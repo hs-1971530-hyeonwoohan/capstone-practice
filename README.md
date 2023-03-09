@@ -5,14 +5,14 @@
 ---
 commit message 구조 : 제목(필수), 본문, 꼬릿말 형식
 ```javascript
-<type>[optional scope]: <description>
+[<type>][optional scope]: <description>
 
 [optional body]
 
 [optional footer(s)]
 ```
 
-type은 반드시 작성. 다음 값 중 하나를 선택
+type은 반드시 작성하며 첫글자는 대문자로 작성합니다. 다음 값 중 하나를 선택합니다.
 ```
 feat: 새로운 기능 추가
 fix: 버그 수정
@@ -29,7 +29,18 @@ chore: 빌드 업무 수정, 패키지 매니저 수정 등 (코드 변경 없�
 
 `[optional body]`는 변경 사항에 대한 자세한 내용을 작성하는 부분입니다. 이 부분은 생략할 수 있습니다.
 
-`[optional footer(s)]`는 이슈 트래커 ID나 참조 등을 작성하는 부분입니다. 이 부분도 생략 가능합니다.
+`[optional footer(s)]`는 이슈 트래커 ID나 참조 등을 작성하는 부분입니다. 이 부분도 생략 가능합니다. 다음의 규칙을 지킵니다.
+```
+꼬리말은  "유형: #이슈 번호"  형식으로 사용한다.
+여러 개의 이슈 번호를 적을 때는  `쉼표(,)`로 구분한다.
+이슈 트래커 유형은 다음 중 하나를 사용한다.  
+- Fixes: 이슈 수정중 (아직 해결되지 않은 경우)  
+- Resolves: 이슈를 해결했을 때 사용  
+- Ref: 참고할 이슈가 있을 때 사용  
+- Related to: 해당 커밋에 관련된 이슈번호 (아직 해결되지 않은 경우)  
+ex) Fixes: #45 Related to: #34, #23
+```
+
 
 ---
 commit convention을 고려한 commit 작성 예시
