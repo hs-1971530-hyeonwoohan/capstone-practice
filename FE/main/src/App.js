@@ -1,41 +1,39 @@
-import { Outlet } from 'react-router-dom';
-import './App.css';
-import DashLeft from './components/dashLeft/DashLeft';
-import DashRight from './components/dashRight/DashRight';
-import Footer from './components/footer/Footer';
+import { Outlet, Route, Router, Routes } from "react-router-dom";
+import { RecoilRoot } from "recoil";
+import "./App.css";
+import Calendar from "./components/calendar/Calendar";
+import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
-import NavBar from "./components/navbar/NavBar";
-import Home from './pages/home/Home';
-import Profile from './pages/profile/Profile';
+import DashBoard from "./pages/dashboard/DashBoard";
+import Home from "./pages/home/Home";
+import Login from "./pages/login/Login";
 
 const Layout = () => {
   return (
     <div>
-      <Header/>
+      <Header />
 
-      <Outlet/>
+      <Outlet />
 
-      <Footer/>
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
 function App() {
   return (
-    <div className="App">
-      <div>
-      <Header/>
+    <RecoilRoot>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="dashBoard" element={<DashBoard />} />
+            <Route path="calendar" element={<Calendar />} />
+          </Route>
+          <Route path="loginForm" element={<Login />}/>
+        </Routes>
       </div>
-      <div className='w-full min-h-[90vh] grid grid-cols-12'>
-        <NavBar/>
-        <div className='grid grid-cols-1 xl:grid-cols-5 w-full col-span-10'>
-          <DashLeft/>
-          <DashRight/>
-        </div>
-      </div>
-      <Home/>
-      <Profile/>
-    </div>
+    </RecoilRoot>
   );
 }
 

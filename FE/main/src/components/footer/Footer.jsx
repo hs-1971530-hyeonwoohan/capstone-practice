@@ -3,10 +3,10 @@ import React from "react";
 function Footer() {
   return (
     <div>
-      <footer className=" bg-white sm:p-6 dark:bg-gray-900">
-        <hr className=" border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+      <footer className=" bg-white sm:px-6 dark:bg-gray-900">
+        <hr className=" border-gray-200 sm:mx-auto dark:border-gray-700" />
         <div className="md:flex md:justify-between">
-          <div className="flex justify-around gap-8 sm:gap-6 sm:grid-cols-3 w-full">
+          <div className="flex justify-around gap-8 sm:gap-6 sm:grid-cols-3 w-full pt-5">
             <div>
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
                 Resources

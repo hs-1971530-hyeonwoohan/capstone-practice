@@ -12,7 +12,7 @@ function PortfolioItem({ item }) {
         </div>
         <div className="w-full space-y-1">
           <h1 className="font-bold">{title}</h1>
-          <p className="text-xs">{desc}</p>
+          <p className="text-xs"></p>
         </div>
       </div>
     </div>

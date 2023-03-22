@@ -4,6 +4,12 @@
   "private": true,
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
+    "@fullcalendar/common": "^5.11.4",
+    "@fullcalendar/daygrid": "^6.1.4",
+    "@fullcalendar/interaction": "^6.1.4",
+    "@fullcalendar/list": "^6.1.4",
+    "@fullcalendar/react": "^6.1.4",
+    "@fullcalendar/timegrid": "^6.1.4",
     "@headlessui/react": "^1.7.10",
     "@heroicons/react": "^1.0.6",
     "@testing-library/jest-dom": "^5.16.5",
