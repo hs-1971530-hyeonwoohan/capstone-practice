@@ -1,7 +1,11 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FaRegBell } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { selectedNavigationIndex } from "../../atoms/SelectedNavigationIndex";
+
+const isAuthenticated = true;
 
 const user = {
   name: "Tom Cook",
@@ -10,11 +14,11 @@ const user = {
     "https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
 };
 const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-  { name: "Reports", href: "#", current: false },
+  { name: "Dashboard", href: "dashBoard" },
+  { name: "Team", href: "/" },
+  { name: "Projects", href: "/" },
+  { name: "Calendar", href: "calendar" },
+  { name: "Reports", href: "/", current: false },
 ];
 const userNavigation = [
   { name: "Your Profile", href: "#" },
@@ -27,6 +31,7 @@ function classNames(...classes) {
 }
 
 export default function Header() {
+  const [selectedIndex, setSelectedIndex] = useRecoilState(selectedNavigationIndex);
   
   return (
     <>
@@ -46,11 +51,13 @@ export default function Header() {
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
+                      <Link to="/" onClick={() => setSelectedIndex()}>
                       <img
-                        className="h-8 w-8"
-                        src="../imgs/icon1.png"
+                        className="object-cover h-8 w-8 cursor-pointer"
+                        src="../../imgs/icon1.png"
                         alt=""
                       />
+                      </Link>
                     </div>
                     <Navigation navigation={navigation}/>
                   </div>
@@ -58,7 +65,10 @@ export default function Header() {
                     <div className="ml-4 flex items-center md:ml-6">
                       <div className="mr-3 px-3 py-2  rounded-md text-black text-sm font-medium">
                         <button className=" text-black hover:bg-teal-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                          <Link to="/">
+                          {/*여기에도  onClick={() => setSelectedIndex()} 추가 필요.*/}
                           Study
+                          </Link>
                         </button>
                       </div>
 
@@ -94,7 +104,10 @@ export default function Header() {
                         <span className="sr-only">5</span>
                       </button>
 
-                      {/* Profile dropdown */}
+                      {/* Profile + dropdown Header에서는 로그인/비로그인을 나눌 파트가 여기뿐임. bell Icon + profile로 div하나로 묶고 로그인/비로그인 나눠놓기. */}
+                      if(isAuthenticated) {
+                        
+                      }
                       <Menu as="div" className="relative ml-3">
                         <div>
                           <Menu.Button className="flex max-w-xs items-center rounded-full bg-teal-500 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-teal-500">
@@ -103,7 +116,7 @@ export default function Header() {
                               className="h-8 w-8 rounded-full"
                               src={user.imageUrl}
                               alt=""
-                            />
+                            ></img>
                           </Menu.Button>
                         </div>
                         <Transition
@@ -225,15 +238,16 @@ export default function Header() {
 }
 
 function Navigation({ navigation }) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  
+  const [selectedIndex, setSelectedIndex] = useRecoilState(selectedNavigationIndex);
 
   return (
     <div className="hidden md:block">
       <div className="ml-10 flex items-baseline space-x-4">
         {navigation.map((item, index) => (
-          <a
+          <Link
             key={item.name}
-            href={item.href}
+            to={item.href}
             className={classNames(
               index === selectedIndex
                 ? "bg-teal-500 text-white"
@@ -243,7 +257,7 @@ function Navigation({ navigation }) {
             onClick={() => setSelectedIndex(index)}
           >
             {item.name}
-          </a>
+          </Link>
         ))}
       </div>
     </div>
