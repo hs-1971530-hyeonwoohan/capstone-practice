@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import Carousel2 from "../../components/carousel/Carousel2";
-import Footer from "../../components/footer/Footer";
-import Header from "../../components/header/Header";
 import Ranking from "../../components/ranking/Ranking";
 import Studyroom from "../../components/studyroom/Studyroom";
 import VerticalTextSlider from "../../components/verticalslider/VerticalSlider";
@@ -11,8 +9,6 @@ function Home() {
   
   return (
     <div className="w-full min-h-full max-h-full">
-      <Header className="z-50" />
-
       <div className="py-16 pl-10">
         <span className=" font-kr font-bold text-3xl">
           ABC지금 여기 한글이라 font weight이 특정 값 이상으로 안올라감.
@@ -25,7 +21,7 @@ function Home() {
             <span>큐레이션을 찾아보세요. 여기도 마찬가지</span>
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col pr-10">
         <div className="grid grid-cols-3">
           <button
             className={`border-b-4 pt-1 h-11 ${
@@ -93,7 +89,6 @@ function Home() {
         {/*content*/}
       </div>
       <div className="mt-10">
-        <Footer />
       </div>
     </div>
   );
