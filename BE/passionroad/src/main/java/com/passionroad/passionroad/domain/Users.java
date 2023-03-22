@@ -41,4 +41,8 @@ public class Users extends BaseEntity{
     @Column(length = 20, nullable = true)
     private String student_id;  // college student id
 
+    public void changePw(String pw){
+        this.pw = pw;
+    }
+
 }
