@@ -2,6 +2,7 @@ package com.passionroad.passionroad.domain;
 
 import lombok.*;
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,6 +41,10 @@ public class Users extends BaseEntity{
 
     @Column(length = 20, nullable = true)
     private String student_id;  // college student id
+
+    // one User can join with many freeboard entities
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<FreeBoard> freeBoardList;
 
     public void changePw(String pw){
         this.pw = pw;
