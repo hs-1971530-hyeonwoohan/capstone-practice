@@ -20,6 +20,11 @@ const navigation = [
   { name: "Calendar", href: "calendar" },
   { name: "Reports", href: "/", current: false },
 ];
+
+const nonAuthenticated = [
+  { name: "Sign In", href: "dashBoard" },
+];
+
 const userNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
@@ -33,6 +38,113 @@ function classNames(...classes) {
 export default function Header() {
   const [selectedIndex, setSelectedIndex] = useRecoilState(selectedNavigationIndex);
   
+  if(!isAuthenticated) {
+    return (
+      <>
+        {/*
+          This example requires updating your template:
+  
+          ```
+          <html class="h-full bg-gray-100">
+          <body class="h-full">
+          ```
+        */}
+        <div className=" min-h-full sticky z-10 top-0 bg-gray-200">
+          <Disclosure as="nav" className="">
+            {({ open }) => (
+              <>
+                <div className=" mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                  <div className="flex h-16 items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0">
+                        <Link to="/" onClick={() => setSelectedIndex()}>
+                        <img
+                          className="object-cover h-8 w-8 cursor-pointer"
+                          src="../../imgs/icon1.png"
+                          alt=""
+                        />
+                        </Link>
+                      </div>
+                      <Navigation navigation={navigation}/>
+                    </div>
+                    <div className="hidden md:block">
+                      <div className=" flex items-center md:ml-6">
+                        <div className="mr-3 px-3 py-2  rounded-md text-black text-sm font-medium">
+                          <button className=" text-black hover:bg-teal-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                            <Link to="/">
+                            {/*여기에도  onClick={() => setSelectedIndex()} 추가 필요.*/}
+                            Study
+                            </Link>
+                          </button>
+                        </div>
+  
+                        <div className="flex border-2 border-gray-200 rounded-md focus-within:ring-2 ring-teal-500 mr-10">
+                          <input
+                            type="text"
+                            className="w-full rounded-tl-md rounded-bl-md px-2 py-3 text-sm text-gray-600 focus:outline-none"
+                            placeholder="Search"
+                          />
+                          <button className="rounded-tr-md rounded-br-md px-2 py-3 hidden md:block">
+                            <svg
+                              className="w-4 h-4 fill-current"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd"
+                              ></path>
+                            </svg>
+                          </button>
+                        </div>
+  
+                        {/*nav Bell 아이콘 있던 자리*/}
+                        <div className="mr-3 py-2  rounded-md text-black text-sm font-medium">
+                          <button className=" text-black hover:bg-teal-400 hover:text-white px-2  py-2 rounded-md text-sm font-medium">
+                            <Link to="/">
+                            {/*여기에도  onClick={() => setSelectedIndex()} 추가 필요.*/}
+                            Sign In
+                            </Link>
+                          </button>
+                        </div>
+  
+                        {/* Profile + dropdown Header에서는 로그인/비로그인을 나눌 파트가 여기뿐임. bell Icon + profile로 div하나로 묶고 로그인/비로그인 나눠놓기. */}
+                        
+                    
+                      </div>
+                    </div>
+                    <div className="-mr-2 flex md:hidden">
+                      {/* Mobile menu button */}
+                      <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                        <span className="sr-only">Open main menu</span>
+                        {/*{open ? (
+                          <XMarkIcon
+                            className="block h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <Bars3Icon
+                            className="block h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        )}*/}
+                      </Disclosure.Button>
+                    </div>
+                  </div>
+                </div>
+  
+                
+              </>
+            )}
+          </Disclosure>
+          {/**/}
+        </div>
+      </>
+    );
+  }
+  else {
   return (
     <>
       {/*
@@ -43,7 +155,7 @@ export default function Header() {
         <body class="h-full">
         ```
       */}
-      <div className="min-h-full sticky z-10 top-0 bg-gray-50">
+      <div className="min-h-full sticky z-10 top-0 bg-gray-200">
         <Disclosure as="nav" className="">
           {({ open }) => (
             <>
@@ -64,7 +176,7 @@ export default function Header() {
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6">
                       <div className="mr-3 px-3 py-2  rounded-md text-black text-sm font-medium">
-                        <button className=" text-black hover:bg-teal-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        <button className=" text-black hover:bg-black hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                           <Link to="/">
                           {/*여기에도  onClick={() => setSelectedIndex()} 추가 필요.*/}
                           Study
@@ -236,6 +348,7 @@ export default function Header() {
     </>
   );
 }
+}
 
 function Navigation({ navigation }) {
   
@@ -263,3 +376,4 @@ function Navigation({ navigation }) {
     </div>
   );
 }
+
