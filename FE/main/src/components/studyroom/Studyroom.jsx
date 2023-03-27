@@ -8,21 +8,21 @@ const tempRooms = [
     title: "Study With Me",
     img: "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     current: "5/8",
-    fire: 6
+    fire: 6,
   },
   {
     id: 2,
     title: "All Night Study",
     img: "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     current: "2/8",
-    fire: 6
+    fire: 6,
   },
   {
     id: 3,
     title: "D-day 18",
     img: "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     current: "3/8",
-    fire: 5
+    fire: 5,
   },
 
   {
@@ -30,21 +30,21 @@ const tempRooms = [
     title: "Cam On, Mic Off",
     img: "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     current: "1/8",
-    fire: 4
+    fire: 4,
   },
   {
     id: 5,
     title: "Cam On, Mic Off",
     img: "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     current: "1/8",
-    fire : 3
+    fire: 3,
   },
   {
     id: 6,
     title: "Cam On, Mic Off",
     img: "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     current: "1/8",
-    fire: 2
+    fire: 2,
   },
   {
     id: 7,
@@ -62,12 +62,12 @@ const tempRooms = [
 ];
 function Studyroom() {
   return (
-    <div className="px-3">
+    <div className="px-3 h-full">
       <div className="p-2 mt-3 font-semibold text-2xl">Now Studying</div>
       <div className="min-h-[h-28] max-h-[h-28] mx-auto w-full flex  content-center">
         {tempRooms.slice(0, 6).map((room) => (
           <div
-            className="flex flex-wrap min-w-[w-28] max-w-[w-28] px-2 py-4 relative"
+            className="flex min-w-[w-28] max-w-[w-28] px-2 py-4 relative"
             key={room.id}
           >
             <div className="mx-1 my-1 text-white absolute">
@@ -82,15 +82,16 @@ function Studyroom() {
                 alt=""
                 className="object-cover cursor-pointer rounded"
               />
-            </div>
-            {/*icon 집어넣을 자리*/}
-
-            <div className="w-full pt-2 cursor-pointer flex justify-between">
+              <div className="w-full pt-2 cursor-pointer flex justify-between">
               <div className="pt">{room.title}</div>
               <div className="pr-2">
                 <AnimatedIcon fire={room.fire} />
               </div>
             </div>
+            </div>
+            {/*icon 집어넣을 자리*/}
+
+            
           </div>
         ))}
       </div>
