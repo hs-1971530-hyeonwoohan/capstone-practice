@@ -15,7 +15,8 @@ public class FreeBoard extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long post_id;
+    @Column(name = "post_id")
+    private Long postId;
 
     @Column
     private String title;
@@ -28,4 +29,8 @@ public class FreeBoard extends BaseEntity{
     @JoinColumn(name = "author_id") // make fk named 'author_id'
     private Users users;            // entity for join
 
+    public void change(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
