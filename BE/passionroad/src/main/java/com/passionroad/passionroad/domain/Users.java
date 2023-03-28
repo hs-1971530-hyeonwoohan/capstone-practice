@@ -2,20 +2,20 @@ package com.passionroad.passionroad.domain;
 
 import lombok.*;
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor // make constructor with all args
 @NoArgsConstructor // make constructor without args
-@ToString
+@ToString(exclude = "freeBoardList") // exclude property : prevent circular reference
 public class Users extends BaseEntity{
-
-    // think next time -> In Korean... VARCHAR(255) == @Column(length = 255 ...) is it correct?
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // make pk (mysql, mariadb : auto increment)
-    private Long user_id;   // Users table primary key
+    @Column(name = "user_id")
+    private Long userId;   // Users table primary key
 
     @Column(length = 255, nullable = false) // NOT NULL
     private String id;  // user id for login
@@ -32,14 +32,18 @@ public class Users extends BaseEntity{
     @Column(length = 10, nullable = true)
     private String gender;
 
-    @Column(length = 20, nullable = true)
-    private String phone_num;
+    @Column(name = "phone_num", length = 20, nullable = true)
+    private String phoneNum;
 
-    @Column(length = 320, nullable = true) // 320 is maximum length of email
+    @Column(length = 320, unique = true) // 320 is maximum length of email
     private String email;   // email address
 
-    @Column(length = 20, nullable = true)
-    private String student_id;  // college student id
+    @Column(name = "student_id", length = 20, nullable = true)
+    private String studentId;  // college student id
+
+    // one User can join with many freeboard entities
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<FreeBoard> freeBoardList;
 
     public void changePw(String pw){
         this.pw = pw;
