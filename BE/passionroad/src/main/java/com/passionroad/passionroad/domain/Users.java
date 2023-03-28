@@ -12,8 +12,6 @@ import java.util.List;
 @ToString(exclude = "freeBoardList") // exclude property : prevent circular reference
 public class Users extends BaseEntity{
 
-    // think next time -> In Korean... VARCHAR(255) == @Column(length = 255 ...) is it correct?
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // make pk (mysql, mariadb : auto increment)
     @Column(name = "user_id")
@@ -37,7 +35,7 @@ public class Users extends BaseEntity{
     @Column(name = "phone_num", length = 20, nullable = true)
     private String phoneNum;
 
-    @Column(length = 320, nullable = true) // 320 is maximum length of email
+    @Column(length = 320, unique = true) // 320 is maximum length of email
     private String email;   // email address
 
     @Column(name = "student_id", length = 20, nullable = true)
