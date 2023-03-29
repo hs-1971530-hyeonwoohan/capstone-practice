@@ -33,7 +33,7 @@ public class UsersRepositoryTest {
 
             // insert or update result
             Users result = usersRepository.save(users);
-            log.info("user_id: " + result.getUser_id());
+            log.info("user_id: " + result.getUserId());
         });
     }
 
