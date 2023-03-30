@@ -3,7 +3,7 @@ package com.passionroad.passionroad.config.auth;
 import com.passionroad.passionroad.config.auth.dto.OAuthAttributes;
 import com.passionroad.passionroad.config.auth.dto.SessionUser;
 import com.passionroad.passionroad.domain.user.User;
-import com.passionroad.passionroad.domain.user.UserRepository;
+import com.passionroad.passionroad.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

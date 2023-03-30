@@ -1,5 +1,6 @@
 package com.passionroad.passionroad.domain;
 
+import com.passionroad.passionroad.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,7 +28,7 @@ public class FreeBoard extends BaseEntity{
     // many freeboard entities can join with one user
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id") // make fk named 'author_id'
-    private Users users;            // entity for join
+    private User user;            // entity for join
 
     public void change(String title, String content) {
         this.title = title;

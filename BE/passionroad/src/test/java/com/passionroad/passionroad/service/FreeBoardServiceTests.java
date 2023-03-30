@@ -1,8 +1,8 @@
 package com.passionroad.passionroad.service;
 
-import com.passionroad.passionroad.domain.Users;
+import com.passionroad.passionroad.domain.user.User;
 import com.passionroad.passionroad.dto.FreeBoardDTO;
-import com.passionroad.passionroad.repository.UsersRepository;
+import com.passionroad.passionroad.repository.UserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class FreeBoardServiceTests {
     @Autowired
     private FreeBoardService freeBoardService;
     @Autowired
-    private UsersRepository usersRepository;
+    private UserRepository userRepository;
 
     @Test
     public void testRegister(){
@@ -23,14 +23,14 @@ public class FreeBoardServiceTests {
 
         // user who will post
         Long userId = 100L;
-        Users users = usersRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow();
         // post made by user
         FreeBoardDTO boardDTO = FreeBoardDTO.builder()
                 .title("sample title...")
                 .content("sample content...")
                 .build();
 
-        Long postId = freeBoardService.register(boardDTO, users);
+        Long postId = freeBoardService.register(boardDTO, user);
 
         log.info("postId: " + postId); // post_id of user 100
     }

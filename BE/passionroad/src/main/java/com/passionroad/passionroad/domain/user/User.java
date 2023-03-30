@@ -1,16 +1,19 @@
 package com.passionroad.passionroad.domain.user;
 
-import com.passionroad.passionroad.domain.BaseTimeEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.passionroad.passionroad.domain.BaseEntity;
+import com.passionroad.passionroad.domain.FreeBoard;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString(exclude = "freeBoardList")
 @Entity
-public class User extends BaseTimeEntity {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +23,9 @@ public class User extends BaseTimeEntity {
     private String name;
 
     @Column(nullable = false)
+    private String nickname;
+
+    @Column(length = 320, nullable = false, unique = true)
     private String email;
 
     @Column
@@ -28,6 +34,9 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<FreeBoard> freeBoardList;
 
     @Builder
     public User(String name, String email, String picture, Role role) {
