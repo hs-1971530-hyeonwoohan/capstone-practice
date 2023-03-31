@@ -19,20 +19,20 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String nickname;
 
-    @Column(length = 320, nullable = false, unique = true)
+    @Column(length = 320, nullable = true, unique = true)
     private String email;
 
     @Column
     private String picture;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
