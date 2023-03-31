@@ -1,7 +1,7 @@
 package com.passionroad.passionroad.controller;
 
 import com.passionroad.passionroad.dto.FreeBoardDTO;
-import com.passionroad.passionroad.repository.UsersRepository;
+import com.passionroad.passionroad.repository.UserRepository;
 import com.passionroad.passionroad.service.FreeBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -32,14 +32,22 @@ public class FreeBoardController {
      * */
 
     private final FreeBoardService freeBoardService;
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
 
     // write freeboard post
-    @PostMapping
-    public ResponseEntity<FreeBoardDTO> writePost(@RequestBody @Valid FreeBoardDTO freeBoardDTO, @AuthenticationPrincipal UserDetails userDetails){
+//    @PostMapping
+//    public ResponseEntity<FreeBoardDTO> writePost(@RequestBody @Valid FreeBoardDTO freeBoardDTO, @AuthenticationPrincipal UserDetails userDetails){
+//
+//        return null;
+//    }
+
+    @GetMapping
+    public ResponseEntity<FreeBoardDTO> readAll(){
 
         return null;
     }
+
+
 
 
 

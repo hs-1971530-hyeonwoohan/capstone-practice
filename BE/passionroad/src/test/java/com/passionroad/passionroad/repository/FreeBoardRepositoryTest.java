@@ -33,6 +33,7 @@ public class FreeBoardRepositoryTest {
             FreeBoard freeBoard = FreeBoard.builder()
                     .title("title..." + i)
                     .content("content..." + i)
+                    .writer("writer..." + i)
                     .build();
 
             FreeBoard result = freeBoardRepository.save(freeBoard);
