@@ -1,10 +1,10 @@
 import React from 'react';
-import fire1 from '../imgs/fireIcon.gif';
-import fire2 from '../imgs/fireIcon2.gif';
-import fire3 from '../imgs/fireIcon3.gif';
-import fire4 from '../imgs/fireIcon4.gif';
-import fire5 from '../imgs/fireIcon5.gif';
-import fire6 from '../imgs/fireIcon6.gif';
+import fire1 from '../imgs/icons/fireIcon.gif';
+import fire2 from '../imgs/icons/fireIcon2.gif';
+import fire3 from '../imgs/icons/fireIcon3.gif';
+import fire4 from '../imgs/icons/fireIcon4.gif';
+import fire5 from '../imgs/icons/fireIcon5.gif';
+import fire6 from '../imgs/icons/fireIcon6.gif';
 
 
 const fireIcons = {
