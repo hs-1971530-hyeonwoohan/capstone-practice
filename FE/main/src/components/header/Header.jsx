@@ -15,10 +15,8 @@ const user = {
 };
 const navigation = [
   { name: "Dashboard", href: "dashBoard" },
-  { name: "Team", href: "/" },
-  { name: "Projects", href: "/" },
-  { name: "Calendar", href: "calendar" },
-  { name: "Reports", href: "/", current: false },
+  { name: "Board", href: "/" },
+  { name: "Calendar", href: "calendar", current: false },
 ];
 
 const nonAuthenticated = [
