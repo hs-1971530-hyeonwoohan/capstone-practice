@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class FreeBoardDTO {
 
     private Long postId;   // post_id
-    private Long authorId; // user_id(author_id)
+    private Long authorId; // user id(author_id)
     @NotEmpty
     private String title;
     @NotEmpty
@@ -31,6 +31,7 @@ public class FreeBoardDTO {
                 .postId(this.postId)
                 .title(this.title)
                 .content(this.content)
+                .writer(this.writer)
                 .user(user)
                 .build();
     }
@@ -42,7 +43,7 @@ public class FreeBoardDTO {
                 .authorId(freeBoard.getUser().getId())
                 .title(freeBoard.getTitle())
                 .content(freeBoard.getContent())
-                .writer(freeBoard.getUser().getNickname()) // user nickname
+                .writer(freeBoard.getUser().getNickname()) // writer : user nickname
                 .regDate(freeBoard.getRegDate())
                 .modDate(freeBoard.getModDate())
                 .build();

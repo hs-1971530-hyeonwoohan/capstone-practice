@@ -26,7 +26,7 @@ public class UserRepositoryTest {
         // make test Users Entity instance
         IntStream.rangeClosed(1, 100).forEach(i -> {
             User user = User.builder()
-                    .nickname("nickname......" + i)
+//                    .nickname("nickname......" + i)
                     .build();
 
             // insert or update result

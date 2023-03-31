@@ -17,13 +17,16 @@ public class FreeBoard extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
-    private Long postId;
+    private Long postId;    // 식별자
 
     @Column
-    private String title;
+    private String title;   // 제목
 
     @Column(columnDefinition = "TEXT")
-    private String content;
+    private String content; // 내용
+
+    @Column
+    private String writer;  // 작성자
 
     // many freeboard entities can join with one user
     @ManyToOne(fetch = FetchType.LAZY)

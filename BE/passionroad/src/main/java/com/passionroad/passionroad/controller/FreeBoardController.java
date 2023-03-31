@@ -35,11 +35,19 @@ public class FreeBoardController {
     private final UserRepository userRepository;
 
     // write freeboard post
-    @PostMapping
-    public ResponseEntity<FreeBoardDTO> writePost(@RequestBody @Valid FreeBoardDTO freeBoardDTO, @AuthenticationPrincipal UserDetails userDetails){
+//    @PostMapping
+//    public ResponseEntity<FreeBoardDTO> writePost(@RequestBody @Valid FreeBoardDTO freeBoardDTO, @AuthenticationPrincipal UserDetails userDetails){
+//
+//        return null;
+//    }
+
+    @GetMapping
+    public ResponseEntity<FreeBoardDTO> readAll(){
 
         return null;
     }
+
+
 
 
 
