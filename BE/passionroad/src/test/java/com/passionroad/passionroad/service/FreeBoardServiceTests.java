@@ -2,6 +2,8 @@ package com.passionroad.passionroad.service;
 
 import com.passionroad.passionroad.domain.user.User;
 import com.passionroad.passionroad.dto.FreeBoardDTO;
+import com.passionroad.passionroad.dto.PageRequestDTO;
+import com.passionroad.passionroad.dto.PageResponseDTO;
 import com.passionroad.passionroad.repository.UserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -40,6 +42,21 @@ public class FreeBoardServiceTests {
         Long postId = 101L;
         FreeBoardDTO freeBoardDTO = freeBoardService.readOne(postId);
         log.info(freeBoardDTO);
+    }
+
+    @Test
+    public void testList(){
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .type("tcw")    // title, content, writer
+                .keyword("1")   // posts that contain "1"
+                .page(1)    // page 1, 2
+                .size(10)
+                .build();
+
+        PageResponseDTO<FreeBoardDTO> pageResponseDTO = freeBoardService.list(pageRequestDTO);
+
+        log.info(pageResponseDTO);
     }
 
     @Test

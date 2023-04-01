@@ -1,6 +1,7 @@
 package com.passionroad.passionroad.repository;
 
 import com.passionroad.passionroad.domain.FreeBoard;
+import com.passionroad.passionroad.domain.user.User;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,19 @@ public class FreeBoardRepositoryTest {
 
     @Autowired
     private FreeBoardRepository freeBoardRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     public void testInsert(){
+        User user = userRepository.findByEmail("ziczin7176@gmail.com").orElseThrow();
+
         IntStream.rangeClosed(1, 100).forEach(i -> {
             FreeBoard freeBoard = FreeBoard.builder()
                     .title("title..." + i)
                     .content("content..." + i)
                     .writer("writer..." + i)
+                    .user(user)
                     .build();
 
             FreeBoard result = freeBoardRepository.save(freeBoard);
