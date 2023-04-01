@@ -3,6 +3,8 @@ package com.passionroad.passionroad.service;
 import com.passionroad.passionroad.domain.FreeBoard;
 import com.passionroad.passionroad.domain.user.User;
 import com.passionroad.passionroad.dto.FreeBoardDTO;
+import com.passionroad.passionroad.dto.PageRequestDTO;
+import com.passionroad.passionroad.dto.PageResponseDTO;
 import com.passionroad.passionroad.repository.FreeBoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -40,18 +43,27 @@ public class FreeBoardService {
         return FreeBoardDTO.fromEntity(freeBoard);
     }
 
+    // searchAll result
+    public PageResponseDTO<FreeBoardDTO> list(PageRequestDTO pageRequestDTO){
 
-    public List<FreeBoard> readAll(){
+        String[] types = pageRequestDTO.getTypes();
+        String keyword = pageRequestDTO.getKeyword();
+        Pageable pageable = pageRequestDTO.getPageable("postId");   // postId descending sort
 
-        Pageable pageable = PageRequest.of(1, 10, Sort.by("postId").descending());
+        // Search All posts
+        Page<FreeBoard> result = freeBoardRepository.searchAll(types, keyword, pageable);
 
-        Page<FreeBoard> result = freeBoardRepository.findAll(pageable);
+        // result FreeBoard Entities -> FreeBoardDTO List
+        List<FreeBoardDTO> dtoList = result.getContent().stream().map(freeBoard -> FreeBoardDTO.fromEntity(freeBoard)).collect(Collectors.toList());
 
-        List<FreeBoard> freeBoardList = result.getContent();    // return Page<FreeBoard> List
-        freeBoardList.forEach(freeBoard -> log.info(freeBoard));
-
-        return freeBoardList;
+        // return new PageResponseDTO instance
+        return PageResponseDTO.<FreeBoardDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)   // freeboard dto list
+                .total((int) result.getTotalElements())
+                .build();
     }
+
 
     // (GET) readOne() to modify original data -> (POST) make dto with modified data -> modify(dto)
     public void modify(FreeBoardDTO freeBoardDTO) {
