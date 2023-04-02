@@ -11,7 +11,7 @@ import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import DashBoard from "./pages/dashboard/DashBoard";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
-
+import JobfinderBoard from "./pages/board/JobfinderBoard";
 
 
 const Layout = () => {
@@ -42,6 +42,7 @@ function App() {
           <Route path="post" element={<Post/>}/>
 
         </Route>
+        <Route path="board" element={<JobfinderBoard />} />
         <Route path="login" element={<Login />} />
       </Routes>
     </div>
