@@ -1,4 +1,3 @@
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { FaAngleLeft, FaAngleRight} from "react-icons/fa";
 
 const items = [
