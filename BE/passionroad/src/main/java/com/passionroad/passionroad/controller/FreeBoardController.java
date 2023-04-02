@@ -1,6 +1,8 @@
 package com.passionroad.passionroad.controller;
 
 import com.passionroad.passionroad.dto.FreeBoardDTO;
+import com.passionroad.passionroad.dto.PageRequestDTO;
+import com.passionroad.passionroad.dto.PageResponseDTO;
 import com.passionroad.passionroad.repository.UserRepository;
 import com.passionroad.passionroad.service.FreeBoardService;
 import lombok.RequiredArgsConstructor;
@@ -41,10 +43,21 @@ public class FreeBoardController {
 //        return null;
 //    }
 
-    @GetMapping
-    public ResponseEntity<FreeBoardDTO> readAll(){
+    @GetMapping(value = "/")
+    public ResponseEntity<PageResponseDTO<FreeBoardDTO>> searchPosts(@RequestParam String page, @RequestParam String size, @RequestParam String type, @RequestParam String keyword) {
 
-        return null;
+        // make page request dto with url parameter
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(Integer.parseInt(page))
+                .size(Integer.parseInt(size))
+                .type(type)
+                .keyword(keyword)
+                .build();
+
+        // make page response dto with page request dto
+        PageResponseDTO<FreeBoardDTO> pageResponseDTO = freeBoardService.list(pageRequestDTO);
+
+        return ResponseEntity.ok(pageResponseDTO);
     }
 
 
