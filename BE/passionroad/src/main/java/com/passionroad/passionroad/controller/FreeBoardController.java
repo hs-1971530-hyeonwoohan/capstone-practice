@@ -43,8 +43,8 @@ public class FreeBoardController {
 //        return null;
 //    }
 
-    @GetMapping(value = "/")
-    public ResponseEntity<PageResponseDTO<FreeBoardDTO>> searchPosts(@RequestParam String page, @RequestParam String size, @RequestParam String type, @RequestParam String keyword) {
+    @GetMapping
+    public ResponseEntity<PageResponseDTO<FreeBoardDTO>> listPosts(@RequestParam(defaultValue = "1") String page, @RequestParam(defaultValue = "10") String size, @RequestParam(required = false) String type, @RequestParam(required = false) String keyword) {
 
         // make page request dto with url parameter
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
@@ -59,9 +59,4 @@ public class FreeBoardController {
 
         return ResponseEntity.ok(pageResponseDTO);
     }
-
-
-
-
-
 }
