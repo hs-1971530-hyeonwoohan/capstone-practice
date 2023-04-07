@@ -1,6 +1,7 @@
 package com.passionroad.passionroad.repository;
 
 import com.passionroad.passionroad.domain.FreeBoard;
+import com.passionroad.passionroad.domain.user.User;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,19 @@ public class FreeBoardRepositoryTest {
 
     @Autowired
     private FreeBoardRepository freeBoardRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     public void testInsert(){
+        User user = userRepository.findByEmail("ziczin7176@gmail.com").orElseThrow();
+
         IntStream.rangeClosed(1, 100).forEach(i -> {
             FreeBoard freeBoard = FreeBoard.builder()
                     .title("title..." + i)
                     .content("content..." + i)
                     .writer("writer..." + i)
+                    .user(user)
                     .build();
 
             FreeBoard result = freeBoardRepository.save(freeBoard);
@@ -95,10 +101,35 @@ public class FreeBoardRepositoryTest {
     // Querydsl JPQLQuery method test
     @Test
     public void testSearch1(){
-        // 2 page order by postId desc
+        // page order by postId desc
         Pageable pageable = PageRequest.of(1, 10, Sort.by("postId").descending());
 
         freeBoardRepository.search1(pageable);  // return Page<FreeBoard>
+    }
+
+    @Test
+    public void testSearchAll(){
+        String[] types = {"t", "c", "w"};
+
+        String keyword = "1";
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("postId").descending());
+
+        Page<FreeBoard> result = freeBoardRepository.searchAll(types, keyword, pageable);
+
+        // total pages
+        log.info(result.getTotalPages());
+
+        // page size
+        log.info(result.getSize());
+
+        // page number
+        log.info(result.getNumber());
+
+        // prev next
+        log.info(result.hasPrevious() + " : " + result.hasNext());
+
+        result.getContent().forEach(freeBoard -> log.info(freeBoard));
     }
 
 

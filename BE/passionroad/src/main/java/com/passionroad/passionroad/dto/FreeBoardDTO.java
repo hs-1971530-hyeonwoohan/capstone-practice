@@ -43,7 +43,7 @@ public class FreeBoardDTO {
                 .authorId(freeBoard.getUser().getId())
                 .title(freeBoard.getTitle())
                 .content(freeBoard.getContent())
-                .writer(freeBoard.getUser().getNickname()) // writer : user nickname
+                .writer(freeBoard.getUser().getName())
                 .regDate(freeBoard.getRegDate())
                 .modDate(freeBoard.getModDate())
                 .build();
