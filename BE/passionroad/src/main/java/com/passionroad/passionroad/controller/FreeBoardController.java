@@ -39,7 +39,7 @@ public class FreeBoardController {
     private final UserRepository userRepository;
 
     // write freeboard post
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    /*@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FreeBoardDTO> writePost(
             @RequestBody @Valid FreeBoardDTO freeBoardDTO,
             @AuthenticationPrincipal UserDetails userDetails){
@@ -48,7 +48,7 @@ public class FreeBoardController {
 //        userDetails.getUsername()
 
         return null;
-    }
+    }*/
 
     @GetMapping
     public ResponseEntity<PageResponseDTO<FreeBoardDTO>> listPosts(
@@ -80,4 +80,30 @@ public class FreeBoardController {
         return ResponseEntity.ok(freeBoardDTO);
     }
 
+    // modify a specific post
+    @PostMapping("/{id}")
+    public ResponseEntity<Void> modifyPost(
+            @PathVariable Long id,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String content){
+
+        FreeBoardDTO freeBoardDTO = FreeBoardDTO.builder()
+                .postId(id)
+                .title(title)
+                .content(content)
+                .build();
+
+        freeBoardService.modify(freeBoardDTO);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    // delete a specific post (error)
+    /*@DeleteMapping("/{id}")
+    public ResponseEntity<Void> removePost(@PathVariable Long id){
+
+        freeBoardService.remove(id);
+
+        return ResponseEntity.noContent().build();
+    }*/
 }
