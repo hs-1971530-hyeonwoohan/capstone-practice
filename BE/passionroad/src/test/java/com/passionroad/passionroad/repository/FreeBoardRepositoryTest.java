@@ -32,7 +32,7 @@ public class FreeBoardRepositoryTest {
 
     @Test
     public void testInsert(){
-        User user = userRepository.findByEmail("ziczin7176@gmail.com").orElseThrow();
+        User user = userRepository.findByEmail("kimhankimhan1111@gmail.com").orElseThrow();
 
         IntStream.rangeClosed(1, 100).forEach(i -> {
             FreeBoard freeBoard = FreeBoard.builder()
