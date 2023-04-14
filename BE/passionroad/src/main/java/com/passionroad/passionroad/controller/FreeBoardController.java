@@ -1,13 +1,17 @@
 package com.passionroad.passionroad.controller;
 
+import com.passionroad.passionroad.dto.FreeBoardCommentDTO;
 import com.passionroad.passionroad.dto.FreeBoardDTO;
 import com.passionroad.passionroad.dto.PageRequestDTO;
 import com.passionroad.passionroad.dto.PageResponseDTO;
+import com.passionroad.passionroad.repository.FreeBoardCommentRepository;
 import com.passionroad.passionroad.repository.FreeBoardRepository;
 import com.passionroad.passionroad.repository.UserRepository;
+import com.passionroad.passionroad.service.FreeBoardCommentService;
 import com.passionroad.passionroad.service.FreeBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.coyote.Response;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/freeboards")
@@ -37,8 +42,12 @@ public class FreeBoardController {
 
     private final FreeBoardService freeBoardService;
     private final UserRepository userRepository;
+    private final FreeBoardCommentService freeBoardCommentService;
 
-    // write freeboard post
+     /* write freeboard post
+     *  GET: return user name by UserDetails
+     *  POST: create freeboard post*/
+
     /*@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FreeBoardDTO> writePost(
             @RequestBody @Valid FreeBoardDTO freeBoardDTO,
@@ -49,6 +58,7 @@ public class FreeBoardController {
 
         return null;
     }*/
+
 
     @GetMapping
     public ResponseEntity<PageResponseDTO<FreeBoardDTO>> listPosts(
@@ -72,23 +82,23 @@ public class FreeBoardController {
     }
 
     // read a specific post
-    @GetMapping("/{id}")
-    public ResponseEntity<FreeBoardDTO> readPost(@PathVariable Long id){
+    @GetMapping("/{postId}")
+    public ResponseEntity<FreeBoardDTO> readPost(@PathVariable Long postId){
 
-        FreeBoardDTO freeBoardDTO = freeBoardService.readOne(id);
+        FreeBoardDTO freeBoardDTO = freeBoardService.readOne(postId);
 
         return ResponseEntity.ok(freeBoardDTO);
     }
 
     // modify a specific post
-    @PostMapping("/{id}")
+    @PostMapping("/{postId}")
     public ResponseEntity<Void> modifyPost(
-            @PathVariable Long id,
+            @PathVariable Long postId,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String content){
 
         FreeBoardDTO freeBoardDTO = FreeBoardDTO.builder()
-                .postId(id)
+                .postId(postId)
                 .title(title)
                 .content(content)
                 .build();
@@ -99,11 +109,54 @@ public class FreeBoardController {
     }
 
     // delete a specific post (error)
-    /*@DeleteMapping("/{id}")
-    public ResponseEntity<Void> removePost(@PathVariable Long id){
+    /*@DeleteMapping("/{postId}")
+    public ResponseEntity<Void> removePost(@PathVariable Long postId){
 
-        freeBoardService.remove(id);
+        freeBoardService.remove(postId);
 
         return ResponseEntity.noContent().build();
     }*/
+
+    // write post's comment
+    @PostMapping("/{postId}/comments")
+    public ResponseEntity<Void> writeComment(){
+
+        return null;
+    }
+
+    // read post's comments
+    @GetMapping("/{postId}/comments")
+    public ResponseEntity<List<FreeBoardCommentDTO>> readComments(@PathVariable Long postId){
+
+        List<FreeBoardCommentDTO> dtoList = freeBoardCommentService.listByPostId(postId);
+
+        return ResponseEntity.ok(dtoList);
+    }
+
+    // modify post's comment
+    @PostMapping(value = "/{postId}/{commentId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> modifyComment(
+            @PathVariable Long postId,
+            @PathVariable Long commentId,
+            @RequestBody @Valid FreeBoardCommentDTO freeBoardCommentDTO
+    ){
+        // necessary dto parameter: commentId, commentText
+
+        freeBoardCommentService.modify(freeBoardCommentDTO);
+
+        return ResponseEntity.noContent().build();
+    }
+
+
+    // delete post's comment
+    @DeleteMapping("/{postId}/{commentId}")
+    public ResponseEntity<Void> removeComment(
+            @PathVariable Long postId,
+            @PathVariable Long commentId
+    ){
+        freeBoardCommentService.remove(commentId);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }
