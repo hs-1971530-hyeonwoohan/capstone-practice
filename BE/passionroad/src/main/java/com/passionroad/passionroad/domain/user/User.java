@@ -1,7 +1,8 @@
 package com.passionroad.passionroad.domain.user;
 
 import com.passionroad.passionroad.domain.BaseEntity;
-import com.passionroad.passionroad.domain.FreeBoard;
+import com.passionroad.passionroad.domain.freeboard.FreeBoard;
+import com.passionroad.passionroad.domain.freeboard.FreeBoardComment;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,21 +20,24 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = true)
+    @Column
     private String name;
 
-    @Column(length = 320, nullable = true, unique = true)
+    @Column(length = 320, unique = true)
     private String email;
 
     @Column
     private String picture;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
+    @Column
     private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<FreeBoard> freeBoardList;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<FreeBoardComment> freeBoardCommentList;
 
     @Builder
     public User(String name, String email, String picture, Role role) {
