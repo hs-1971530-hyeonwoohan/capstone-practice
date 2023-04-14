@@ -41,8 +41,8 @@ public class PageResponseDTO<E> {
         this.total = total; // total page
         this.dtoList = dtoList; // search result list
 
-        this.end = (int)(Math.ceil(this.page / 10.0)) * 10; // end page number
-        this.start = this.end - 9; // start page number
+        this.end = (int)(Math.ceil(this.page / 5.0)) * 5; // end page number
+        this.start = this.end - 4; // start page number
         int last = (int)(Math.ceil((total / (double)size))); // last page number
 
         this.end = end > last ? last : end;
