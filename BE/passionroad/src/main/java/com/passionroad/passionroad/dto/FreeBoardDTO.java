@@ -1,6 +1,6 @@
 package com.passionroad.passionroad.dto;
 
-import com.passionroad.passionroad.domain.FreeBoard;
+import com.passionroad.passionroad.domain.freeboard.FreeBoard;
 import com.passionroad.passionroad.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
