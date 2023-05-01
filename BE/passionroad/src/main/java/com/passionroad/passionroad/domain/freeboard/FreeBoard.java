@@ -1,17 +1,19 @@
-package com.passionroad.passionroad.domain;
+package com.passionroad.passionroad.domain.freeboard;
 
+import com.passionroad.passionroad.domain.BaseEntity;
 import com.passionroad.passionroad.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class FreeBoard extends BaseEntity{
+@ToString(exclude = "user")
+public class FreeBoard extends BaseEntity {
     // free_board entity
 
     @Id
@@ -32,6 +34,9 @@ public class FreeBoard extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id") // make fk named 'author_id'
     private User user;            // entity for join
+
+    @OneToMany(mappedBy = "freeBoard", fetch = FetchType.LAZY)
+    private List<FreeBoardComment> freeBoardCommentList;
 
     public void change(String title, String content) {
         this.title = title;

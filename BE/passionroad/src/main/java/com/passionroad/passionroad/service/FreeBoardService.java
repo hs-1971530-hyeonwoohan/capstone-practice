@@ -1,6 +1,6 @@
 package com.passionroad.passionroad.service;
 
-import com.passionroad.passionroad.domain.FreeBoard;
+import com.passionroad.passionroad.domain.freeboard.FreeBoard;
 import com.passionroad.passionroad.domain.user.User;
 import com.passionroad.passionroad.dto.FreeBoardDTO;
 import com.passionroad.passionroad.dto.PageRequestDTO;
@@ -11,8 +11,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,8 +28,7 @@ public class FreeBoardService {
 
         FreeBoard freeBoard = freeBoardDTO.toEntity(user);
 
-        Long postId = freeBoardRepository.save(freeBoard).getPostId();
-        return postId;
+        return freeBoardRepository.save(freeBoard).getPostId();
     }
 
     // read one by post_id
@@ -52,7 +51,7 @@ public class FreeBoardService {
         Page<FreeBoard> result = freeBoardRepository.searchAll(types, keyword, pageable);
 
         // result FreeBoard Entities -> FreeBoardDTO List
-        List<FreeBoardDTO> dtoList = result.getContent().stream().map(freeBoard -> FreeBoardDTO.fromEntity(freeBoard)).collect(Collectors.toList());
+        List<FreeBoardDTO> dtoList = result.getContent().stream().map(FreeBoardDTO::fromEntity).collect(Collectors.toList());
 
         // return new PageResponseDTO instance
         return PageResponseDTO.<FreeBoardDTO>withAll()

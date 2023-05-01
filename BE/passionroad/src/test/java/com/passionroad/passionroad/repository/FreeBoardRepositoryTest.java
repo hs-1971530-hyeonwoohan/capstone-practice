@@ -1,6 +1,6 @@
 package com.passionroad.passionroad.repository;
 
-import com.passionroad.passionroad.domain.FreeBoard;
+import com.passionroad.passionroad.domain.freeboard.FreeBoard;
 import com.passionroad.passionroad.domain.user.User;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
