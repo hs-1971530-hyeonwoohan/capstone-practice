@@ -15,7 +15,7 @@ const user = {
 };
 const navigation = [
   { name: "Dashboard", href: "dashBoard" },
-  { name: "Board", href: "/" },
+  { name: "Board", href: "freeBoard" },
   { name: "Calendar", href: "calendar", current: false },
 ];
 
@@ -47,7 +47,7 @@ export default function Header() {
           <body class="h-full">
           ```
         */}
-        <div className=" min-h-full sticky z-10 top-0 bg-gray-200">
+        <div className=" min-h-full sticky z-10 top-0 bg-white">
           <Disclosure as="nav" className="">
             {({ open }) => (
               <>
@@ -70,7 +70,7 @@ export default function Header() {
                         <div className="mr-3 px-3 py-2  rounded-md text-black text-sm font-medium">
                           <button className=" text-black hover:bg-teal-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                             <Link to="/">
-                            {/*여기에도  onClick={() => setSelectedIndex()} 추가 필요.*/}
+                            {/*여기에도 이거도 걍 Navigation 컴포넌트 주고  추가 필요.*/}
                             Study
                             </Link>
                           </button>
@@ -153,7 +153,7 @@ export default function Header() {
         <body class="h-full">
         ```
       */}
-      <div className="min-h-full sticky z-10 top-0 bg-gray-200">
+      <div className="min-h-full sticky z-10 top-0 bg-white shadow ">
         <Disclosure as="nav" className="">
           {({ open }) => (
             <>
@@ -215,9 +215,7 @@ export default function Header() {
                       </button>
 
                       {/* Profile + dropdown Header에서는 로그인/비로그인을 나눌 파트가 여기뿐임. bell Icon + profile로 div하나로 묶고 로그인/비로그인 나눠놓기. */}
-                      if(isAuthenticated) {
-                        
-                      }
+                      
                       <Menu as="div" className="relative ml-3">
                         <div>
                           <Menu.Button className="flex max-w-xs items-center rounded-full bg-teal-500 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-teal-500">

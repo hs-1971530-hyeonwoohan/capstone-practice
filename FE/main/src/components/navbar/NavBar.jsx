@@ -37,7 +37,7 @@ const navLinks = [
   },
   {
     id: 5,
-    title: "Settings",
+    title: "Profile",
     icon: <HiOutlineCog className="nav-icon" />,
     current:false
   },
@@ -52,7 +52,6 @@ const navLinks = [
 ];
 
 function NavBar() {
-  const [activeNav, setActiveNav] = useRecoilState(ActiveTapState);
 
   return (
     <nav className=" col-span-2 border-r border-gray-200 min-h-[h-auto] max-h-[auto] w-[80px] xl:w-[210px] px-1 flex flex-col items-start justify-around">
@@ -73,13 +72,13 @@ function NavBar() {
         </div>
         <div className="space-y-10 w-full ">
           {navLinks.slice(0, 4).map((link) => (
-            <NavItem link={link} key={`${link.id}-${activeNav}`} activeNav={activeNav} setActiveNav={setActiveNav} />
+            <NavItem data={link} key={`${link.id}`}/>
           ))}
           <div className="w-full border-t border-gray-200" />
           {navLinks.slice(4, 6).map((link) => (
-            <NavItem link={link} key={`${link.id}-${activeNav}`} activeNav={activeNav} setActiveNav={setActiveNav} />
+            <NavItem data={link} key={`${link.id}`}/>
           ))}
-        </div>
+        </div>  
       </div>
       <div className="w-full min-h-fit max-h-fit">
 
@@ -88,29 +87,35 @@ function NavBar() {
   );
 }
 
-function NavItem({ link, activeNav, setActiveNav }) {
+function NavItem({data}) {
+  const id = data.id;
+  const [activeNav, setActiveNav] = useRecoilState(ActiveTapState);
+  
+  const handleClick = () => {
+    setActiveNav(id);
+    console.log("현재 activeNav", activeNav);
+    console.log("현재 누른 버튼 : ",  data.title);
+    console.log("현재 누른 버튼의 id :", id);
+  };
  
   return (
     <div
-    onClick={() => {
-      setActiveNav(link.id);
-    }}
-      className={`w-full flex items-center justify-start space-x-8 px-5 cursor-pointer
-       group hover:border-gray-900 border-l-4 border-transparent ${
-         activeNav === link.id && 'border-gray-900' 
-       } `}
+    onClick={handleClick}
+    className={`w-full flex items-center justify-start space-x-8 px-5 cursor-pointer ${activeNav === data.id ? 'border-gray-900 border-l-4' : 'group hover:border-gray-900 border-l-4 border-transparent'}`}
+       
+  >
+    <span>{data.icon}</span>
+    <h1
+      className={(activeNav === data.id ? `text-black` : `text-gray-600 group-hover:text-black xl:flex hidden`
+       )}
     >
-      <span>{link.icon}</span>
-      <h1
-        className={`text-gray-600 group-hover:text-black xl:flex hidden ${
-          activeNav === link.id && "text-black "
-        } `}
-      >
-        {link.title}
-      </h1>
-    </div>
+      {data.title}
+    </h1>
+  </div>
   );
 }
+
+
 
 export default NavBar;
 //
