@@ -241,31 +241,34 @@ function Post() {
                 </div>
               </div>
             ))}
-            <div className="px-6 pt-2">
-              <div className="border border-gray-700">
-                <textarea
-                  placeholder="댓글을 입력해 주세요."
-                  rows="1"
-                  className="w-full pb-16 pl-2 pt-2 outline-none border-b border-gray-300 resize-none scrollbar-hide"
-                ></textarea>
-                <div className="h-10 flex justify-between items-center">
+            <div className="px-6 mt-3">
+              <div className="h-full border border-gray-700">
+                <div>
+                  <textarea
+                    placeholder="댓글을 입력해 주세요."
+                    rows="1"
+                    className="w-full pb-12 pl-2 pt-2 outline-none border-gray-300 resize-none scrollbar-hide"
+                  ></textarea>
+                </div>
+
+                <div className="h-10 flex justify-between items-center border-t border-gray-400">
                   <div className="flex font-kr">
-                    <div className="pr-2 pl-2 cursor-pointer flex">
+                    <div className="pr-2  pb-1 pl-2 cursor-pointer flex">
                       <FaRegSmileBeam className="mt-1 mr-1" />
                       이모티콘
                     </div>
-                    <div className="pr-2 cursor-pointer flex">
+                    <div className="pr-2 pb-1 cursor-pointer flex">
                       <FaImage className="mt-1 mr-1" />
                       이미지
                     </div>
-                    <div className="pr-2 cursor-pointer flex">
+                    <div className="pr-2 pb-1 cursor-pointer flex">
                       <FaRegPlayCircle className="mt-1 mr-1" />
                       동영상
                     </div>
                   </div>
 
-                  <div className="flex align-middle">
-                    <div className="pr-3 pt-2">0/1000</div>
+                  <div className="relative flex items-center">
+                    <div className="pr-3">0/1000</div>
                     <div className="w-24 p-2 bg-sky-900 text-center text-white font-kr cursor-pointer">
                       등록
                     </div>
