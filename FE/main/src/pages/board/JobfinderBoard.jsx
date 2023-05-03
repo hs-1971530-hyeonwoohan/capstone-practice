@@ -9,9 +9,9 @@ import Header from "../../components/header/Header";
 
 const JobfinderBoard = () => {
   return (
-    <div className='w-[85%] m-auto bg-white'>
+    <div className=' bg-white'>
         <Header />
-        {/* <BoardNavBar/> */}
+        {/*<BoardNavBar/>*/}
         <Search/>
         <Jobs/>
         <Value/>
