@@ -1,5 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
+import { getPostComment } from "../../api/axios";
+import DateConversion from "../dateconversion/DateConversion";
+import isAuthenticatedAtom from "../../atoms/IsAuthenticatedAtom";
+import { useRecoilValue } from "recoil";
+import { FaImage, FaRegSmileBeam, FaRegPlayCircle } from "react-icons/fa";
 
 import {
   FaSistrix,
@@ -81,8 +86,29 @@ const posts = [
 
 function Post() {
   const location = useLocation();
+  const { postId, authorId, writer, content, title, date } =
+    location.state || {};
+  const [comments, setComments] = useState([]);
 
-  const { postId, authorId, writer, content, title, date } = location.state || {};
+  async function fetchComments() {
+    const fetchedComments = await getPostComment(postId);
+    setComments(fetchedComments);
+  }
+
+  useEffect(() => {
+    fetchComments();
+  }, []);
+
+  const dateConvert = (regD, modD) => {
+    console.log("date함수 실행 redD, modD :", regD, modD);
+    const regDate = regD;
+    const modDate = modD ? modD : null;
+
+    const displayDate = modDate ? modDate : regDate;
+    const displayText = DateConversion(displayDate);
+
+    return displayText;
+  };
 
   return (
     <div className="w-full h-full bg-lightbeige pt-4 pb-4">
@@ -111,12 +137,11 @@ function Post() {
               {console.log("writer로 구조 분해 할당 한 writer값", writer)}
               {console.log("title로 구조 분해 할당 한 title값", title)}
               {console.log("postId로 구조 분해 할당 한 postId값", postId)}
+              {console.log("postId로 불러온 comment데이터", comments)}
 
               {writer}
               <FaRegClock className="mt-2 mr-1 ml-4 w-3 h-3 text-gray-300" />
-              <span className="mt-1 text-gray-300 text-sm">
-                {date}
-              </span>
+              <span className="mt-1 text-gray-300 text-sm">{date}</span>
             </div>
             <div className="pr-4 cursor-pointer">
               <FaPrint />
@@ -167,11 +192,12 @@ function Post() {
           </div>
 
           <div className="flex justify-end mb-4 pr-2 ">
-            <Link to="/textedit"
-                  state = {{
-                    postId: `${postId}`, // or a valid postId, if needed
-                    editMode: true,
-                  }}
+            <Link
+              to="/textedit"
+              state={{
+                postId: `${postId}`, // or a valid postId, if needed
+                editMode: true,
+              }}
             >
               <div>
                 <div className="rounded font-kr bg-black text-white px-2 py-1 hover:bg-gray-400 cursor-pointer">
@@ -186,22 +212,24 @@ function Post() {
               <BsFillChatLeftQuoteFill className="w-5 h-5" />
             </div>
             <span className="text-lg font-semibold">
-              {/*posts[0].totalcomments*/}개의 댓글
+              {comments.length}개의 댓글
             </span>
           </div>
           {/*comment*/}
-          <div className="mt-3">
+          <div className="mt-3 mb-10">
             {/*여기서 부터 comment map*/}
 
-            {posts[0].comments.map((comment) => (
-              <div key={`${posts[0].pid} +${comment.uid}`}>
+            {comments.map((comment) => (
+              <div key={`${comment.commentId}`}>
                 <div className="bg-stone-200 rounded-md text-sm h-7 mx-6 pl-3 flex items-center justify-between">
-                  {comment.uid}
+                  {comment.commentWriter}
                   <div className="text-gray-400 text-xs pr-3">
-                    {comment.commentdate}
+                    {dateConvert(comment.regDate, comment.modDate)}
                   </div>
                 </div>
-                <main className="mx-10 pt-1 text-base">{comment.ccontent}</main>
+                <main className="mx-10 pt-1 text-base">
+                  {comment.commentText}
+                </main>
                 <div className="flex justify-end mr-8 mb-1">
                   <div className="pr-3 flex text-gray-400">
                     <BsHandThumbsUp className="w-4 h-4" />
@@ -213,6 +241,41 @@ function Post() {
                 </div>
               </div>
             ))}
+            <div className="px-6 mt-3">
+              <div className="h-full border border-gray-700">
+                <div>
+                  <textarea
+                    placeholder="댓글을 입력해 주세요."
+                    rows="1"
+                    className="w-full pb-12 pl-2 pt-2 outline-none border-gray-300 resize-none scrollbar-hide"
+                  ></textarea>
+                </div>
+
+                <div className="h-10 flex justify-between items-center border-t border-gray-400">
+                  <div className="flex font-kr">
+                    <div className="pr-2  pb-1 pl-2 cursor-pointer flex">
+                      <FaRegSmileBeam className="mt-1 mr-1" />
+                      이모티콘
+                    </div>
+                    <div className="pr-2 pb-1 cursor-pointer flex">
+                      <FaImage className="mt-1 mr-1" />
+                      이미지
+                    </div>
+                    <div className="pr-2 pb-1 cursor-pointer flex">
+                      <FaRegPlayCircle className="mt-1 mr-1" />
+                      동영상
+                    </div>
+                  </div>
+
+                  <div className="relative flex items-center">
+                    <div className="pr-3">0/1000</div>
+                    <div className="w-24 p-2 bg-sky-900 text-center text-white font-kr cursor-pointer">
+                      등록
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

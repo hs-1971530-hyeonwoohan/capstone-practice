@@ -143,6 +143,8 @@ function FreeBoard() {
 export default FreeBoard;
 
 const PostsLists = React.memo(({ posts }) => {
+  const [formattedPosts, setFormattedPosts] = useState([]);
+
   const date = (regD, modD) => {
     console.log("date함수 실행 redD, modD :", regD, modD);
     const regDate = regD;
@@ -154,6 +156,14 @@ const PostsLists = React.memo(({ posts }) => {
     return displayText;
   };
 
+  useEffect(() => {
+    const newFormattedPosts = posts.dtoList.map((post) => ({
+      ...post,
+      displayDate: date(post.regDate, post.modDate),
+    }));
+    setFormattedPosts(newFormattedPosts);
+  }, [posts]);
+
   return (
     <div className=" flex flex-col divide-y divide-gray-200">
       {console.log(" PostsLists로 들어온 데이터 :", posts)}
@@ -161,7 +171,7 @@ const PostsLists = React.memo(({ posts }) => {
         " PostsLists로 들어온 데이터 중 posts.dtoList :",
         posts.dtoList
       )}
-      {posts.dtoList.map((post) => (
+      {formattedPosts.map((post) => (
         <div key={post.postId} className="w-full h-8">
           {console.log(" PostsLists로 들어온 post.postId", post.postId)}
           {/*<a
@@ -197,7 +207,7 @@ const PostsLists = React.memo(({ posts }) => {
                 {/*post.recommend*/}
               </span>
               <span className="w-20 h-6 min-w-[80px] text-center text-gray-300">
-                {date(post.regDate, post.modDate)}
+              {post.displayDate}
               </span>
             </div>
           </div>
