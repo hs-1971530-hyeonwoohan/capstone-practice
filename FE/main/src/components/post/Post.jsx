@@ -216,7 +216,7 @@ function Post() {
             </span>
           </div>
           {/*comment*/}
-          <div className="mt-3">
+          <div className="mt-3 mb-10">
             {/*여기서 부터 comment map*/}
 
             {comments.map((comment) => (
