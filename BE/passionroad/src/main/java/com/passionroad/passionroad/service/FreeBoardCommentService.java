@@ -2,7 +2,7 @@ package com.passionroad.passionroad.service;
 
 import com.passionroad.passionroad.domain.freeboard.FreeBoard;
 import com.passionroad.passionroad.domain.freeboard.FreeBoardComment;
-import com.passionroad.passionroad.domain.user.User;
+import com.passionroad.passionroad.domain.member.Member;
 import com.passionroad.passionroad.dto.FreeBoardCommentDTO;
 import com.passionroad.passionroad.repository.FreeBoardCommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +23,9 @@ public class FreeBoardCommentService {
     private final FreeBoardCommentRepository freeBoardCommentRepository;
 
     // write comment
-    public Long register(FreeBoardCommentDTO freeBoardCommentDTO, User user, FreeBoard freeBoard){
+    public Long register(FreeBoardCommentDTO freeBoardCommentDTO, Member member, FreeBoard freeBoard){
 
-        FreeBoardComment freeBoardComment = freeBoardCommentDTO.toEntity(user, freeBoard);
+        FreeBoardComment freeBoardComment = freeBoardCommentDTO.toEntity(member, freeBoard);
 
         return freeBoardCommentRepository.save(freeBoardComment).getCommentId();
     }
@@ -38,9 +38,9 @@ public class FreeBoardCommentService {
     }
 
     // read comments by (user) id (fk) : dashboard page
-    public List<FreeBoardCommentDTO> listByUserId(Long userId){
+    public List<FreeBoardCommentDTO> listByMemberId(Long memberId){
 
-        List<FreeBoardComment> comments = freeBoardCommentRepository.findAllByUser_Id(userId).orElseThrow();
+        List<FreeBoardComment> comments = freeBoardCommentRepository.findAllByMember_Id(memberId).orElseThrow();
 
         return comments.stream().map(FreeBoardCommentDTO::fromEntity).collect(Collectors.toList());
     }

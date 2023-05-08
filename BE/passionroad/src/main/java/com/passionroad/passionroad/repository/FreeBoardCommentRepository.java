@@ -12,5 +12,5 @@ public interface FreeBoardCommentRepository extends JpaRepository<FreeBoardComme
     // find comments by post_id (fk)
     Optional<List<FreeBoardComment>> findAllByFreeBoard_PostId(Long postId);
     // find comments by (user)id (fk)
-    Optional<List<FreeBoardComment>> findAllByUser_Id(Long authorId);
+    Optional<List<FreeBoardComment>> findAllByMember_Id(Long authorId);
 }

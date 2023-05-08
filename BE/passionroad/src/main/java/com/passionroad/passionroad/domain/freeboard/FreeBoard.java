@@ -1,7 +1,7 @@
 package com.passionroad.passionroad.domain.freeboard;
 
 import com.passionroad.passionroad.domain.BaseEntity;
-import com.passionroad.passionroad.domain.user.User;
+import com.passionroad.passionroad.domain.member.Member;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "user")
+@ToString(exclude = "member")
 public class FreeBoard extends BaseEntity {
     // free_board entity
 
@@ -33,7 +33,7 @@ public class FreeBoard extends BaseEntity {
     // many freeboard entities can join with one user
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id") // make fk named 'author_id'
-    private User user;            // entity for join
+    private Member member;            // entity for join
 
     @OneToMany(mappedBy = "freeBoard", fetch = FetchType.LAZY)
     private List<FreeBoardComment> freeBoardCommentList;

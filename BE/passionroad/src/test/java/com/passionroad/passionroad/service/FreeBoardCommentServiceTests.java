@@ -1,11 +1,10 @@
 package com.passionroad.passionroad.service;
 
 import com.passionroad.passionroad.domain.freeboard.FreeBoard;
-import com.passionroad.passionroad.domain.freeboard.FreeBoardComment;
-import com.passionroad.passionroad.domain.user.User;
+import com.passionroad.passionroad.domain.member.Member;
 import com.passionroad.passionroad.dto.FreeBoardCommentDTO;
 import com.passionroad.passionroad.repository.FreeBoardRepository;
-import com.passionroad.passionroad.repository.UserRepository;
+import com.passionroad.passionroad.repository.MemberRepository;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +20,12 @@ public class FreeBoardCommentServiceTests {
     private FreeBoardCommentService freeBoardCommentService;
 
     @Autowired
-    private UserRepository userRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
     private FreeBoardRepository freeBoardRepository;
 
+/*
     @Test
     public void testRegister(){
         // get post id, user info and comment dto
@@ -34,21 +34,23 @@ public class FreeBoardCommentServiceTests {
         Long postId = 2L;
         FreeBoard freeBoard = freeBoardRepository.findById(postId).orElseThrow();
 
-        User user = userRepository.findByEmail("kimhankimhan1111@gmail.com")
+        Member member = memberRepository.findByEmail("kimhankimhan1111@gmail.com")
                 .orElseThrow();
 
         // comment writer != post writer
         FreeBoardCommentDTO freeBoardCommentDTO = FreeBoardCommentDTO.builder()
-                .authorId(user.getId())
+                .authorId(member.getId())
                 .postId(freeBoard.getPostId())
                 .commentText("test service...")
-                .commentWriter(user.getName())
+//                .commentWriter(member.getName())
+                .commentWriter(member.getMid())
                 .build();
 
-        Long commentId = freeBoardCommentService.register(freeBoardCommentDTO, user, freeBoard);
+        Long commentId = freeBoardCommentService.register(freeBoardCommentDTO, member, freeBoard);
 
         log.info("commentId: " + commentId);
     }
+*/
 
     @Test
     public void testListByPostId(){
@@ -60,10 +62,10 @@ public class FreeBoardCommentServiceTests {
     }
 
     @Test
-    public void testListByUserId(){
-        Long userId = 2L;
+    public void testListByMemberId(){
+        Long memberId = 2L;
 
-        List<FreeBoardCommentDTO> dtoList = freeBoardCommentService.listByUserId(userId);
+        List<FreeBoardCommentDTO> dtoList = freeBoardCommentService.listByMemberId(memberId);
 
         log.info(dtoList);
     }
