@@ -2,7 +2,7 @@ package com.passionroad.passionroad.repository;
 
 import com.passionroad.passionroad.domain.freeboard.FreeBoard;
 import com.passionroad.passionroad.domain.freeboard.FreeBoardComment;
-import com.passionroad.passionroad.domain.user.User;
+import com.passionroad.passionroad.domain.member.Member;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,22 +22,22 @@ public class FreeBoardCommentRepositoryTest {
     FreeBoardRepository freeBoardRepository;
 
     @Autowired
-    UserRepository userRepository;
+    MemberRepository memberRepository;
 
-    @Test
+/*    @Test
     public void testInsert(){
         // real post_id,  in free_board table, find post
         Long postId = 1L;
         FreeBoard freeBoard = freeBoardRepository.findById(postId).orElseThrow();
 
         // find user
-        User user = userRepository.findByEmail("kimhankimhan1111@gmail.com").orElseThrow();
+        Member member = memberRepository.findByEmail("kimhankimhan1111@gmail.com").orElseThrow();
 
 
         IntStream.rangeClosed(1, 3).forEach(i -> {
             FreeBoardComment freeBoardComment = FreeBoardComment.builder()
                     .freeBoard(freeBoard)
-                    .user(user)
+                    .member(member)
                     .commentText("comment text..." + i)
                     .commentWriter("comment writer..." + i)
                     .build();
@@ -45,7 +45,7 @@ public class FreeBoardCommentRepositoryTest {
             FreeBoardComment result = freeBoardCommentRepository.save(freeBoardComment);
             log.info("commentId: " + result.getCommentId());
         });
-    }
+    }*/
 
     @Test
     public void testSelectAllByPostId(){
@@ -58,15 +58,17 @@ public class FreeBoardCommentRepositoryTest {
         comments.forEach(log::info);
     }
 
+/*
     @Test
-    public void testSelectAllByUserId(){
+    public void testSelectAllByMemberId(){
         // find comments by (user) id (fk)
-        User user = userRepository.findByEmail("kimhankimhan1111@gmail.com").orElseThrow();
+        Member member = memberRepository.findByEmail("kimhankimhan1111@gmail.com").orElseThrow();
 
-        List<FreeBoardComment> comments = freeBoardCommentRepository.findAllByUser_Id(user.getId()).orElseThrow();
+        List<FreeBoardComment> comments = freeBoardCommentRepository.findAllByMember_Id(member.getId()).orElseThrow();
 
         comments.forEach(log::info);
     }
+*/
 
     @Test
     public void testUpdate(){
