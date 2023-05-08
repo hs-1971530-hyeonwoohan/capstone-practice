@@ -1,7 +1,7 @@
 package com.passionroad.passionroad.service;
 
 import com.passionroad.passionroad.domain.freeboard.FreeBoard;
-import com.passionroad.passionroad.domain.user.User;
+import com.passionroad.passionroad.domain.member.Member;
 import com.passionroad.passionroad.dto.FreeBoardDTO;
 import com.passionroad.passionroad.dto.PageRequestDTO;
 import com.passionroad.passionroad.dto.PageResponseDTO;
@@ -24,9 +24,9 @@ public class FreeBoardService {
     private final FreeBoardRepository freeBoardRepository;
 
     // write post & save into DB
-    public Long register(FreeBoardDTO freeBoardDTO, User user) {
+    public Long register(FreeBoardDTO freeBoardDTO, Member member) {
 
-        FreeBoard freeBoard = freeBoardDTO.toEntity(user);
+        FreeBoard freeBoard = freeBoardDTO.toEntity(member);
 
         return freeBoardRepository.save(freeBoard).getPostId();
     }
