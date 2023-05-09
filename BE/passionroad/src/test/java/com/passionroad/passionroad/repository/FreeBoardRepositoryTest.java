@@ -30,22 +30,25 @@ public class FreeBoardRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-/*    @Test
+    @Test
     public void testInsert(){
-        Member member = memberRepository.findByEmail("kimhankimhan1111@gmail.com").orElseThrow();
+//        Member member = memberRepository.findByEmail("kimhankimhan1111@gmail.com").orElseThrow();
 
         IntStream.rangeClosed(1, 100).forEach(i -> {
+            Member member = memberRepository.findByMid("user" + (i % 10 + 1)).orElseThrow();
+
             FreeBoard freeBoard = FreeBoard.builder()
                     .title("title..." + i)
                     .content("content..." + i)
-                    .writer("writer..." + i)
+//                    .writer("writer..." + i)
+                    .writer(member.getMid())
                     .member(member)
                     .build();
 
             FreeBoard result = freeBoardRepository.save(freeBoard);
             log.info("post_id: " + result.getPostId());
         });
-    }*/
+    }
 
     @Test
     public void testSelect(){
