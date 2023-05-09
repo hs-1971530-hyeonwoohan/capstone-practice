@@ -4,18 +4,13 @@ import com.passionroad.passionroad.dto.FreeBoardCommentDTO;
 import com.passionroad.passionroad.dto.FreeBoardDTO;
 import com.passionroad.passionroad.dto.PageRequestDTO;
 import com.passionroad.passionroad.dto.PageResponseDTO;
-import com.passionroad.passionroad.repository.FreeBoardCommentRepository;
-import com.passionroad.passionroad.repository.FreeBoardRepository;
-import com.passionroad.passionroad.repository.UserRepository;
+import com.passionroad.passionroad.repository.MemberRepository;
 import com.passionroad.passionroad.service.FreeBoardCommentService;
 import com.passionroad.passionroad.service.FreeBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.coyote.Response;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -41,7 +36,7 @@ public class FreeBoardController {
      * */
 
     private final FreeBoardService freeBoardService;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final FreeBoardCommentService freeBoardCommentService;
 
      /* write freeboard post
@@ -141,6 +136,8 @@ public class FreeBoardController {
             @RequestBody @Valid FreeBoardCommentDTO freeBoardCommentDTO
     ){
         // necessary dto parameter: commentId, commentText
+        log.info("FreeBoardController: modifyComment -----------------------");
+        log.info("FreeBoardCommentDTO: " + freeBoardCommentDTO);
 
         freeBoardCommentService.modify(freeBoardCommentDTO);
 

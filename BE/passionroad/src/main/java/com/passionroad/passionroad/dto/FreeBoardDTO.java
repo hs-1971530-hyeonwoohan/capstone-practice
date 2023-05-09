@@ -1,7 +1,7 @@
 package com.passionroad.passionroad.dto;
 
 import com.passionroad.passionroad.domain.freeboard.FreeBoard;
-import com.passionroad.passionroad.domain.user.User;
+import com.passionroad.passionroad.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,13 +26,13 @@ public class FreeBoardDTO {
     private LocalDateTime regDate, modDate; // data format: 2021-01-01T00:00
 
     // DTO -> ENTITY
-    public FreeBoard toEntity(User user) {
+    public FreeBoard toEntity(Member member) {
         return FreeBoard.builder()
                 .postId(this.postId)
                 .title(this.title)
                 .content(this.content)
                 .writer(this.writer)
-                .user(user)
+                .member(member)
                 .build();
     }
 
@@ -40,10 +40,12 @@ public class FreeBoardDTO {
     public static FreeBoardDTO fromEntity(FreeBoard freeBoard) {
         return FreeBoardDTO.builder()
                 .postId(freeBoard.getPostId())
-                .authorId(freeBoard.getUser().getId())
+                .authorId(freeBoard.getMember().getId())
                 .title(freeBoard.getTitle())
                 .content(freeBoard.getContent())
-                .writer(freeBoard.getUser().getName())
+//                OAuth2 비활성화 & Member 엔티티 name column 삭제
+//                .writer(freeBoard.getMember().getName())
+                .writer(freeBoard.getMember().getMid())
                 .regDate(freeBoard.getRegDate())
                 .modDate(freeBoard.getModDate())
                 .build();
