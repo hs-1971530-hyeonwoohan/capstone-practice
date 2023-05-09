@@ -11,6 +11,6 @@ public interface StudyRoomMapper {
     StudyRoomMapper INSTANCE = Mappers.getMapper(StudyRoomMapper.class);
 
     StudyRoomDto.RoomResponse toResponse(StudyRoom studyRoom);
-    List<StudyRoomDto.RoomInfo> toInfo(List<StudyRoom> rooms);
-    StudyRoomDto.RoomInfo toInfoOne(StudyRoom studyRoom);
+    List<StudyRoomDto.StudyRoomInfo> toInfo(List<StudyRoom> studyRooms);
+    StudyRoomDto.StudyRoomInfo toInfoOne(StudyRoom studyRoom);
 }

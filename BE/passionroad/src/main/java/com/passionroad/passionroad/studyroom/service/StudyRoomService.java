@@ -13,6 +13,7 @@ import com.passionroad.passionroad.tag.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -21,9 +22,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudyRoomService {
 
-    private final StudyRoomRepository studyRoomRepository;
-    private final GroupRepository groupRepository;
-    private final TagRepository tagRepository;
+    private final StudyRoomRepository studyRoomRepository; // 스터디룸
+    private final GroupRepository groupRepository; // 스터디룸 구성원
+    private final TagRepository tagRepository; // 태그들
 
     public StudyRoomDto.RoomResponse addBycode(String code, StudyRoomDto.InsertHostInfo insertHostInfo) {
         StudyRoom studyRoom = StudyRoom.builder()
@@ -33,22 +34,21 @@ public class StudyRoomService {
                 .isPublic(insertHostInfo.getIsPublic())
                 .roomName(insertHostInfo.getRoomName())
                 .build();
-        return StudyRoomMapper.INSTANCE.toResponse(
-                studyRoomRepository.save(studyRoom)
+        return StudyRoomMapper.INSTANCE.toResponse(studyRoomRepository.save(studyRoom)
         );
     }
 
-    public StudyRoom finishRoom(long roomId) {
+    public StudyRoom finishRoom(long roomId) { // 방 종료
         StudyRoom room= studyRoomRepository.findOneByRoomId(roomId);
         System.out.println(room);
-        room.updateEndTime(new Date());
+        room.updateEndTime(new Date()); // endTime을 업데이트
         System.out.println(room);
-        return studyRoomRepository.save(room);
+        return studyRoomRepository.save(room); // 변경된 endTime을 저장
     }
 
     public String getCode() {
         String code;
-        // 무한루프는 그대로지만 HashSet 활용해서 DB 접근 최소화!
+        // 무한루프는 그대로지만 HashSet 활용해서 DB 접근 최소화
         HashSet<String> set = new HashSet<>(studyRoomRepository.findAllCode());
         while (true) {
             code = Util.getRandomCode();
@@ -67,17 +67,17 @@ public class StudyRoomService {
             return 0;
     }
 
-    public long addMember(String code, long userId, String nickName, int ishost) {
+    public long addGroup(String code, long userId, String nickName, int ishost) {
 
         StudyRoom studyRoom = studyRoomRepository.findOneByCode(code);
-        // Room Not Found or Room is closed
+        // 방이 없거나 종료된 경우
         if(studyRoom == null || studyRoom.getEndTime() != null)
             throw new RoomNotFoundException(code);
         Group group = new Group(studyRoom.getRoomId(), userId, nickName, ishost);
         return groupRepository.save(group).getRoomId();
     }
 
-    public StudyRoomDto.RoomInfo updateRoom(StudyRoomDto.UpdateRoomInfo updateRoomInfo) {
+    public StudyRoomDto.StudyRoomInfo updateRoom(StudyRoomDto.UpdateStudyRoomInfo updateRoomInfo) {
         StudyRoom studyRoom= studyRoomRepository.findOneByRoomId(updateRoomInfo.getRoomId());
         StudyRoom newRoom = StudyRoom.builder()
                 .hostId(studyRoom.getHostId())
@@ -106,28 +106,49 @@ public class StudyRoomService {
         }
     }
 
-    public List<StudyRoomDto.RoomInfo> get(long userId) {
+    public List<StudyRoomDto.StudyRoomInfo> get(long userId) {
         return StudyRoomMapper.INSTANCE.toInfo(studyRoomRepository.getRoomsInfo(userId));
     }
 
-    public long getRoomValid(String code) {
-        StudyRoom studyRoom = studyRoomRepository.findOneByCode(code);
-        if(studyRoom != null)
-            return studyRoom.getRoomId();
-        else
-            return 0;
+    public List<StudyRoomDto.StudyRoomInfoPlus> getPublicRooms(int pagenum){
+        List<StudyRoomDto.StudyRoomInfoPlus> roomlist = new ArrayList<>();
+        List<StudyRoomDto.StudyRoomInfo> roominfolist = StudyRoomMapper.INSTANCE.toInfo(studyRoomRepository.getPublicRoomsInfo((pagenum-1)*12,pagenum*12));
+        for(int i=0; i<roominfolist.size(); i++) {
+            StudyRoomDto.StudyRoomInfoPlus roominfoplus = new StudyRoomDto.StudyRoomInfoPlus();
+            roominfoplus.setStudyRoominfo(roominfolist.get(i));
+            roominfoplus.setHost(groupRepository.findHostnameByroomId(roominfoplus.getStudyRoominfo().getRoomId()));
+            roominfoplus.setUsers(groupRepository.findNicknameByroomId(roominfoplus.getStudyRoominfo().getRoomId()));
+            roomlist.add(roominfoplus);
+        }
+        return roomlist;
     }
 
-    public StudyRoomDto.RoomInfo updateRoom(StudyRoomDto.UpdateRoomInfo updateRoomInfo) {
-        StudyRoom studyRoom= studyRoomRepository.findOneByRoomId(updateRoomInfo.getRoomId());
-        StudyRoom newRoom = StudyRoom.builder()
-                .hostId(studyRoom.getHostId())
-                .startTime(studyRoom.getStartTime())
-                .code(studyRoom.getCode())
-                .roomId(studyRoom.getRoomId())
-                .roomName(updateRoomInfo.getRoomName())
-                .isPublic(updateRoomInfo.getIsPublic())
-                .build();
-        return StudyRoomMapper.INSTANCE.toInfoOne(studyRoomRepository.save(newRoom));
+    public List<StudyRoomDto.StudyRoomInfoPlus> getPublicRoomsByNameOrTag(String keyword, int pagenum) {
+        List<StudyRoomDto.StudyRoomInfoPlus> roomlist = new ArrayList<>();
+        List<StudyRoomDto.StudyRoomInfo> roominfolist = StudyRoomMapper.INSTANCE.toInfo(studyRoomRepository.getPublicRoomsByRoomNameOrTag(keyword, (pagenum-1)*12,pagenum*12));
+        for(int i=0; i<roominfolist.size(); i++) {
+            StudyRoomDto.StudyRoomInfoPlus studyRoominfoplus = new StudyRoomDto.StudyRoomInfoPlus();
+            studyRoominfoplus.setStudyRoominfo(roominfolist.get(i));
+            studyRoominfoplus.setHost(groupRepository.findHostnameByroomId(studyRoominfoplus.getStudyRoominfo().getRoomId()));
+            studyRoominfoplus.setUsers(groupRepository.findNicknameByroomId(studyRoominfoplus.getStudyRoominfo().getRoomId()));
+            roomlist.add(studyRoominfoplus);
+        }
+        return roomlist;
+    }
+
+    public long getPublicRoomsCount() {
+        return studyRoomRepository.getPublicRoomsCount();
+    }
+
+    public long getPublicRoomsSearchCount(String keyword) {
+        return studyRoomRepository.getPublicRoomsSearchCount(keyword);
+    }
+
+    public StudyRoomDto.StudyRoomInfo getRoomByRoomId(long roomId){
+        return StudyRoomMapper.INSTANCE.toInfoOne(studyRoomRepository.findOneByRoomId(roomId));
+    }
+
+    public List<String> getAllTags(){
+        return tagRepository.findAllTags();
     }
 }
