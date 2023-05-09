@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -24,28 +25,40 @@ public class FreeBoardCommentRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
-/*    @Test
+    @Test
     public void testInsert(){
-        // real post_id,  in free_board table, find post
-        Long postId = 1L;
-        FreeBoard freeBoard = freeBoardRepository.findById(postId).orElseThrow();
+        Random random = new Random();
+        random.setSeed(System.currentTimeMillis());
 
-        // find user
-        Member member = memberRepository.findByEmail("kimhankimhan1111@gmail.com").orElseThrow();
+        IntStream.rangeClosed(0, 299).forEach(i -> {
 
+            Long postId = (long) ( i % 100 + 1 ); // 1 - 100 3번 순환
+            Long commentId = (long) (random.nextInt(100) + 1);    // 1 - 100 사이 랜덤 정수
 
-        IntStream.rangeClosed(1, 3).forEach(i -> {
+            FreeBoard freeBoard = freeBoardRepository.findById(postId).orElseThrow();
+            Member member = memberRepository.findById(commentId).orElseThrow();    // user 1- 100번 사이의 댓글 작성자
+
+            // 1 - 100번 게시물의 각 댓글
             FreeBoardComment freeBoardComment = FreeBoardComment.builder()
-                    .freeBoard(freeBoard)
-                    .member(member)
-                    .commentText("comment text..." + i)
-                    .commentWriter("comment writer..." + i)
+                    .commentText("comment text..." + (i + 1))
+                    .commentWriter(member.getMid()) // 댓글작성자 ID
+                    .freeBoard(freeBoard)   // 댓글달린 게시글
+                    .member(member) // 댓글작성자 계정
                     .build();
 
             FreeBoardComment result = freeBoardCommentRepository.save(freeBoardComment);
             log.info("commentId: " + result.getCommentId());
         });
-    }*/
+
+
+        // real post_id,  in free_board table, find post
+//        Long postId = 1L;
+//        FreeBoard freeBoard = freeBoardRepository.findById(postId).orElseThrow();
+
+        // find user
+//        Member member = memberRepository.findByEmail("kimhankimhan1111@gmail.com").orElseThrow();
+
+    }
 
     @Test
     public void testSelectAllByPostId(){

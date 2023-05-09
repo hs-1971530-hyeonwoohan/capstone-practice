@@ -1,6 +1,7 @@
 package com.passionroad.passionroad.repository;
 
 import com.passionroad.passionroad.domain.member.Member;
+import com.passionroad.passionroad.domain.member.Role;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class MemberRepositoryTest {
             Member member = Member.builder()
                     .mid("user" + i)
                     .mpw(passwordEncoder.encode("1111"))
+                    .role(Role.USER)
                     .build();
 
             memberRepository.save(member);
