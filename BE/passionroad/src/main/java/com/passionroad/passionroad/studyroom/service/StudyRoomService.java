@@ -1,8 +1,8 @@
 package com.passionroad.passionroad.studyroom.service;
 
 import com.passionroad.passionroad.exception.RoomNotFoundException;
-import com.passionroad.passionroad.member.entity.Member;
-import com.passionroad.passionroad.member.repository.MemberRepository;
+import com.passionroad.passionroad.group.entity.Group;
+import com.passionroad.passionroad.group.repository.GroupRepository;
 import com.passionroad.passionroad.studyroom.Util;
 import com.passionroad.passionroad.studyroom.dto.StudyRoomDto;
 import com.passionroad.passionroad.studyroom.entity.StudyRoom;
@@ -22,7 +22,7 @@ import java.util.List;
 public class StudyRoomService {
 
     private final StudyRoomRepository studyRoomRepository;
-    private final MemberRepository memberRepository;
+    private final GroupRepository groupRepository;
     private final TagRepository tagRepository;
 
     public StudyRoomDto.RoomResponse addBycode(String code, StudyRoomDto.InsertHostInfo insertHostInfo) {
@@ -73,8 +73,8 @@ public class StudyRoomService {
         // Room Not Found or Room is closed
         if(studyRoom == null || studyRoom.getEndTime() != null)
             throw new RoomNotFoundException(code);
-        Member member = new Member(studyRoom.getRoomId(), userId, nickName, ishost);
-        return memberRepository.save(member).getRoomId();
+        Group group = new Group(studyRoom.getRoomId(), userId, nickName, ishost);
+        return groupRepository.save(group).getRoomId();
     }
 
     public StudyRoomDto.RoomInfo updateRoom(StudyRoomDto.UpdateRoomInfo updateRoomInfo) {

@@ -1,4 +1,4 @@
-package com.passionroad.passionroad.member.entity;
+package com.passionroad.passionroad.group.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Member implements Serializable {
+public class Group implements Serializable {
     // 객체를 바이트 스트림으로 변환하여 저장하거나 네트워크를 통해 전송하기 위해 직렬화
 
     @Id
