@@ -4,7 +4,8 @@ import { getPostComment } from "../../api/axios";
 import DateConversion from "../dateconversion/DateConversion";
 import isAuthenticatedAtom from "../../atoms/IsAuthenticatedAtom";
 import { useRecoilValue } from "recoil";
-import { FaImage, FaRegSmileBeam, FaRegPlayCircle } from "react-icons/fa";
+
+import PostList from "../freeboard/PostList";
 
 import {
   FaSistrix,
@@ -23,72 +24,21 @@ import {
   BsHandThumbsUp,
   BsHandThumbsDown,
 } from "react-icons/bs";
-import PageNation2 from "../pagenation/PageNation2";
-
-const posts = [
-  {
-    pid: 1,
-    uid: "김삿갓11313",
-    title: "이거 맞나요?",
-    url: "http//:www.naver.com",
-    pcontent: "",
-    totalcomments: 33,
-    recommend: 76,
-    discourage: 3,
-    postdate: "1시간 전",
-    comments: [
-      {
-        uid: "임시123",
-        ccontent: "이거 맞는 거 같음",
-        commentdate: "1시간 전",
-      },
-      { uid: "김계란", ccontent: "이거 맞는 거 같음", commentdate: "2시간 전" },
-      { uid: "랄로", ccontent: "이거 맞는 거 같음", commentdate: "30분 전" },
-      { uid: "임시1234", ccontent: "이거 맞는 거 같음", commentdate: "3분 전" },
-      {
-        uid: "갈축키보드",
-        ccontent: "이거 맞는 거 같음",
-        commentdate: "1시간 전",
-      },
-      {
-        uid: "M2맥프로350",
-        ccontent: "이거 맞는 거 같음",
-        commentdate: "5시간 전",
-      },
-      {
-        uid: "임시113",
-        ccontent: "이거 맞는 거 같음",
-        commentdate: "1시간 전",
-      },
-    ],
-  },
-  {
-    pid: 2,
-    uid: "김삿갓",
-    title: "이거 맞아요?",
-    url: "",
-    totalcomments: 33,
-    recommend: 76,
-    discourage: 3,
-    postdate: "1시간 전",
-  },
-  {
-    pid: 3,
-    uid: "김삿갓",
-    title: "이거 맞아요?",
-    url: "",
-    totalcomments: 33,
-    recommend: 76,
-    discourage: 3,
-    postdate: "1시간 전",
-  },
-];
+import CommentReg from "./CommentReg";
 
 function Post() {
   const location = useLocation();
   const { postId, authorId, writer, content, title, date } =
     location.state || {};
   const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
+  const [charCount, setCharCount] = useState(0);
+
+  const handleCommentTextChange = (e) => {
+    const newText = e.target.value;
+    setCommentText(newText);
+    setCharCount(newText.length);
+  };
 
   async function fetchComments() {
     const fetchedComments = await getPostComment(postId);
@@ -97,7 +47,7 @@ function Post() {
 
   useEffect(() => {
     fetchComments();
-  }, []);
+  }, [postId]);
 
   const dateConvert = (regD, modD) => {
     console.log("date함수 실행 redD, modD :", regD, modD);
@@ -242,85 +192,12 @@ function Post() {
               </div>
             ))}
             <div className="px-6 mt-3">
-              <div className="h-full border border-gray-700">
-                <div>
-                  <textarea
-                    placeholder="댓글을 입력해 주세요."
-                    rows="1"
-                    className="w-full pb-12 pl-2 pt-2 outline-none border-gray-300 resize-none scrollbar-hide"
-                  ></textarea>
-                </div>
-
-                <div className="h-10 flex justify-between items-center border-t border-gray-400">
-                  <div className="flex font-kr">
-                    <div className="pr-2  pb-1 pl-2 cursor-pointer flex">
-                      <FaRegSmileBeam className="mt-1 mr-1" />
-                      이모티콘
-                    </div>
-                    <div className="pr-2 pb-1 cursor-pointer flex">
-                      <FaImage className="mt-1 mr-1" />
-                      이미지
-                    </div>
-                    <div className="pr-2 pb-1 cursor-pointer flex">
-                      <FaRegPlayCircle className="mt-1 mr-1" />
-                      동영상
-                    </div>
-                  </div>
-
-                  <div className="relative flex items-center">
-                    <div className="pr-3">0/1000</div>
-                    <div className="w-24 p-2 bg-sky-900 text-center text-white font-kr cursor-pointer">
-                      등록
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <CommentReg postId={postId} />
             </div>
           </div>
         </div>
-
-        <div className="w-full h-auto flex flex-col mt-2">
-          <div className=" py-1 font-semibold flex">
-            <span className="basis-3/4 pl-2 text-center">제목</span>
-            <span className="pr-14">글쓴이</span>
-            <span className="pr-7">추천수</span>
-            <span className="pr-7">날짜</span>
-          </div>
-
-          <div className=" flex flex-col divide-y divide-gray-200 ">
-            {posts.map((post) => (
-              <div key={post.pid} className="w-full">
-                {/*<a
-                  href={post.url}
-                  className="block p-1 rounded-lg hover:bg-gray-100 bg-black"
-            />*/}
-                <div className="flex">
-                  <span className="basis-3/4 px-2 cursor-pointer">
-                    <span className="pl-3 font-medium text-base text-black mr-1 hover:underline decoration-1 hover:text-blue-500">
-                      {post.title}
-                    </span>
-                    <span className="text-base text-blue-600">
-                      {post.totalcomments}
-                    </span>
-                  </span>
-                  <div className="flex justify-items-stretch">
-                    <span className="w-28 h-6 min-w-[112px] pr-2 cursor-pointer">
-                      {post.uid}
-                    </span>
-                    <span className="w-12 h-6 min-w-[48px] text-center text-blue-600  pr-2">
-                      {post.recommend}
-                    </span>
-                    <span className="w-20 h-6 min-w-[80px] text-center text-gray-300 ">
-                      {post.postdate}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
-      <PageNation2 />
+      <PostList />
     </div>
   );
 }
