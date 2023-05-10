@@ -47,8 +47,9 @@ function App() {
           <Route path="post/:postId" element={<Post />} /> 
           <Route path="groupBoard" element={<GroupBoard />} />
           <Route path="comment" element={<Comment />} />
+          <Route path="jobBoard" element={<JobfinderBoard />} />
         </Route>
-        <Route path="board" element={<JobfinderBoard />} />
+        
         <Route path="login" element={<Login />} />
        
         {/*profile의 URL은 해당 유저가 요청한 데이터 값만 가져다 줘야 하기 때문에 이 URL은 매우 유동적이여야 할 것임. 지금은 임시로 이렇게 컴포넌트만 지정해놓은 거임.*/}

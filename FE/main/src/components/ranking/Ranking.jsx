@@ -12,9 +12,7 @@ const tempStudyTime = [
 function Ranking() {
   return (
     <div className="flex">
-      <span className="pl-2 mt-1 font-semibold text-2xl">Ranking</span>
-      <div>{/*vertical text slide 추가*/}</div>
-      <div></div>
+     
     </div>
   );
 }

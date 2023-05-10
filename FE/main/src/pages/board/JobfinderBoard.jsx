@@ -10,7 +10,7 @@ import Header from "../../components/header/Header";
 const JobfinderBoard = () => {
   return (
     <div className=' bg-white'>
-        <Header />
+    
         {/*<BoardNavBar/>*/}
         <Search/>
         <Jobs/>

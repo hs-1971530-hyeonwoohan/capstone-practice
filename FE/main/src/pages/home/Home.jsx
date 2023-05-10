@@ -80,10 +80,9 @@ function Home() {
       <div className="w-full">
         <Carousel2/>
       </div>
-      <div className="m-4">
+      <div className="w-full">
         {/*ranking*/}
-        <Ranking />
-        <VerticalTextSlider />
+        <VerticalTextSlider/>
       </div>
       <div>
         <Studyroom />

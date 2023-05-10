@@ -13,7 +13,7 @@ export default function ProfileModal() {
   } else {
     document.body.classList.remove('active-modal')
   }
-
+//모달이 활성화 되었을 때, 스크롤 바를 제거 함으로써 사용자에게 더 나은 경험을 제공.
   return (
     <>
       <button onClick={toggleModal} className="btn-modal">

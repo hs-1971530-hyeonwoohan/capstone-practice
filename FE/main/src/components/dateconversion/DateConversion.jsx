@@ -16,7 +16,7 @@ function DateConversion(dateString) {
     return `${hours}시간 전`;
   } else if (days < 7) {
     return `${days}일 전`;
-  } else if (weeks < 4) {
+  } else if (weeks < 5) {
     return `${weeks}주 전`;
   } else {
     return `${months}개월 전`;
