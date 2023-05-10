@@ -18,3 +18,16 @@ export const getPostComment = async (postParam) => {
     
     return response.data
 };
+
+export const sendComment = async (postId, commentText) => {
+    try {
+      const response = await axiosURL.post(`/freeboards/${postId}/comments`, {
+        content: commentText,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error while sending comment:", error);
+      throw error;
+    }
+  };
+  //원래 content: commentText 다음에 사용자Id에 대한 정보도 함께 전달하게 되있을 거임.

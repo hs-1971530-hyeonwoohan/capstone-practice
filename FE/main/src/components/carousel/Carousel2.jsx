@@ -3,15 +3,17 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useState, useEffect, useRef } from 'react';
+import sect01 from "../../imgs/slider/sect01.jpg"
+import sect02 from "../../imgs/slider/sect02.jpg"
 
 const slides = [
     {
-      imageSrc: 'https://images.pexels.com/photos/301920/pexels-photo-301920.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-      text: 'Slide 1',
+      imageSrc: sect01,
+      text: '',
     },
     {
-      imageSrc: 'https://images.pexels.com/photos/12064/pexels-photo-12064.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-      text: 'Slide 2',
+      imageSrc: sect02,
+      text: ["",]
     },
     {
       imageSrc: 'https://images.pexels.com/photos/2041540/pexels-photo-2041540.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
@@ -29,6 +31,7 @@ const slides = [
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    arrows: false
   };
   
   function Carousel2() {
@@ -58,7 +61,7 @@ const slides = [
   
     return (
         <div>
-          <div className="relative h-80 mx-5">
+          <div className="relative h-96 mx-5 mt-4">
             <Slider {...settings} ref={sliderRef}>
               {slides.map(slide => (
                 <Slide key={slide.text} imageSrc={slide.imageSrc} text={slide.text} />
@@ -91,8 +94,8 @@ const slides = [
     
     function Slide({ imageSrc, text }) {
       return (
-        <div className="relative h-80">
-          <img className="w-full h-full object-cover rounded-lg" src={imageSrc} alt="" />
+        <div className="relative h-96 cursor-pointer">
+          <img className="w-full h-full object-none rounded-lg bg-blue-900 " src={imageSrc} alt="" />
           <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center text-white text-4xl font-bold">{text}</div>
         </div>
       );

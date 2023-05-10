@@ -47,7 +47,7 @@ export default function Header() {
           <body class="h-full">
           ```
         */}
-        <div className=" min-h-full sticky z-10 top-0 bg-white">
+        <div className="w-full h-full sticky z-10 top-0 bg-white">
           <Disclosure as="nav" className="">
             {({ open }) => (
               <>
@@ -77,6 +77,7 @@ export default function Header() {
                         </div>
   
                         <div className="flex border-2 border-gray-200 rounded-md focus-within:ring-2 ring-teal-500 mr-10">
+                          {/*여기에 search 함수 연결*/}
                           <input
                             type="text"
                             className="w-full rounded-tl-md rounded-bl-md px-2 py-3 text-sm text-gray-600 focus:outline-none"
@@ -153,7 +154,7 @@ export default function Header() {
         <body class="h-full">
         ```
       */}
-      <div className="min-h-full sticky z-10 top-0 bg-white shadow ">
+      <div className="w-full h-full sticky z-10 top-0 bg-white shadow ">
         <Disclosure as="nav" className="">
           {({ open }) => (
             <>
@@ -283,7 +284,7 @@ export default function Header() {
                   {navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
-                      as="a"
+                      as="Link"
                       href={item.href}
                       className={classNames(
                         item.current
