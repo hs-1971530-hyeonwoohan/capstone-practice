@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { useState, useEffect, useRef } from "react";
 import sect01 from "../../imgs/slider/sect01.jpg";
 import sect02 from "../../imgs/slider/sect02.jpg";
-import sect03 from "../../imgs/slider/sect03-5.png";
+import sect03 from "../../imgs/slider/sect03.png";
 import { Link } from "react-router-dom";
 
 const slides = [
