@@ -1,6 +1,6 @@
 package com.passionroad.passionroad.dto;
 
-import com.passionroad.passionroad.domain.member.Member;
+
 import com.passionroad.passionroad.domain.member.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
