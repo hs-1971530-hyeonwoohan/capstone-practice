@@ -17,13 +17,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class FreeBoardCommentDTO {
 
-    @NotEmpty
     private Long commentId; // comment_id
     private Long authorId; // user id(author_id)
     private Long postId;    // post id
     @NotEmpty
     private String commentText;
-    @NotEmpty
     private String commentWriter;
     private LocalDateTime regDate, modDate; // data format: 2021-01-01T00:00
 
