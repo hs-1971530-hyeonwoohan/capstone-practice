@@ -5,11 +5,14 @@ import "slick-carousel/slick/slick-theme.css";
 import { useState, useEffect, useRef } from "react";
 import sect01 from "../../imgs/slider/sect01.jpg";
 import sect02 from "../../imgs/slider/sect02.jpg";
+import sect03 from "../../imgs/slider/sect03-5.png";
 import { Link } from "react-router-dom";
 
 const slides = [
   {
     imageSrc: sect01,
+    backgroundColor:'#1e3a8a',
+    href: "https://www.kosaf.go.kr/ko/main.do",
     text: (
       <div>
         <div className="relative w-auto">
@@ -27,9 +30,11 @@ const slides = [
         </div>
       </div>
     ),
+    
   },
   {
     imageSrc: sect02,
+    href: "https://swjungle.net/",
     text: (
       <div>
         <div className="relative w-auto">
@@ -49,14 +54,26 @@ const slides = [
     ),
   },
   {
-    imageSrc:
-      "https://images.pexels.com/photos/2041540/pexels-photo-2041540.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    text: "Slide 3",
-  },
-  {
-    imageSrc:
-      "https://images.pexels.com/photos/2004161/pexels-photo-2004161.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    text: "Slide 4",
+    imageSrc: sect03,
+    href: 'https://thinkyou.co.kr/',
+    backgroundColor: '#EDA0C7',
+    text: (
+      <div>
+        <div className="relative w-auto">
+          <h6 className=" text-white bg-black/50 border border-solid border-black/50 font-bold text-xs px-2 py-0.75 mt-44 ml-8  rounded-sm">
+            공모전 / 대외활동
+          </h6>
+          <div className="absolute">
+            <h2 className="ml-8 text-white font-bold text-2xl mt-4 whitespace-nowrap">
+              공모전, 대외활동 확인하고 참여하자 !
+            </h2>
+            <h6 className="ml-8 mt-2 text-gray-600 whitespace-nowrap">
+              #포트폴리오 #자기소개서 #취업
+            </h6>
+          </div>
+        </div>
+      </div>
+    ),
   },
 ];
 
@@ -96,13 +113,15 @@ function Carousel2() {
 
   return (
     <div>
-      <div className="relative h-96 mx-5 mt-4">
+      <div className="relative h-96 mx-16 mt-4">
         <Slider {...settings} ref={sliderRef}>
           {slides.map((slide) => (
             <Slide
               key={slide.text}
               imageSrc={slide.imageSrc}
               text={slide.text}
+              backgroundColor={slide.backgroundColor}
+              href={slide.href}
             />
           ))}
         </Slider>
@@ -131,13 +150,17 @@ function Carousel2() {
   );
 }
 
-function Slide({ imageSrc, text }) {
+function Slide({ imageSrc, text, backgroundColor, href }) {
   return (
     <div>
-      <a href="https://www.kosaf.go.kr/ko/main.do?currentMain=1" target="_blank">
+      <a
+        href={href}
+        target="_blank"
+      >
         <div className="relative h-96 cursor-pointer">
           <img
-            className="w-full h-full object-none rounded-lg bg-blue-900 "
+            className="w-full h-full object-none rounded-2xl "
+            style={{ backgroundColor: backgroundColor }}
             src={imageSrc}
             alt=""
           />
@@ -148,7 +171,7 @@ function Slide({ imageSrc, text }) {
         {text}
       </div> */}
         </div>
-        </a>
+      </a>
     </div>
   );
 }
