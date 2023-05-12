@@ -1,49 +1,64 @@
 package com.passionroad.passionroad.studyroom.entity;
 
-import com.passionroad.passionroad.tag.entity.Tag;
+import com.passionroad.passionroad.domain.member.Member;
+import com.passionroad.passionroad.studyroom.Timestamped;
+import com.passionroad.passionroad.studyroom.request.StudyRoomRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.util.UUID;
 
-@Entity
+
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
+@Entity
 @NoArgsConstructor
-public class StudyRoom {
+@AllArgsConstructor
+public class StudyRoom extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, updatable = false)
-    private long roomId;
-
-    @Column(nullable =false)
-    private long hostId;
-
-    @Column(nullable = true)
-    private String roomName;
+    private Long id;
 
     @Column
-    private Date startTime;
+    private String roomId;
 
     @Column
-    private Date endTime;
+    private String title;
+
+    @Column
+    private Long memberCount;
+
+    @ManyToOne
+    @JoinColumn
+    private Member member;
+
+    @Column
+    private int maxMember;
 
     @Column(nullable = false)
-    private String code;
+    private String tag1;
 
-    public void updateEndTime(Date endTime) {
-        this.endTime = endTime;
+    @Column(nullable = false)
+    private String tag2;
+
+    @Column(nullable = false)
+    private String tag3;
+
+    @Column(nullable = false)
+    private boolean studying;
+
+    public static StudyRoom create(StudyRoomRequestDto studyRoomDto, Member member, int maxUser) {
+        StudyRoom studyRoom = new StudyRoom();
+        studyRoom.roomId = UUID.randomUUID().toString();
+        studyRoom.title = studyRoomDto.getTitle();
+        studyRoom.member = member;
+        studyRoom.memberCount = 0L;
+        studyRoom.maxMember = maxUser;
+        studyRoom.tag1 = studyRoomDto.getTag1();
+        studyRoom.tag2 = studyRoomDto.getTag2();
+        studyRoom.tag3 = studyRoomDto.getTag3();
+        studyRoom.studying = false;
+        return studyRoom;
     }
-
-    @Column(nullable = false, columnDefinition = "TINYINT", length=1)
-    private int isPublic;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "roomId")
-    private List<Tag> tags;
-
-
 }

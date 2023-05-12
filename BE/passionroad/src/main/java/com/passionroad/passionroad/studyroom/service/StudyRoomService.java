@@ -6,7 +6,6 @@ import com.passionroad.passionroad.group.repository.GroupRepository;
 import com.passionroad.passionroad.studyroom.Util;
 import com.passionroad.passionroad.studyroom.dto.StudyRoomDto;
 import com.passionroad.passionroad.studyroom.entity.StudyRoom;
-import com.passionroad.passionroad.studyroom.entity.StudyRoomMapper;
 import com.passionroad.passionroad.studyroom.repository.StudyRoomRepository;
 import com.passionroad.passionroad.tag.entity.Tag;
 import com.passionroad.passionroad.tag.repository.TagRepository;
