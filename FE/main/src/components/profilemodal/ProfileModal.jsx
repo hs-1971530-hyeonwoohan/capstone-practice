@@ -1,44 +1,34 @@
-import React, { useState } from "react";
-import "./Modal.css";
+import React from "react";
+// import { IoClose } from "react-icons/io5";
+import {X} from 'react-feather';
 
-export default function ProfileModal() {
-  const [modal, setModal] = useState(false);
-
-  const toggleModal = () => {
-    setModal(!modal);
-  };
-
-  if(modal) {
-    document.body.classList.add('active-modal')
-  } else {
-    document.body.classList.remove('active-modal')
-  }
-//모달이 활성화 되었을 때, 스크롤 바를 제거 함으로써 사용자에게 더 나은 경험을 제공.
+function ProfileModal({ open, onClose, children }) {
+  
   return (
-    <>
-      <button onClick={toggleModal} className="btn-modal">
-        Open
-      </button>
-
-      {modal && (
-        <div className="modal">
-          <div onClick={toggleModal} className="overlay"></div>
-          <div className="modal-content">
-            <h2>Hello Modal</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
-              perferendis suscipit officia recusandae, eveniet quaerat assumenda
-              id fugit, dignissimos maxime non natus placeat illo iusto!
-              Sapiente dolorum id maiores dolores? Illum pariatur possimus
-              quaerat ipsum quos molestiae rem aspernatur dicta tenetur. Sunt
-              placeat tempora vitae enim incidunt porro fuga ea.
-            </p>
-            <button className="close-modal" onClick={toggleModal}>
-              CLOSE
-            </button>
-          </div>
-        </div>
-      )}
-    </>
+    <div
+      onClick={onClose}
+      className={`fixed inset-0 flex justify-center items-center transition-colors z-50 ${
+        open ? "visible bg-black/20" : "invisible"
+      }`}
+    >
+      {/* modal */}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className={`bg-white rounded-xl shadow p-6 transition-all ${
+          open ? "scale-100 opacity-100" : "scale-125 opacity-0"
+        }`}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 p-1 rounded-lg text-gray-500 bg-white hover:bg-gray-50 hover:text-gray-700"
+        >
+          <X />
+          {/* <IoClose /> */}
+        </button>
+        {children}
+      </div>
+    </div>
   );
 }
+
+export default ProfileModal;
