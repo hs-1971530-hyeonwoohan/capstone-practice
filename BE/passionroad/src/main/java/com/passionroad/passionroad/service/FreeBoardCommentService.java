@@ -45,6 +45,12 @@ public class FreeBoardCommentService {
         return comments.stream().map(FreeBoardCommentDTO::fromEntity).collect(Collectors.toList());
     }
 
+    public FreeBoardCommentDTO readComment(Long commentId){
+        FreeBoardComment freeBoardComment = freeBoardCommentRepository.findById(commentId).orElseThrow();
+
+        return FreeBoardCommentDTO.fromEntity(freeBoardComment);
+    }
+
     // modify comments
     public void modify(FreeBoardCommentDTO dto){
 

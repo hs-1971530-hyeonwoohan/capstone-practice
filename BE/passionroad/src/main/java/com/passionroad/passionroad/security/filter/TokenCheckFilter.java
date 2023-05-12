@@ -1,10 +1,14 @@
 package com.passionroad.passionroad.security.filter;
 
+import com.passionroad.passionroad.security.APIUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.passionroad.passionroad.security.exception.AccessTokenException;
 import com.passionroad.passionroad.util.JWTUtil;
@@ -14,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Log4j2
@@ -27,14 +32,23 @@ public class TokenCheckFilter extends OncePerRequestFilter {
     * */
 
     private final JWTUtil jwtUtil;
+    private final APIUserDetailsService apiUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
 
         String path = request.getRequestURI();  // 요청 받은 주소 반환
+        String httpMethod = request.getMethod();    // 요청 메소드
+        List<String> blackList = List.of("POST", "PUT", "DELETE");  // 검사할 메소드 리스트
 
-        // 요청을 보낸 주소가 /api/로 시작하지 않으면 검사하지 않고 return
-        if(!path.startsWith("/api/")){
+        /*
+        1. 경로가 /api/.. 로 시작하지 않으면 검사 x
+        2. 경로는 /api/.. 로 시작하지만 POST, PUT, DELETE 가 아니면 검사 x
+        */
+        if(!path.startsWith("/api/") || !blackList.contains(httpMethod)){
+
+            log.info("Token Check Passed.................");
+
             filterChain.doFilter(request, response);
             return;
         }
@@ -43,7 +57,21 @@ public class TokenCheckFilter extends OncePerRequestFilter {
         log.info("JWTUtil: " + jwtUtil);
 
         try{
-            validateAccessToken(request);   // 토큰 검사: 토큰 이상 없으면 claim 반환
+            Map<String, Object> payload = validateAccessToken(request);   // 토큰 검사: 토큰 이상 없으면 claim 반환
+
+            String mid = (String)payload.get("mid");
+
+            log.info("mid from JWT payload: " + mid);
+
+            // 토큰의 mid 사용해서 UserDetails 호출
+            UserDetails userDetails = apiUserDetailsService.loadUserByUsername(mid);
+
+            // authentication 객체 생성
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+            // SecurityContextHolder 에 현재 사용자정보 전달
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
             filterChain.doFilter(request, response);
         }catch(AccessTokenException accessTokenException){ // 토큰 예외 처리
             accessTokenException.sendResponseError(response);

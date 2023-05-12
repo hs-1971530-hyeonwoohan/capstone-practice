@@ -12,9 +12,14 @@ import com.passionroad.passionroad.service.FreeBoardCommentService;
 import com.passionroad.passionroad.service.FreeBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -89,31 +94,88 @@ public class FreeBoardController {
 
     // modify a specific post
     @PutMapping(value = "/{postId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, String> modifyPost(
+    public ResponseEntity<String> modifyPost(
             @PathVariable Long postId,
             @RequestBody FreeBoardDTO freeBoardDTO){
 
+        log.info("FreeBoardController: modifyPost -----------------------");
+
+        FreeBoardDTO freeBoardDTOForMid = freeBoardService.readOne(postId);
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String mid = null;
+
+        if(principal instanceof UserDetails){
+            mid = ((UserDetails) principal).getUsername();
+            log.info("mid(username): " + mid);
+        }else{
+            mid = principal.toString();
+            log.info("mid(username): " + mid);
+        }
+
         /*
          * FreeBoardDTO Json에 필요한 필드:
-         * 1. postId 2. title 3. content
+         * 1. title 2. content 3. postId
          * */
-        log.info("FreeBoardController: modifyPost -----------------------");
         log.info("FreeBoardDTO: " + freeBoardDTO);
 
-        freeBoardService.modify(freeBoardDTO);
+        if(mid.equals(freeBoardDTOForMid.getWriter())){
+            
+            // 글 작성자와 토큰 mid가 같다: 수정 허용
+            log.info("modifyPost >> writer == mid");
+            
+            freeBoardService.modify(freeBoardDTO);
 
-        return Map.of("result", "success");
+            return new ResponseEntity<>("Modifying Post Succeed", HttpStatus.OK);
+        }else{
+            
+            // 글 작성자와 토큰 mid가 다르다: 수정 불허
+            log.info("modifyPost >> writer != mid");
+
+            return new ResponseEntity<>("Modifying Post Failed", HttpStatus.METHOD_NOT_ALLOWED);
+        }
     }
 
     // delete a specific post (error)
     @DeleteMapping("/{postId}")
-    public Map<String, String> removePost(@PathVariable Long postId){
+    public ResponseEntity<String> removePost(@PathVariable Long postId){
 
         log.info("FreeBoardController: removePost -----------------------");
 
-        freeBoardService.remove(postId);
+        FreeBoardDTO freeBoardDTOForMid = freeBoardService.readOne(postId);
 
-        return Map.of("result", "success");
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String mid = null;
+
+        if(principal instanceof UserDetails){
+            mid = ((UserDetails) principal).getUsername();
+            log.info("mid(username): " + mid);
+        }else{
+            mid = principal.toString();
+            log.info("mid(username): " + mid);
+        }
+
+        if(mid.equals(freeBoardDTOForMid.getWriter())){
+
+            // 글 작성자와 토큰 mid가 같다: 삭제 허용
+            log.info("removePost >> writer == mid");
+
+            // 외래키 제약조건 때문에 댓글 먼저 전부 삭제
+            List<FreeBoardCommentDTO> commentDTOList = freeBoardCommentService.listByPostId(postId);
+
+            commentDTOList.forEach(commentDTO -> {
+                freeBoardCommentService.remove(commentDTO.getCommentId());
+            });
+            freeBoardService.remove(postId);
+
+            return new ResponseEntity<>("Remove Post Succeed", HttpStatus.OK);
+        }else{
+
+            // 글 작성자와 토큰 mid가 다르다: 삭제 불허
+            log.info("removePost >> writer != mid");
+
+            return new ResponseEntity<>("Remove Post Failed", HttpStatus.METHOD_NOT_ALLOWED);
+        }
     }
 
 
@@ -151,36 +213,93 @@ public class FreeBoardController {
 
     // modify post's comment
     @PutMapping(value = "/{postId}/{commentId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, String> modifyComment(
+    public ResponseEntity<String> modifyComment(
             @PathVariable Long postId,
             @PathVariable Long commentId,
             @RequestBody @Valid FreeBoardCommentDTO freeBoardCommentDTO
     ){
+
+        log.info("FreeBoardController: modifyComment -----------------------");
+
+        FreeBoardCommentDTO commentDTOForMid = freeBoardCommentService.readComment(commentId);
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String mid = null;
+
+        if(principal instanceof UserDetails){
+            mid = ((UserDetails) principal).getUsername();
+            log.info("mid(username): " + mid);
+        }else{
+            mid = principal.toString();
+            log.info("mid(username): " + mid);
+        }
+
         /*
          * FreeBoardCommentDTO Json에 필요한 필드:
          * 1. commentId 2. commentText
          * */
-        log.info("FreeBoardController: modifyComment -----------------------");
         log.info("FreeBoardCommentDTO: " + freeBoardCommentDTO);
 
-        freeBoardCommentService.modify(freeBoardCommentDTO);
+        if(mid.equals(commentDTOForMid.getCommentWriter())){
 
-        return Map.of("result", "success");
+            // 댓글 작성자와 토큰 mid가 같다: 수정 허용
+            log.info("modifyComment >> commentWriter == mid");
+
+            freeBoardCommentService.modify(freeBoardCommentDTO);
+
+            return new ResponseEntity<>("Modifying Comment Succeed", HttpStatus.OK);
+        }else{
+
+            // 글 작성자와 토큰 mid가 다르다: 수정 불허
+            log.info("modifyComment >> commentWriter != mid");
+
+            return new ResponseEntity<>("Modifying Comment Failed", HttpStatus.METHOD_NOT_ALLOWED);
+        }
     }
 
 
     // delete post's comment
     @DeleteMapping("/{postId}/{commentId}")
-    public Map<String, String> removeComment(
+    public ResponseEntity<String> removeComment(
             @PathVariable Long postId,
             @PathVariable Long commentId
     ){
 
         log.info("FreeBoardController: removeComment -----------------------");
 
-        freeBoardCommentService.remove(commentId);
+        FreeBoardCommentDTO commentDTOForMid = freeBoardCommentService.readComment(commentId);
 
-        return Map.of("result", "success");
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String mid = null;
+
+        if(principal instanceof UserDetails){
+            mid = ((UserDetails) principal).getUsername();
+            log.info("mid(username): " + mid);
+        }else{
+            mid = principal.toString();
+            log.info("mid(username): " + mid);
+        }
+
+        /*
+         * FreeBoardCommentDTO Json에 필요한 필드:
+         * 1. commentId
+         * */
+
+        if(mid.equals(commentDTOForMid.getCommentWriter())){
+
+            // 댓글 작성자와 토큰 mid가 같다: 수정 허용
+            log.info("removeComment >> commentWriter == mid");
+
+            freeBoardCommentService.remove(commentId);
+
+            return new ResponseEntity<>("Remove Comment Succeed", HttpStatus.OK);
+        }else{
+
+            // 글 작성자와 토큰 mid가 다르다: 수정 불허
+            log.info("removeComment >> commentWriter != mid");
+
+            return new ResponseEntity<>("Remove Comment Failed", HttpStatus.METHOD_NOT_ALLOWED);
+        }
     }
 
 }
