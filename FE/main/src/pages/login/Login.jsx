@@ -4,7 +4,7 @@ import LoginForm from '../../components/loginform/LoginForm'
 function Login() {
   return (
     <div>
-        <div className="h-full w-full px-4">
+        <div className="h-full w-full mb-20">
             <div className="flex flex-col items-center justify-center">
                 <svg tabindex="0" className="focus:outline-none" aria-label="logo" role="banner" width="188" height="74" viewBox="0 0 188 74" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
