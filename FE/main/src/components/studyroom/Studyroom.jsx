@@ -71,7 +71,7 @@ const tempRooms = [
 ];
 function Studyroom() {
   return (
-    <div className="px-3 h-full">
+    <div className="mx-20 h-full mt-5">
       <div className="p-2 mt-3 font-semibold text-2xl">Now Studying</div>
       <div className="min-h-[h-28] max-h-[h-28] mx-auto w-full flex  content-center">
         {tempRooms.slice(0, 6).map((room) => (

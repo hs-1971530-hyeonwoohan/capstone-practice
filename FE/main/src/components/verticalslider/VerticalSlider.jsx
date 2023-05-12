@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import moment from "moment";
 
 const tempStudyTime = [
   { userid: 1, usernick: "김한1", time: "10:22:00" },
@@ -25,14 +26,26 @@ const VerticalSlider = () => {
     className: "vertical-slider",
     autoplay: true,
     autoplaySpeed: 2500,
-    arrows: false
+    arrows: false,
   };
 
+  const moment = require("moment");
+  require("moment/locale/ko"); // 한국어 로케일 설정
+  const currentDate = moment();
+  const formattedDate = currentDate.format("YYYY.MM.DD. (dddd)");
+
   return (
-    <div className="h-20 mt-20 mb-28 mx-5">
+    <div className="h-20 mt-10 mb-32 mx-20">
+      <div className="flex justify-between">
+        <div className="font-kr text-xl font-extrabold pl-4 pb-2"></div>
+        <div className="text-sm pr-2 text-gray-400 mb-2">{formattedDate}</div>
+      </div>
       <div className="flex justify-center">
         <div className="flex items-center w-full h-16 border border-gray-300 border-b-0 text-lg font-kr rounded-t">
-          <span className="ml-4">(나) 김한 : 1:03:43</span>
+          <span className="ml-4">
+            (나) <span className="font-semibold">김한 </span>{" "}
+            <span className="font-normal">: 1:03:43</span>{" "}
+          </span>
         </div>
       </div>
       <div className="h-16 flex justify-center">
@@ -42,7 +55,9 @@ const VerticalSlider = () => {
               <div key={user.userid} className="pb pl-4">
                 <div className=" ">
                   <p className="text-lg ">
-                    <span className="w-12 font-kr font-semibold">{user.usernick}</span>
+                    <span className="w-12 font-kr font-semibold">
+                      {user.usernick}
+                    </span>
                     <span className="w-12 "> - {user.time} </span>
                   </p>
                 </div>

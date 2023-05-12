@@ -5,11 +5,12 @@ import 'slick-carousel/slick/slick-theme.css';
 import { useState, useEffect, useRef } from 'react';
 import sect01 from "../../imgs/slider/sect01.jpg"
 import sect02 from "../../imgs/slider/sect02.jpg"
+import { Link } from 'react-router-dom';
 
 const slides = [
     {
       imageSrc: sect01,
-      text: '',
+      text : ["123", "456", "789"],
     },
     {
       imageSrc: sect02,
@@ -17,11 +18,11 @@ const slides = [
     },
     {
       imageSrc: 'https://images.pexels.com/photos/2041540/pexels-photo-2041540.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-      text: 'Slide 3',
+      text: '',
     },
     {
       imageSrc: 'https://images.pexels.com/photos/2004161/pexels-photo-2004161.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-      text: 'Slide 4',
+      text: '',
     },
   ];
   
@@ -61,7 +62,7 @@ const slides = [
   
     return (
         <div>
-          <div className="relative h-96 mx-5 mt-4">
+          <div className="relative h-96 mx-16 mt-4">
             <Slider {...settings} ref={sliderRef}>
               {slides.map(slide => (
                 <Slide key={slide.text} imageSrc={slide.imageSrc} text={slide.text} />
@@ -94,9 +95,26 @@ const slides = [
     
     function Slide({ imageSrc, text }) {
       return (
+        <div>
+          <Link>
         <div className="relative h-96 cursor-pointer">
-          <img className="w-full h-full object-none rounded-lg bg-blue-900 " src={imageSrc} alt="" />
-          <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center text-white text-4xl font-bold">{text}</div>
+          <img className="w-full h-full object-none rounded-2xl bg-blue-900 " src={imageSrc} alt="" />
+          <div className="absolute top-0 left-0 w-full h-full flex justify-start items-center text-white text-4xl font-bold">
+            <div className='pl-4'>
+            <div className=''>
+              slides에 있는 녀석들 각각에 
+            </div>
+            <div>
+            text : ["123", "456", "789"] 처럼 내용 넣어주시고
+            </div>
+            <div>
+            slides[0].text[0] 이런식으로 text의 요소들 각각을 끄집어 내시면 됩니다 링크태그 링크도 걸어주시면 됩니다.
+            </div>
+            </div>
+            
+          </div>
+        </div>
+        </Link>
         </div>
       );
     }

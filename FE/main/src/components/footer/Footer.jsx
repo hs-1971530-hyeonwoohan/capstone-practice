@@ -13,12 +13,13 @@ function Footer() {
               </h2>
               <ul className="text-gray-600 dark:text-gray-400">
                 <li className="mb-4">
-                  <a href="https://flowbite.com/" className="hover:underline">
-                    Flowbite
+                  <a href="https://google.com" target="_blank" className="hover:underline ">
+                    Google
                   </a>
                 </li>
                 <li>
                   <a
+                  target="_blank"
                     href="https://tailwindcss.com/"
                     className="hover:underline"
                   >
@@ -34,7 +35,8 @@ function Footer() {
               <ul className="text-gray-600 dark:text-gray-400">
                 <li className="mb-4">
                   <a
-                    href="https://github.com/themesberg/flowbite"
+                  target="_blank"
+                    href="https://github.com"
                     className="hover:underline "
                   >
                     Github
@@ -42,7 +44,8 @@ function Footer() {
                 </li>
                 <li>
                   <a
-                    href="https://discord.gg/4eeurUVvTy"
+                  target="_blank"
+                    href="https://discord.com"
                     className="hover:underline"
                   >
                     Discord
