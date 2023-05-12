@@ -1,153 +1,221 @@
 package com.passionroad.passionroad.studyroom.service;
 
-import com.passionroad.passionroad.exception.RoomNotFoundException;
-import com.passionroad.passionroad.group.entity.Group;
-import com.passionroad.passionroad.group.repository.GroupRepository;
-import com.passionroad.passionroad.studyroom.Util;
-import com.passionroad.passionroad.studyroom.dto.StudyRoomDto;
+import com.passionroad.passionroad.domain.member.Member;
+import com.passionroad.passionroad.exception.MemberException;
+import com.passionroad.passionroad.exception.MemberExceptionType;
+import com.passionroad.passionroad.studyroom.entity.BanMember;
+import com.passionroad.passionroad.studyroom.entity.EnterMember;
+import com.passionroad.passionroad.studyroom.entity.MemberDetailsImpl;
 import com.passionroad.passionroad.studyroom.entity.StudyRoom;
+import com.passionroad.passionroad.studyroom.repository.BanMemberRepository;
+import com.passionroad.passionroad.studyroom.repository.EnterMemberRepository;
 import com.passionroad.passionroad.studyroom.repository.StudyRoomRepository;
-import com.passionroad.passionroad.tag.entity.Tag;
-import com.passionroad.passionroad.tag.repository.TagRepository;
+import com.passionroad.passionroad.studyroom.repository.StudyRoomSpecification;
+import com.passionroad.passionroad.studyroom.request.StudyRoomEnterRequestDto;
+import com.passionroad.passionroad.studyroom.request.StudyRoomRequestDto;
+import com.passionroad.passionroad.studyroom.response.EnterMemberResponseDto;
+import com.passionroad.passionroad.studyroom.response.StudyRoomResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StudyRoomService {
 
     private final StudyRoomRepository studyRoomRepository; // 스터디룸
-    private final GroupRepository groupRepository; // 스터디룸 구성원
-    private final TagRepository tagRepository; // 태그들
+    private final EnterMemberRepository enterMemberRepository;
+    private final BanMemberRepository banMemberRepository;
 
-    public StudyRoomDto.RoomResponse addBycode(String code, StudyRoomDto.InsertHostInfo insertHostInfo) {
-        StudyRoom studyRoom = StudyRoom.builder()
-                .hostId(insertHostInfo.getHostId())
-                .code(code)
-                .startTime(new Date())
-                .isPublic(insertHostInfo.getIsPublic())
-                .roomName(insertHostInfo.getRoomName())
-                .build();
-        return StudyRoomMapper.INSTANCE.toResponse(studyRoomRepository.save(studyRoom)
-        );
-    }
 
-    public StudyRoom finishRoom(long roomId) { // 방 종료
-        StudyRoom room= studyRoomRepository.findOneByRoomId(roomId);
-        System.out.println(room);
-        room.updateEndTime(new Date()); // endTime을 업데이트
-        System.out.println(room);
-        return studyRoomRepository.save(room); // 변경된 endTime을 저장
-    }
+    public StudyRoomResponseDto createRoom(StudyRoomRequestDto requestDto, Member member){
 
-    public String getCode() {
-        String code;
-        // 무한루프는 그대로지만 HashSet 활용해서 DB 접근 최소화
-        HashSet<String> set = new HashSet<>(studyRoomRepository.findAllCode());
-        while (true) {
-            code = Util.getRandomCode();
-            if(!set.contains(code)) break;
+        if (studyRoomRepository.findByTitle(requestDto.getTitle()) != null) {
+            throw new IllegalArgumentException("이미 존재하는 방 이름입니다.");
         }
 
-        return code;
+        if (requestDto.getTitle() == null || requestDto.getTitle().equals(" ")) {
+            throw new IllegalArgumentException("방 이름을 입력해주세요.");
+        }
+
+        if (requestDto.getTag1() == null) {
+            throw new IllegalArgumentException("기업분류를 선택해주세요");
+        } else if (requestDto.getTag2() == null) {
+            throw new IllegalArgumentException("신입/경력을 선택해주세요");
+        } else if (requestDto.getTag3() == null) {
+            throw new IllegalArgumentException("면접 유형을 선택해주세요");
+        }
+
+        int maxUser = requestDto.getMaxUser();
+        if(maxUser < 2){
+            throw new IllegalArgumentException("인원수를 선택해주세요");
+        }
+
+        StudyRoom studyRoom = StudyRoom.create(requestDto, member, maxUser);
+        StudyRoom createRoom = studyRoomRepository.save(studyRoom);
+        String title = createRoom.getTitle();
+        String roomId = createRoom.getRoomId();
+        Long userCount = 0L;
+        String tag1 = createRoom.getTag1();
+        String tag2 = createRoom.getTag2();
+        String tag3 = createRoom.getTag3();
+        LocalDateTime createAt = createRoom.getCreatedAt();
+
+        return new StudyRoomResponseDto(title, roomId, userCount, maxUser, tag1, tag2, tag3, createAt, member);
     }
 
+    //방 진입
+    public List<EnterMemberResponseDto> enterRoom(StudyRoomEnterRequestDto roomEnterRequestDto, MemberDetailsImpl memberDetails) {
+        Member member = memberDetails.getMember();
+        String roomId = roomEnterRequestDto.getRoomId();
+        // 받은 룸id로 내가 입장할 받을 찾음
+        StudyRoom studyRoom = studyRoomRepository.findByroomId(roomId).orElseThrow(
+                () -> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
 
-    public long getRoomValid(String code) {
-        StudyRoom studyRoom = studyRoomRepository.findOneByCode(code);
-        if(studyRoom != null)
-            return studyRoom.getRoomId();
-        else
-            return 0;
-    }
+        // 들어갈 방에서 유저를 찾음
+        EnterMember enterCheck = enterMemberRepository.findByRoomAndUser(studyRoom, member);
 
-    public long addGroup(String code, long userId, String nickName, int ishost) {
+        // 내가 입장할 방이 추방당한 방인지 확인
+        BanMember banMemberCheck = banMemberRepository.findByRoomAndMember(studyRoom, member);
+        if (banMemberCheck != null) {
+            throw new MemberException(MemberExceptionType.BAN_USER_ROOM);
+        }
 
-        StudyRoom studyRoom = studyRoomRepository.findOneByCode(code);
-        // 방이 없거나 종료된 경우
-        if(studyRoom == null || studyRoom.getEndTime() != null)
-            throw new RoomNotFoundException(code);
-        Group group = new Group(studyRoom.getRoomId(), userId, nickName, ishost);
-        return groupRepository.save(group).getRoomId();
-    }
+        boolean roomStatusCheck = studyRoom.isStudying();
 
-    public StudyRoomDto.StudyRoomInfo updateRoom(StudyRoomDto.UpdateStudyRoomInfo updateRoomInfo) {
-        StudyRoom studyRoom= studyRoomRepository.findOneByRoomId(updateRoomInfo.getRoomId());
-        StudyRoom newRoom = StudyRoom.builder()
-                .hostId(studyRoom.getHostId())
-                .startTime(studyRoom.getStartTime())
-                .code(studyRoom.getCode())
-                .roomId(studyRoom.getRoomId())
-                .roomName(updateRoomInfo.getRoomName())
-                .isPublic(updateRoomInfo.getIsPublic())
-                .build();
-        return StudyRoomMapper.INSTANCE.toInfoOne(studyRoomRepository.save(newRoom));
-    }
+        // 스터디가 진행중이라면 입장 불가.
+        if (roomStatusCheck == true) {
+            throw new MemberException(MemberExceptionType.ROOM_STATUS_TRUE);
+        }
 
-    //태그 추가
-    public void addTags(List<String> tags, long roomId) {
-        //기존 태그 삭제
-        tagRepository.deleteAllByRoomId(roomId);
-        if(tags != null) {
-            //saveAll 사용하면 한번에 넣을 수 있기는 함
-            for(String tagname : tags) {
-                Tag tag = Tag.builder()
-                        .roomId(roomId)
-                        .tagName(tagname)
-                        .build();
-                tagRepository.save(tag);
+        // 해당 방에 입장 되어있는 경우 (이미 입장한 방인경우)
+        if (enterCheck != null) {
+            throw new MemberException(MemberExceptionType.HAS_ENTER_ROOM);
+        }
+        //들어갈 방을 찾음? (들어온 유저가 몇명인지 체크 ?) (동일한 룸이 몇개인지 확인하여 리스트에 담아 몇명인지를 확인)
+        List<EnterMember> enterMemberSize = enterMemberRepository.findByRoom(studyRoom);
+
+        //방을 입장할때마다 몇명이 있는지 확인하는 로직(입장인원 초과 확인)
+        int maxMember = studyRoom.getMaxMember();
+        if (enterMemberSize.size() > 0) {
+            if (maxMember < enterMemberSize.size() + 1) {
+                throw new MemberException(MemberExceptionType.ENTER_MAX_USER);
             }
         }
-    }
 
-    public List<StudyRoomDto.StudyRoomInfo> get(long userId) {
-        return StudyRoomMapper.INSTANCE.toInfo(studyRoomRepository.getRoomsInfo(userId));
-    }
-
-    public List<StudyRoomDto.StudyRoomInfoPlus> getPublicRooms(int pagenum){
-        List<StudyRoomDto.StudyRoomInfoPlus> roomlist = new ArrayList<>();
-        List<StudyRoomDto.StudyRoomInfo> roominfolist = StudyRoomMapper.INSTANCE.toInfo(studyRoomRepository.getPublicRoomsInfo((pagenum-1)*12,pagenum*12));
-        for(int i=0; i<roominfolist.size(); i++) {
-            StudyRoomDto.StudyRoomInfoPlus roominfoplus = new StudyRoomDto.StudyRoomInfoPlus();
-            roominfoplus.setStudyRoominfo(roominfolist.get(i));
-            roominfoplus.setHost(groupRepository.findHostnameByroomId(roominfoplus.getStudyRoominfo().getRoomId()));
-            roominfoplus.setUsers(groupRepository.findNicknameByroomId(roominfoplus.getStudyRoominfo().getRoomId()));
-            roomlist.add(roominfoplus);
+        // 나가기 처리가 되지않아 내가 아직 특정방에 남아있는상태라면
+        EnterMember enterMemberCheck = enterMemberRepository.findAllByUser(member);
+        if (enterMemberCheck != null) {
+            enterMemberRepository.delete(enterMemberCheck);
         }
-        return roomlist;
-    }
 
-    public List<StudyRoomDto.StudyRoomInfoPlus> getPublicRoomsByNameOrTag(String keyword, int pagenum) {
-        List<StudyRoomDto.StudyRoomInfoPlus> roomlist = new ArrayList<>();
-        List<StudyRoomDto.StudyRoomInfo> roominfolist = StudyRoomMapper.INSTANCE.toInfo(studyRoomRepository.getPublicRoomsByRoomNameOrTag(keyword, (pagenum-1)*12,pagenum*12));
-        for(int i=0; i<roominfolist.size(); i++) {
-            StudyRoomDto.StudyRoomInfoPlus studyRoominfoplus = new StudyRoomDto.StudyRoomInfoPlus();
-            studyRoominfoplus.setStudyRoominfo(roominfolist.get(i));
-            studyRoominfoplus.setHost(groupRepository.findHostnameByroomId(studyRoominfoplus.getStudyRoominfo().getRoomId()));
-            studyRoominfoplus.setUsers(groupRepository.findNicknameByroomId(studyRoominfoplus.getStudyRoominfo().getRoomId()));
-            roomlist.add(studyRoominfoplus);
+        Long memberCount = studyRoom.getMemberCount() + 1;
+        //유저카운터 증가
+        studyRoom.setMemberCount(memberCount);
+        studyRoomRepository.save(studyRoom);
+
+        //방에 입장시 유저 한명이되는꼴
+        EnterMember enterMember = new EnterMember(member, studyRoom);
+        enterMemberRepository.save(enterMember);
+
+        // 방에 입장한 사람들을 리스트에 담음
+        List<EnterMember> enterMembers = enterMemberRepository.findByRoom(studyRoom);
+        List<EnterMemberResponseDto> enterStudyRoomMembers = new ArrayList<>();
+        for (EnterMember enterMember2 : enterMembers) {
+            enterStudyRoomMembers.add(new EnterMemberResponseDto(
+                    //방에 입장한 유저의 이름
+                    enterMember2.getMember().getNickname()
+                    //방에 입장한 유저의 프로필
+//                    enterMember2.getMember().getProfileImg()
+            ));
         }
-        return roomlist;
+        return enterStudyRoomMembers;
     }
 
-    public long getPublicRoomsCount() {
-        return studyRoomRepository.getPublicRoomsCount();
+    //방 나가기
+    @Transactional
+    public void quitRoom(String roomId, MemberDetailsImpl memberDetails) {
+        Member member = memberDetails.getMember();
+
+        //내가입장한 방을 찾음
+        StudyRoom studyRoom = studyRoomRepository.findByroomId(roomId).orElseThrow(()-> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
+        //방에서 내가 입장했던 스터디룸을 찾은다음
+        EnterMember enterMember =  enterMemberRepository.findByRoomAndUser(studyRoom, member);
+        // 그 기록을 지워서 내가 들어가있던 상태를 나간 상태로 만든다.
+        enterMemberRepository.delete(enterMember);
+        //내가 방을 나갔으니, room의 유저 카운터를 -1 해준다
+        Long memberCount = studyRoom.getMemberCount() - 1;
+        //유저카운터 감소
+        studyRoom.setMemberCount(memberCount);
+        studyRoomRepository.save(studyRoom);
+
+        //userCount 체크하여 0이면 다 나간것으로 간주하여 방 폭파
+        if (studyRoom.getMemberCount() == 0) {
+            List<BanMember> banMember = banMemberRepository.findAllByRoom(studyRoom);
+            if (banMember != null) {
+                banMemberRepository.deleteAll(banMember);
+            }
+            studyRoomRepository.delete(studyRoom);
+        }
+    }
+    // 스터디 목록 페이지 전체 화상 채팅방 조회
+    public List<StudyRoom> allReadRoom() {
+        return studyRoomRepository.findAllByOrderByCreatedAtDesc();
     }
 
-    public long getPublicRoomsSearchCount(String keyword) {
-        return studyRoomRepository.getPublicRoomsSearchCount(keyword);
+    //메인페이지 상위 8개 화상 채팅방 조회
+    @Transactional
+    public List<StudyRoom> mainPageReadRoom() {
+        return studyRoomRepository.findTop8ByOrderByCreatedAtDesc();
     }
 
-    public StudyRoomDto.StudyRoomInfo getRoomByRoomId(long roomId){
-        return StudyRoomMapper.INSTANCE.toInfoOne(studyRoomRepository.findOneByRoomId(roomId));
+    // 스터디 목록 페이징처리
+    @Transactional
+    public Page<StudyRoom> getPageRoom(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return studyRoomRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
 
-    public List<String> getAllTags(){
-        return tagRepository.findAllTags();
+    // 스터디목록 페이지 조회
+    @Transactional
+    public Page<StudyRoom> getTagRoom(int page, int size, String sortBy, String recruit, String tag1, String tag2, String tag3, String keyword) {
+        Sort.Direction direction = Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Specification<StudyRoom> spec = (root, query, criteriaBuilder) -> null;
+        if(recruit.equals("recruiting"))
+            spec = spec.and(StudyRoomSpecification.equalStudying(false));
+        if (!tag1.equals("null"))
+            spec = spec.and(StudyRoomSpecification.equalTag1(tag1));
+        if (!tag2.equals("null"))
+            spec = spec.and(StudyRoomSpecification.equalTag2(tag2));
+        if (!tag3.equals("null"))
+            spec = spec.and(StudyRoomSpecification.equalTag3(tag3));
+        if (!keyword.equals("null"))
+            spec = spec.and(StudyRoomSpecification.equalTitle(keyword));
+        return studyRoomRepository.findAll(spec, pageable);
+    }
+
+    // 스터디룸의 입장 유저정보 조회
+    public List<EnterMember> enterUsers(String roomId) {
+        StudyRoom studyRoom = studyRoomRepository.findByRoomId(roomId);
+        return enterMemberRepository.findByRoom(studyRoom);
+    }
+
+    // 스터디룸 검색 기능
+    public Page<StudyRoom> roomSearch(int page, int size, String keyword) {
+        Pageable pageable = PageRequest.of(page, size);
+        return studyRoomRepository.findAllByTitleContainingIgnoreCaseOrderByCreatedAtDesc(pageable, keyword);
     }
 }
