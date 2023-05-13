@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,8 +27,11 @@ public class Member extends BaseEntity {
     @Column
     private String mpw;
 
-//    @Column
-//    private String name;
+    @Column
+    private String username;
+
+    @Column
+    private String nickname;
 
 //    @Column(length = 320, unique = true)
 //    private String email;
@@ -45,13 +49,12 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<FreeBoardComment> freeBoardCommentList;
 
-//    @Builder
-//    public Member(String name, String email, String picture, Role role) {
-//        this.name = name;
-//        this.email = email;
-//        this.picture = picture;
-//        this.role = role;
-//    }
+
+    public Member(String nickname, String username, Role role) {
+        this.nickname = nickname;
+        this.username = username;
+        this.role = role;
+    }
 
 //    public Member update(String name, String picture) {
 //        this.name = name;
