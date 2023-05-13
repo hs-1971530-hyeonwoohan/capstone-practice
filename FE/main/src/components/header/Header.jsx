@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 import { selectedNavigationIndex } from "../../atoms/SelectedNavigationIndex";
 import { useState } from "react";
 import ProfileModal from "../profilemodal/ProfileModal";
+import { AiOutlineCamera } from "react-icons/ai";
 
 const isAuthenticated = true;
 
@@ -29,15 +30,34 @@ const userNavigation = [
   { name: "Sign out", href: "#" },
 ];
 
+
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
+
+
+
+
 
 export default function Header() {
   const [selectedIndex, setSelectedIndex] = useRecoilState(
     selectedNavigationIndex
   );
   const [open, setOpen] = useState(false);
+  const [image, setImage] = useState(null);
+
+  function handleImageUpload(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = function() {
+        setImage(reader.result); // 파일을 읽은 후, 이미지 상태를 업데이트
+      }
+      reader.readAsDataURL(file); // 파일을 읽기
+    }
+  }
+
   if (!isAuthenticated) {
     return (
       <>
@@ -305,6 +325,7 @@ export default function Header() {
                   <div className="border-t border-gray-700 pt-4 pb-3">
                     <div className="flex items-center px-5">
                       <div className="flex-shrink-0">
+                        ::bef
                         <img
                           className="h-10 w-10 rounded-full"
                           src={user.imageUrl}
@@ -353,10 +374,24 @@ export default function Header() {
                 <div className="profile-container">
                   <div className="row profile-email">
                     <div class="emailAddress ">
-                      <img
-                        src={user.imageUrl}
-                        className="w-20 h-20 mx-auto rounded-full -mt-16 border-8 border-white"
-                      />
+                      <div className="relative">
+                        <div className="absolute mt-32">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            id="file-input"
+                            style={{ display: "none" }} // input을 숨김
+                            onChange={handleImageUpload} // 파일을 선택하면 실행할 이벤트 핸들러
+                          />
+                          <label htmlFor="file-input">
+                            <AiOutlineCamera className="w-8 h-8 rounded-full ml-48 -mt-20 border-4 border-gray-300 bg-gray-300 cursor-pointer" />
+                          </label>
+                        </div>
+                        <img
+                          src={user.imageUrl}
+                          className="w-20 h-20 mx-auto rounded-full -mt-16 border-8 border-white"
+                        />
+                      </div>
                       <div className="flex">
                         <h3 className="emailAddress mr-4 text-center text-3xl font-medium">
                           {user.email}
