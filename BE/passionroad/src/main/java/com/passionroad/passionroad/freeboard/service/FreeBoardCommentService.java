@@ -1,10 +1,10 @@
-package com.passionroad.passionroad.service;
+package com.passionroad.passionroad.freeboard.service;
 
-import com.passionroad.passionroad.domain.freeboard.FreeBoard;
-import com.passionroad.passionroad.domain.freeboard.FreeBoardComment;
-import com.passionroad.passionroad.domain.member.Member;
-import com.passionroad.passionroad.dto.FreeBoardCommentDTO;
-import com.passionroad.passionroad.repository.FreeBoardCommentRepository;
+import com.passionroad.passionroad.freeboard.domain.freeboard.FreeBoard;
+import com.passionroad.passionroad.freeboard.domain.freeboard.FreeBoardComment;
+import com.passionroad.passionroad.freeboard.dto.FreeBoardCommentDTO;
+import com.passionroad.passionroad.member.domain.Member;
+import com.passionroad.passionroad.freeboard.repository.FreeBoardCommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;

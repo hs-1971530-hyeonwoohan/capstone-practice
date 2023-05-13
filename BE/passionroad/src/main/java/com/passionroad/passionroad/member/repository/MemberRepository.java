@@ -1,6 +1,6 @@
-package com.passionroad.passionroad.repository;
+package com.passionroad.passionroad.member.repository;
 
-import com.passionroad.passionroad.domain.member.Member;
+import com.passionroad.passionroad.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

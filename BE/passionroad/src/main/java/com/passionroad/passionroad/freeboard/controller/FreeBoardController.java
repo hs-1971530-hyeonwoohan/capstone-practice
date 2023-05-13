@@ -1,15 +1,15 @@
-package com.passionroad.passionroad.controller;
+package com.passionroad.passionroad.freeboard.controller;
 
-import com.passionroad.passionroad.domain.freeboard.FreeBoard;
-import com.passionroad.passionroad.domain.member.Member;
-import com.passionroad.passionroad.dto.FreeBoardCommentDTO;
-import com.passionroad.passionroad.dto.FreeBoardDTO;
-import com.passionroad.passionroad.dto.PageRequestDTO;
-import com.passionroad.passionroad.dto.PageResponseDTO;
-import com.passionroad.passionroad.repository.FreeBoardRepository;
-import com.passionroad.passionroad.repository.MemberRepository;
-import com.passionroad.passionroad.service.FreeBoardCommentService;
-import com.passionroad.passionroad.service.FreeBoardService;
+import com.passionroad.passionroad.freeboard.domain.freeboard.FreeBoard;
+import com.passionroad.passionroad.freeboard.dto.FreeBoardCommentDTO;
+import com.passionroad.passionroad.freeboard.dto.FreeBoardDTO;
+import com.passionroad.passionroad.freeboard.service.FreeBoardCommentService;
+import com.passionroad.passionroad.member.domain.Member;
+import com.passionroad.passionroad.freeboard.dto.PageRequestDTO;
+import com.passionroad.passionroad.freeboard.dto.PageResponseDTO;
+import com.passionroad.passionroad.freeboard.repository.FreeBoardRepository;
+import com.passionroad.passionroad.member.repository.MemberRepository;
+import com.passionroad.passionroad.freeboard.service.FreeBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -17,9 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;

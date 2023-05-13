@@ -1,6 +1,6 @@
-package com.passionroad.passionroad.domain.search;
+package com.passionroad.passionroad.freeboard.domain.search;
 
-import com.passionroad.passionroad.domain.freeboard.FreeBoard;
+import com.passionroad.passionroad.freeboard.domain.freeboard.FreeBoard;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

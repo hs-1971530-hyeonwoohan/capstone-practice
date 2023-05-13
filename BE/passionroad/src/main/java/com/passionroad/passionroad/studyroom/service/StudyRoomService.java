@@ -1,6 +1,6 @@
 package com.passionroad.passionroad.studyroom.service;
 
-import com.passionroad.passionroad.domain.member.Member;
+import com.passionroad.passionroad.member.domain.Member;
 import com.passionroad.passionroad.exception.MemberException;
 import com.passionroad.passionroad.exception.MemberExceptionType;
 import com.passionroad.passionroad.studyroom.entity.BanMember;

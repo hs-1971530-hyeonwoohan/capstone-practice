@@ -1,4 +1,4 @@
-package com.passionroad.passionroad.dto;
+package com.passionroad.passionroad.freeboard.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

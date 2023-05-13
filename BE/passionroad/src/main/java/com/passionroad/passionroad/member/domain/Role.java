@@ -1,4 +1,4 @@
-package com.passionroad.passionroad.domain.member;
+package com.passionroad.passionroad.member.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

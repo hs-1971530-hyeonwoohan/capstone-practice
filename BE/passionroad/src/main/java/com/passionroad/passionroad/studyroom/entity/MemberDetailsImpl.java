@@ -1,6 +1,6 @@
 package com.passionroad.passionroad.studyroom.entity;
 
-import com.passionroad.passionroad.domain.member.Member;
+import com.passionroad.passionroad.member.domain.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

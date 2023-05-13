@@ -1,6 +1,6 @@
 package com.passionroad.passionroad.studyroom.response;
 
-import com.passionroad.passionroad.domain.member.Member;
+import com.passionroad.passionroad.member.domain.Member;
 import lombok.Getter;
 import lombok.Setter;
 
