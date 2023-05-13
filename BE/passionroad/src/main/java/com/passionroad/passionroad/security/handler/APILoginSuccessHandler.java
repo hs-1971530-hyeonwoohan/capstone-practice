@@ -41,7 +41,7 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
 
         Gson gson = new Gson();
 
-        Map<String, String> keyMap = Map.of("accessToken", accessToken, "refreshToken", refreshToken);
+        Map<String, String> keyMap = Map.of("accessToken", accessToken, "refreshToken", refreshToken, "mid", authentication.getName());
 
         String jsonStr = gson.toJson(keyMap);   // 토큰들을 담은 맵
 

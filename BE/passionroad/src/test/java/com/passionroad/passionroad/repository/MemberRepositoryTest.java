@@ -1,12 +1,12 @@
 package com.passionroad.passionroad.repository;
 
-import com.passionroad.passionroad.domain.member.Member;
-import com.passionroad.passionroad.domain.member.Role;
+import com.passionroad.passionroad.member.domain.Member;
+import com.passionroad.passionroad.member.domain.Role;
+import com.passionroad.passionroad.member.repository.MemberRepository;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;

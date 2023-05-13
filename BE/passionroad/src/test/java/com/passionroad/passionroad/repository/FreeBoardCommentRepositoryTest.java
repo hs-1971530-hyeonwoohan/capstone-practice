@@ -1,8 +1,11 @@
 package com.passionroad.passionroad.repository;
 
-import com.passionroad.passionroad.domain.freeboard.FreeBoard;
-import com.passionroad.passionroad.domain.freeboard.FreeBoardComment;
-import com.passionroad.passionroad.domain.member.Member;
+import com.passionroad.passionroad.freeboard.domain.freeboard.FreeBoard;
+import com.passionroad.passionroad.freeboard.domain.freeboard.FreeBoardComment;
+import com.passionroad.passionroad.freeboard.repository.FreeBoardCommentRepository;
+import com.passionroad.passionroad.freeboard.repository.FreeBoardRepository;
+import com.passionroad.passionroad.member.domain.Member;
+import com.passionroad.passionroad.member.repository.MemberRepository;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

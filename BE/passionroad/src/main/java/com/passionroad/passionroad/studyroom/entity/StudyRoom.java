@@ -1,0 +1,64 @@
+package com.passionroad.passionroad.studyroom.entity;
+
+import com.passionroad.passionroad.member.domain.Member;
+import com.passionroad.passionroad.studyroom.Timestamped;
+import com.passionroad.passionroad.studyroom.request.StudyRoomRequestDto;
+import lombok.*;
+
+import javax.persistence.*;
+import java.util.UUID;
+
+
+@Getter
+@Setter
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+public class StudyRoom extends Timestamped {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private String roomId;
+
+    @Column
+    private String title;
+
+    @Column
+    private Long memberCount;
+
+    @ManyToOne
+    @JoinColumn
+    private Member member;
+
+    @Column
+    private int maxMember;
+
+    @Column(nullable = false)
+    private String tag1;
+
+    @Column(nullable = false)
+    private String tag2;
+
+    @Column(nullable = false)
+    private String tag3;
+
+    @Column(nullable = false)
+    private boolean studying;
+
+    public static StudyRoom create(StudyRoomRequestDto studyRoomDto, Member member, int maxUser) {
+        StudyRoom studyRoom = new StudyRoom();
+        studyRoom.roomId = UUID.randomUUID().toString();
+        studyRoom.title = studyRoomDto.getTitle();
+        studyRoom.member = member;
+        studyRoom.memberCount = 0L;
+        studyRoom.maxMember = maxUser;
+        studyRoom.tag1 = studyRoomDto.getTag1();
+        studyRoom.tag2 = studyRoomDto.getTag2();
+        studyRoom.tag3 = studyRoomDto.getTag3();
+        studyRoom.studying = false;
+        return studyRoom;
+    }
+}

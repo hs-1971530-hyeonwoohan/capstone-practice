@@ -1,8 +1,8 @@
 package com.passionroad.passionroad.security;
 
-import com.passionroad.passionroad.domain.member.Member;
-import com.passionroad.passionroad.dto.MemberDTO;
-import com.passionroad.passionroad.repository.MemberRepository;
+import com.passionroad.passionroad.member.domain.Member;
+import com.passionroad.passionroad.member.dto.MemberDTO;
+import com.passionroad.passionroad.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
