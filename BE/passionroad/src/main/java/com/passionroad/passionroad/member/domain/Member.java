@@ -1,8 +1,7 @@
-package com.passionroad.passionroad.domain.member;
+package com.passionroad.passionroad.member.domain;
 
-import com.passionroad.passionroad.domain.BaseEntity;
-import com.passionroad.passionroad.domain.freeboard.FreeBoard;
-import com.passionroad.passionroad.domain.freeboard.FreeBoardComment;
+import com.passionroad.passionroad.freeboard.domain.freeboard.FreeBoard;
+import com.passionroad.passionroad.freeboard.domain.freeboard.FreeBoardComment;
 import lombok.*;
 
 import javax.persistence.*;

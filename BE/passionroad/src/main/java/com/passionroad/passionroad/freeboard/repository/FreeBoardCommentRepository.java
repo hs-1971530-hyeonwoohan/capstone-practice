@@ -1,6 +1,6 @@
-package com.passionroad.passionroad.repository;
+package com.passionroad.passionroad.freeboard.repository;
 
-import com.passionroad.passionroad.domain.freeboard.FreeBoardComment;
+import com.passionroad.passionroad.freeboard.domain.freeboard.FreeBoardComment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
