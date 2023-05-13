@@ -1,9 +1,8 @@
 package com.passionroad.passionroad.studyroom.controller;
 
 
-import com.passionroad.passionroad.member.domain.Member;
-import com.passionroad.passionroad.studyroom.entity.EnterMember;
-import com.passionroad.passionroad.studyroom.entity.MemberDetailsImpl;
+import com.passionroad.passionroad.member.dto.MemberDTO;
+import com.passionroad.passionroad.studyroom.entity.EnterMember;;
 import com.passionroad.passionroad.studyroom.entity.StudyRoom;
 import com.passionroad.passionroad.studyroom.response.EnterMemberResponseDto;
 import com.passionroad.passionroad.studyroom.request.StudyRoomEnterRequestDto;
@@ -28,9 +27,9 @@ public class StudyRoomController {
     //방 생성
     @PostMapping("/room")
     public ResponseEntity<StudyRoomResponseDto> createRoom(@RequestBody StudyRoomRequestDto requestDto,
-                                                           @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
-        Member member = memberDetails.getMember();
-        return ResponseEntity.ok().body(studyRoomService.createRoom(requestDto, member));
+                                                           @AuthenticationPrincipal MemberDTO memberDTO) {
+
+        return ResponseEntity.ok().body(studyRoomService.createRoom(requestDto, memberDTO));
     }
 
 
@@ -75,8 +74,8 @@ public class StudyRoomController {
     // 스터디룸에 입장  userEnter 테이블 조인(현재 방에 접속 중인 유저 확인 테이블)
     @PostMapping("/user-enter")
     public ResponseEntity<List<EnterMemberResponseDto>> enterRoom(@RequestBody StudyRoomEnterRequestDto studyRoomEnterRequestDto,
-                                                                  @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
-        return ResponseEntity.ok().body(studyRoomService.enterRoom(studyRoomEnterRequestDto, memberDetails));
+                                                                  @AuthenticationPrincipal String userName) {
+        return ResponseEntity.ok().body(studyRoomService.enterRoom(studyRoomEnterRequestDto, userName));
     }
 
     // 스터디룸에 입장한 유저들 정보 조회
@@ -88,8 +87,8 @@ public class StudyRoomController {
     // 스터디룸에서 퇴장 enterUser 삭제
     @DeleteMapping("/user-quit/{roomId}")
     public void quitRoom(@PathVariable String roomId,
-                         @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
-        studyRoomService.quitRoom(roomId, memberDetails);
+                         @AuthenticationPrincipal String userName) {
+        studyRoomService.quitRoom(roomId, userName);
     }
 
     // 스터디룸 검색 기능

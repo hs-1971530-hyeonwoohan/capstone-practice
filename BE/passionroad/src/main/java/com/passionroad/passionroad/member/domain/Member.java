@@ -26,13 +26,13 @@ public class Member extends BaseEntity {
     @Column
     private String mpw;
 
-    @Column
-    private String username;
+//    @Column
+//    private String username;
+//
+//    @Column
+//    private String nickname;
 
-    @Column
-    private String nickname;
-
-//    @Column(length = 320, unique = true)
+//    @Column(length = 320, unique = true)x
 //    private String email;
 
 //    @Column
@@ -49,11 +49,10 @@ public class Member extends BaseEntity {
     private List<FreeBoardComment> freeBoardCommentList;
 
 
-    public Member(String nickname, String username, Role role) {
-        this.nickname = nickname;
-        this.username = username;
+    /*public Member(String nickname, String username, Role role) {
+        this.mid = username;
         this.role = role;
-    }
+    }*/
 
 //    public Member update(String name, String picture) {
 //        this.name = name;

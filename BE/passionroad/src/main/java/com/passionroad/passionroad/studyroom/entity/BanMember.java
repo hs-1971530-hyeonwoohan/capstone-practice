@@ -1,9 +1,14 @@
 package com.passionroad.passionroad.studyroom.entity;
 
 import com.passionroad.passionroad.member.domain.Member;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
+@Entity
+@Getter
+@Setter
 public class BanMember {
 
     @Id

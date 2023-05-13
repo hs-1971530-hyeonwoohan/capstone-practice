@@ -20,20 +20,20 @@ public class StudyRoom extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(name = "room_id")
     private String roomId;
 
     @Column
     private String title;
 
-    @Column
+    @Column(name = "member_count")
     private Long memberCount;
 
     @ManyToOne
     @JoinColumn
     private Member member;
 
-    @Column
+    @Column(name = "max_member")
     private int maxMember;
 
     @Column(nullable = false)

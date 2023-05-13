@@ -3,6 +3,7 @@ package com.passionroad.passionroad.studyroom.response;
 import com.passionroad.passionroad.member.domain.Member;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 
@@ -18,10 +19,10 @@ public class StudyRoomResponseDto {
     private String tag2;
     private String tag3;
     private LocalDateTime createAt;
-    private Member member;
+    private UserDetails userDetails;
 
 
-    public StudyRoomResponseDto(String title, String roomId, Long userCount, int maxUser, String tag1, String tag2, String tag3, LocalDateTime createAt, Member member) {
+    public StudyRoomResponseDto(String title, String roomId, Long userCount, int maxUser, String tag1, String tag2, String tag3, LocalDateTime createAt, UserDetails userDetails) {
         this.title = title;
         this.roomId = roomId;
         this.userCount = userCount < 0 ? 0 : userCount;
@@ -30,6 +31,6 @@ public class StudyRoomResponseDto {
         this.tag2 = tag2;
         this.tag3 = tag3;
         this.createAt = createAt;
-        this.member = member;
+        this.userDetails = userDetails;
     }
 }
