@@ -9,6 +9,7 @@ const tempRooms = [
     img: "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     current: "5/8",
     fire: 6,
+    hashTag: "#공시, #CPA, #변리사"
   },
   {
     id: 2,
@@ -16,6 +17,7 @@ const tempRooms = [
     img: "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     current: "2/8",
     fire: 6,
+    hashTag: "#코딩테스트"
   },
   {
     id: 3,
@@ -23,6 +25,7 @@ const tempRooms = [
     img: "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     current: "3/8",
     fire: 5,
+    hashTag: "#공시, #CPA, #변리사"
   },
 
   {
@@ -31,6 +34,7 @@ const tempRooms = [
     img: "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     current: "1/8",
     fire: 4,
+    hashTag: "#중간고사, #내신"
   },
   {
     id: 5,
@@ -38,6 +42,7 @@ const tempRooms = [
     img: "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     current: "1/8",
     fire: 3,
+    hashTag: "#수능"
   },
   {
     id: 6,
@@ -45,12 +50,15 @@ const tempRooms = [
     img: "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     current: "1/8",
     fire: 2,
+    hashTag: ""
   },
   {
     id: 7,
     title: "Cam On, Mic Off",
     img: "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     current: "1/8",
+    hashTag: ""
+    
   },
   {
     id: 8,
@@ -58,11 +66,12 @@ const tempRooms = [
     img: "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     current: "1/8",
     icon: "../../imgs/fireIcon.gif",
+    hashTag: ""
   },
 ];
 function Studyroom() {
   return (
-    <div className="px-3 h-full">
+    <div className="mx-20 h-full mt-5">
       <div className="p-2 mt-3 font-semibold text-2xl">Now Studying</div>
       <div className="min-h-[h-28] max-h-[h-28] mx-auto w-full flex  content-center">
         {tempRooms.slice(0, 6).map((room) => (
@@ -87,7 +96,9 @@ function Studyroom() {
               <div className="pr-2">
                 <AnimatedIcon fire={room.fire} />
               </div>
+              
             </div>
+            <div className="text-sm text-gray-300">{room.hashTag}</div>
             </div>
             {/*icon 집어넣을 자리*/}
 
