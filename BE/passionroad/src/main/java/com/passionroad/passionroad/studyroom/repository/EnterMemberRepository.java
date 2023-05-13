@@ -4,17 +4,21 @@ import com.passionroad.passionroad.member.domain.Member;
 import com.passionroad.passionroad.studyroom.entity.EnterMember;
 import com.passionroad.passionroad.studyroom.entity.StudyRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface EnterMemberRepository extends JpaRepository<EnterMember, Long> {
 
-    List<EnterMember> findByRoom(StudyRoom studyRoom);
-    EnterMember findAllByRoom(StudyRoom studyRoom);
+    List<EnterMember> findByStudyRoom(StudyRoom studyRoom);
+//    EnterMember findAllByStudyRoom(StudyRoom studyRoom);
 
-    EnterMember findByRoomAndUser(StudyRoom studyRoom, Member member);
-    EnterMember findAllByUser(Member member);
+    EnterMember findByStudyRoomAndMember(StudyRoom studyRoom, Member member);
 
-    EnterMember findByUser(Member member);
-    EnterMember findAllByRoomId(String roomId);
+    EnterMember findAllByMember(Member member);
+
+    /*EnterMember findByUser(Member member);
+    EnterMember findAllByRoomId(String roomId);*/
 }

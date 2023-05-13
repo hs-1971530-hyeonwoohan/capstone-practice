@@ -1,6 +1,7 @@
 package com.passionroad.passionroad.member.dto;
 
 
+import com.passionroad.passionroad.member.domain.Member;
 import com.passionroad.passionroad.member.domain.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,8 +32,7 @@ public class MemberDTO extends User {
         this.mid = username;
         this.mpw = password;
     }
-
-    /*// DTO -> ENTITY
+    // DTO -> ENTITY
     public Member toEntity(){
         return Member.builder()
                 .id(this.id)
@@ -45,7 +45,7 @@ public class MemberDTO extends User {
                 .build();
     }
 
-    // ENTITY -> DTO
+   /* // ENTITY -> DTO
     public static MemberDTO fromEntity(Member member){
         return MemberDTO.builder()
                 .id(member.getId())
@@ -56,6 +56,5 @@ public class MemberDTO extends User {
 //                .picture(member.getPicture())
                 .role(member.getRole())
                 .build();
-    }
-*/
+    }*/
 }

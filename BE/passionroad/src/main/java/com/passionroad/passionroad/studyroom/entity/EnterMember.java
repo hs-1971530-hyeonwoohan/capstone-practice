@@ -4,6 +4,7 @@ import com.passionroad.passionroad.member.domain.Member;
 import com.passionroad.passionroad.studyroom.Timestamped;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 

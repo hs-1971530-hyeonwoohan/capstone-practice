@@ -10,6 +10,7 @@ import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 public abstract class Timestamped {
 
     // abstract 는 반드시 상속으로만 가능하다는 뜻
+    @Column(name = "created_at")
     @CreatedDate // 생성일자임을 나타냅니다.
     @JsonFormat(pattern = "yyyy-MM-dd")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
