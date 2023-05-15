@@ -325,7 +325,6 @@ export default function Header() {
                   <div className="border-t border-gray-700 pt-4 pb-3">
                     <div className="flex items-center px-5">
                       <div className="flex-shrink-0">
-                        ::bef
                         <img
                           className="h-10 w-10 rounded-full"
                           src={user.imageUrl}
