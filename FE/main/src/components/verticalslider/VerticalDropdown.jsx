@@ -14,7 +14,7 @@ export default function VerticalDropdown() {
     <div className="relative flex-col">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className=" flex justify-items-start items-center  font-bold text-2xl text-teal-600 tracking-wider mb-2"
+        className=" flex justify-items-start items-center  font-bold text-2xl text-teal-500 tracking-wider mb-2"
       >
         하루 전
         {!isOpen ? (
