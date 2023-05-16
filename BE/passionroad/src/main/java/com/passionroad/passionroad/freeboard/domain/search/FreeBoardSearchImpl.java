@@ -1,7 +1,7 @@
 package com.passionroad.passionroad.freeboard.domain.search;
 
 import com.passionroad.passionroad.freeboard.domain.freeboard.FreeBoard;
-import com.passionroad.passionroad.domain.freeboard.QFreeBoard;
+import com.passionroad.passionroad.freeboard.domain.freeboard.QFreeBoard;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
