@@ -40,11 +40,11 @@ function BoardBanner() {
         </button>
       </div>
       {selectedBoard === "Board1" && (
-        <div className="flex flex-col items-center justify-between w-full h-44 p-4 bg-white text-center align-middle">
+        <div className="flex flex-col items-center justify-between w-full h-52  bg-white text-center align-middle">
           <div className="h-full w-full p-2 flex">
-            <div>
-              <div className=" font-semibold"> 최근 방문</div>
-              <div className="relative w-28 h-28 bg-gray-100 cursor-pointer rounded-md">
+            <div className="w-1/4">
+              <div className=" font-semibold items-center mr-14"> 최근 방문</div>
+              <div className="relative w-32 h-36 bg-gray-100 cursor-pointer rounded-md mt-2">
                 <div className="absolute p-2 text-sm text-white">
                   <div className="flex">
                     <FaUserAlt className="mt-1" />
@@ -56,10 +56,71 @@ function BoardBanner() {
                   alt=""
                   className="object-cover"
                 />
-                <div className="text-sm pt-1">Study With Me</div>
+                <div className="items-center mt-4">Study With Me</div>
               </div>
             </div>
-            <div className="ml-6 w-72 h-32 mt-1 flex">
+
+            <div className="mine-goal flex flex-col w-3/4">
+              <div className="mine-goal-contents px-2 ">
+                <div className="mine-goal-record  ">
+                  <div className="mine-goal-record-header flex justify-between">
+                    <h4 className="mine-goal-record-tx title font-bold">
+                      오늘 공부한 시간(스탑워치) /
+                      <span className="text-slate-400">내 목표 시간</span>
+                    </h4>
+                    <button className="form-setting border-1 border-gray-200 bg-gray-200 px-2 rounded-lg text-sm">
+                      설정
+                    </button>
+                  </div>
+                  <div class="mine-goal-record-body">
+                    <div class="mine-goal-record-tx-wrap flex justify-between mt-2 ">
+                      <p class="mine-goal-record-tx time font-semibold ">
+                        0시간 0분
+                        <span class="mine-goal-record-tx total text-gray-300 font-normal">
+                          / 0시간 0분
+                        </span>
+                      </p>
+                      <p class="mine-goal-record-tx none text-slate-400">
+                        내 목표시간을 설정해보세요.
+                      </p>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700 mt-2">
+                      <div
+                        className="bg-teal-600 h-2.5 rounded-full dark:bg-teal-500 mt-2"
+                        style={{ width: "45%" }}
+                      >
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="flex items-start">
+                      <div className="w-1/2 mt-2">
+                        <div className="flex justify-between">
+                          <h4 className="font-semibold">내 각오</h4>
+                          <button className="border-1 border-gray-200 bg-gray-200 px-2 rounded-lg text-sm">
+                            설정
+                          </button>
+                        </div>
+                        <div className="mt-2 items-center">
+                          각오는 30자 이내로 가능합니다.
+                        </div>
+                      </div>
+                      <div className="self-stretch border-l border-gray-300 mx-2 mt-2"></div>
+                      <div className="w-1/2 mt-2">
+                        <div className="flex justify-between">
+                          <h4 className="font-semibold">내 디데이</h4>
+                          <button className="border-1 border-gray-200 bg-gray-200 px-2 rounded-lg text-sm">
+                            설정
+                          </button>
+                        </div>
+                        <div className="mt-2">디데이를 추가해보세요.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* <div className="ml-6 w-72 h-32 mt-1 flex">
               <div>
                 <div className="flex justify-start pl-2 text-sm font-kr ">
                   어제 공부 시간 :{" "}
@@ -79,7 +140,7 @@ function BoardBanner() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       )}
@@ -90,7 +151,7 @@ function BoardBanner() {
         <div className="flex flex-col items-center justify-between w-full h-44 p-4 bg-white text-center align-middle"></div>
       )}
       <div
-        className={`flex flex-col items-center justify-between w-full h-11 min-h-11 p-2 rounded-lg text-white text-center align-middle font-bold cursor-pointer bg-black`}
+        className={`flex flex-col items-center justify-between w-full h-11 min-h-11 p-2 -mt-3 rounded-lg text-white text-center align-middle font-bold cursor-pointer bg-black`}
       >
         <Link to="/Board">캘린더 바로가기</Link>
       </div>

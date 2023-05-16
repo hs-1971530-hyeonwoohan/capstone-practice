@@ -120,7 +120,6 @@ function Studyroom() {
             <AiOutlinePlus className=" text-gray-500" />
             <span className="ml-2">더보기</span>
           </button>
-          
         </div>
       )}
     </div>

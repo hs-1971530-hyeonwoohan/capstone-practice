@@ -7,6 +7,7 @@ import { selectedNavigationIndex } from "../../atoms/SelectedNavigationIndex";
 import { useState } from "react";
 import ProfileModal from "../profilemodal/ProfileModal";
 import { AiOutlineCamera } from "react-icons/ai";
+import UserDefaultImage from "./../../imgs/UserImg/UserDefaultImage.png";
 
 const isAuthenticated = true;
 
@@ -15,6 +16,7 @@ const user = {
   email: "tom@example.com",
   imageUrl:
     "https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
+  image: UserDefaultImage,
 };
 const navigation = [
   { name: "Dashboard", href: "dashBoard" },
@@ -30,15 +32,9 @@ const userNavigation = [
   { name: "Sign out", href: "#" },
 ];
 
-
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-
-
-
-
 
 export default function Header() {
   const [selectedIndex, setSelectedIndex] = useRecoilState(
@@ -47,16 +43,37 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState(null);
 
+  const [commentText, setCommentText] = useState("");
+  const [commentTextLength, setCommentTextLength] = useState(0);
+
+  const handleCommentTextChange = (e) => {
+    const newText = e.target.value;
+    setCommentText(newText);
+    setCommentTextLength(newText.length);
+  };
+
   function handleImageUpload(e) {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = function() {
+      reader.onloadend = function () {
         setImage(reader.result); // 파일을 읽은 후, 이미지 상태를 업데이트
-      }
+      };
       reader.readAsDataURL(file); // 파일을 읽기
     }
   }
+
+  const CameraIcon = ({ handleImageUpload }) => (
+    <AiOutlineCamera
+      className="w-8 h-8 rounded-full ml-48 -mt-20 border-4 border-gray-300 bg-gray-300 cursor-pointer"
+      onClick={handleImageUpload}
+    />
+  );
+
+  const handleLabelClick = (event) => {
+    // Prevent the default label click behavior
+    event.preventDefault();
+  };
 
   if (!isAuthenticated) {
     return (
@@ -381,15 +398,19 @@ export default function Header() {
                             accept="image/*"
                             id="file-input"
                             style={{ display: "none" }} // input을 숨김
-                            onChange={handleImageUpload} // 파일을 선택하면 실행할 이벤트 핸들러
                           />
-                          <label htmlFor="file-input">
-                            <AiOutlineCamera className="w-8 h-8 rounded-full ml-48 -mt-20 border-4 border-gray-300 bg-gray-300 cursor-pointer" />
+                          <label className="flex-none">
+                            <CameraIcon
+                              handleImageUpload={() =>
+                                document.getElementById("file-input").click()
+                              }
+                            />
                           </label>
                         </div>
                         <img
-                          src={user.imageUrl}
-                          className="w-20 h-20 mx-auto rounded-full -mt-16 border-8 border-white"
+                          src={user.image}
+                          // src={image}
+                          className="w-20 h-20 mx-auto bg-white rounded-full -mt-16 border-8 border-white object-cover"
                         />
                       </div>
                       <div className="flex">
@@ -449,17 +470,21 @@ export default function Header() {
                         readonly="readonly"
                       />
                     </div>
-                    <div class="form-group text-area-field mb-2">
+                    <div class="form-group flex justify-between text-area-field mb-2">
                       <label for="birth" className="profileLabel font-bold">
                         내 각오
                       </label>
-                      <textarea
-                        autocomplete="off"
-                        maxlength="1000"
-                        placeholder="올해에는 반드시! 기필코! 합격한다!"
-                        className="w-full px-3 py-2 border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-gray-900 rounded-md placeholder-gray-500 resize-none"
-                      />
+                      <span className="pr-3 ">{commentTextLength}/1000</span>
                     </div>
+                    <textarea
+                      autocomplete="off"
+                      value={commentText}
+                      onChange={handleCommentTextChange}
+                      maxlength="1000"
+                      placeholder="올해에는 반드시! 기필코! 합격한다!"
+                      className="w-full px-3 py-2 border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-gray-900 rounded-md placeholder-gray-500 resize-none -mt-2"
+                    />
+
                     <div className="form-group my-category flex-col">
                       <label for="favorite" className="profileLabel font-bold">
                         내 관심 카테고리
