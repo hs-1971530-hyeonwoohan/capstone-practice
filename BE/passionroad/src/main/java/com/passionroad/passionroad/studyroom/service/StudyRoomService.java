@@ -24,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,9 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service
@@ -47,12 +45,10 @@ public class StudyRoomService {
     private final APIUserDetailsService apiUserDetailsService;
     private final OpenVidu openVidu;
 
-    private Map<String, Session> sessionMap = new ConcurrentHashMap<>();
-
+    // Redis
+    private final RedisTemplate<String, Object> redisTemplate;
 
     public StudyRoomResponseDto createRoom(StudyRoomRequestDto requestDto, MemberDTO memberDTO) throws OpenViduJavaClientException, OpenViduHttpException {
-
-        String sessionName = UUID.randomUUID().toString();
 
         if (studyRoomRepository.findByTitle(requestDto.getTitle()) != null) {
             throw new IllegalArgumentException("이미 존재하는 방 이름입니다.");
@@ -80,11 +76,9 @@ public class StudyRoomService {
         StudyRoom studyRoom = StudyRoom.create(requestDto, member, maxUser);
         StudyRoom createRoom = studyRoomRepository.save(studyRoom);
 
-        // OpenVidu 세션 생성 및 sessionMap에 추가
+        // OpenVidu 세션 생성 및 Redis에 추가
         Session session = openVidu.createSession();
-        sessionMap.put(createRoom.getRoomId(), session);
-
-        sessionMap.put(sessionName, session);
+        redisTemplate.opsForValue().set(createRoom.getRoomId(), session);
 
         String title = createRoom.getTitle();
         String roomId = createRoom.getRoomId();
@@ -151,12 +145,11 @@ public class StudyRoomService {
         studyRoomRepository.save(studyRoom);
 
         //방에 입장시 유저 한명이되는꼴
-
         EnterMember enterMember = new EnterMember(member, studyRoom);
         enterMemberRepository.save(enterMember);
 
         // OpenVidu 세션에 사용자 추가
-        Session session = sessionMap.get(roomEnterRequestDto.getRoomId());
+        Session session = (Session) redisTemplate.opsForValue().get(roomEnterRequestDto.getRoomId());
         if (session == null) {
             throw new IllegalArgumentException("세션을 찾을 수 없습니다.");
         }
@@ -187,10 +180,11 @@ public class StudyRoomService {
         Member member = memberDTO.toEntity();
 
         //내가입장한 방을 찾음
-        StudyRoom studyRoom = studyRoomRepository.findByRoomId(roomId).orElseThrow(()-> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
+        StudyRoom studyRoom = studyRoomRepository.findByRoomId(roomId).orElseThrow(
+                ()-> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
 
         // OpenVidu 세션 종료
-        Session session = sessionMap.get(roomId);
+        Session session = (Session) redisTemplate.opsForValue().get(roomId);
         if (session != null) {
             Connection connection = session.getConnection(member.getMid());
             if (connection != null) {
@@ -215,8 +209,8 @@ public class StudyRoomService {
                 banMemberRepository.deleteAll(banMember);
             }
             studyRoomRepository.delete(studyRoom);
-            // 세션 맵에서 해당 방의 세션 제거
-            sessionMap.remove(roomId);
+            // Redis에서 해당 방의 세션 제거
+            redisTemplate.delete(roomId);
         }
     }
     // 스터디 목록 페이지 전체 화상 채팅방 조회
