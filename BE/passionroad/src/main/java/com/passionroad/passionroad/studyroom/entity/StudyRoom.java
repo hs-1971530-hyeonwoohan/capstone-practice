@@ -6,6 +6,7 @@ import com.passionroad.passionroad.studyroom.request.StudyRoomRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 
@@ -14,7 +15,9 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudyRoom extends Timestamped {
+public class StudyRoom extends Timestamped implements Serializable {
+
+    private static final long serialVersionUID = 6529685098267757690L;  // 이건 필수
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
