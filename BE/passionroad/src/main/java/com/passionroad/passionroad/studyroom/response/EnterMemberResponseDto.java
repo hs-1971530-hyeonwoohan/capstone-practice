@@ -7,10 +7,12 @@ import lombok.Setter;
 @Setter
 public class EnterMemberResponseDto {
 
-    private String nickname;
+    private String mid;
+    private String token;
 
-    public EnterMemberResponseDto(String nickname) {
-        this.nickname = nickname;
+    public EnterMemberResponseDto(String mid, String token) {
+        this.mid = mid;
+        this.token = token;
     }
 
 }
