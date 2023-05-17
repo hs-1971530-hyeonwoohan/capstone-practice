@@ -23,7 +23,7 @@ function DashBoard() {
       <div className="w-full min-h-[h-screen] flex">
         <NavBar />
 
-        <div>
+        <div className="w-full">
           {activeNav === 0 && (
             <div className="grid grid-cols-1 xl:grid-cols-5 w-full col-span-10">
               <DashLeft />

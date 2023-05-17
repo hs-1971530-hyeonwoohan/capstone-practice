@@ -40,8 +40,8 @@ function BoardBanner() {
         </button>
       </div>
       {selectedBoard === "Board1" && (
-        <div className="flex flex-col items-center justify-between w-full h-52  bg-white text-center align-middle">
-          <div className="h-full w-full p-2 flex">
+        <div className="flex flex-col items-center justify-between w-full h-60  bg-white text-center align-middle">
+          <div className="h-full w-full p-4 flex">
             <div className="w-1/4">
               <div className=" font-semibold items-center mr-14"> 최근 방문</div>
               <div className="relative w-32 h-36 bg-gray-100 cursor-pointer rounded-md mt-2">
