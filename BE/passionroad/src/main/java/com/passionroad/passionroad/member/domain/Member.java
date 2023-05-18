@@ -27,6 +27,9 @@ public class Member extends BaseEntity{
     @Column
     private String mpw;
 
+    @Column(nullable = false)
+    private Long accumulatedTime = 0L; // 분 단위의 누적 사용시간
+
 //    @Column
 //    private String username;
 //
