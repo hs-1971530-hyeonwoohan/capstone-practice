@@ -37,3 +37,6 @@ out/
 .vscode/
 
 application-oauth.properties
+
+### HTTPS ssl ###
+keystore.p12

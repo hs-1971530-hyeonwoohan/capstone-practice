@@ -86,7 +86,7 @@ public class CustomSecurityConfig {
         http.authenticationManager(authenticationManager);
 
         // APILoginFilter
-        APILoginFilter apiLoginFilter = new APILoginFilter("/generateToken");   // 로그인 처리 경로 설정
+        APILoginFilter apiLoginFilter = new APILoginFilter("/api/generateToken");   // 로그인 처리 경로 설정
         apiLoginFilter.setAuthenticationManager(authenticationManager);
 
         // APILoginSuccessHandler
@@ -101,7 +101,7 @@ public class CustomSecurityConfig {
         http.addFilterBefore(tokenCheckFilter(jwtUtil, apiUserDetailsService), UsernamePasswordAuthenticationFilter.class);
 
         // refreshToken 호출처리 : TokenCheckFilter 앞에 체크
-        http.addFilterBefore(new RefreshTokenFilter("/refreshToken", jwtUtil), TokenCheckFilter.class);
+        http.addFilterBefore(new RefreshTokenFilter("/api/refreshToken", jwtUtil), TokenCheckFilter.class);
 
         // CORS 설정 추가
         http.cors(httpSecurityCorsConfigurer -> {
