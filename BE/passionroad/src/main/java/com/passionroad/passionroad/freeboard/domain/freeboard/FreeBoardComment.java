@@ -1,6 +1,6 @@
 package com.passionroad.passionroad.freeboard.domain.freeboard;
 
-import com.passionroad.passionroad.member.domain.BaseEntity;
+import com.passionroad.passionroad.BaseEntity;
 import com.passionroad.passionroad.member.domain.Member;
 import lombok.*;
 
