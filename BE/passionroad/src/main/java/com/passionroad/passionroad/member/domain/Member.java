@@ -2,6 +2,7 @@ package com.passionroad.passionroad.member.domain;
 
 import com.passionroad.passionroad.freeboard.domain.freeboard.FreeBoard;
 import com.passionroad.passionroad.freeboard.domain.freeboard.FreeBoardComment;
+import com.passionroad.passionroad.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString(exclude = {"freeBoardList", "freeBoardCommentList"})
 @Entity
-public class Member extends BaseEntity {
+public class Member extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
