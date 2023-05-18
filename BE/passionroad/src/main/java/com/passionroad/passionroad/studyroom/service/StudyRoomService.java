@@ -16,6 +16,7 @@ import com.passionroad.passionroad.studyroom.request.StudyRoomEnterRequestDto;
 import com.passionroad.passionroad.studyroom.request.StudyRoomRequestDto;
 import com.passionroad.passionroad.studyroom.response.EnterMemberResponseDto;
 import com.passionroad.passionroad.studyroom.response.StudyRoomResponseDto;
+import io.openvidu.java.client.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,9 +43,12 @@ public class StudyRoomService {
     private final BanMemberRepository banMemberRepository;
 
     private final APIUserDetailsService apiUserDetailsService;
+    private final OpenVidu openVidu;
 
+    // Redis
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    public StudyRoomResponseDto createRoom(StudyRoomRequestDto requestDto, MemberDTO memberDTO){
+    public StudyRoomResponseDto createRoom(StudyRoomRequestDto requestDto, MemberDTO memberDTO) throws OpenViduJavaClientException, OpenViduHttpException {
 
         if (studyRoomRepository.findByTitle(requestDto.getTitle()) != null) {
             throw new IllegalArgumentException("이미 존재하는 방 이름입니다.");
@@ -70,6 +75,11 @@ public class StudyRoomService {
         Member member = memberDTO.toEntity();
         StudyRoom studyRoom = StudyRoom.create(requestDto, member, maxUser);
         StudyRoom createRoom = studyRoomRepository.save(studyRoom);
+
+        // OpenVidu 세션 생성 및 Redis에 추가
+        Session session = openVidu.createSession();
+        redisTemplate.opsForValue().set(createRoom.getRoomId(), session);
+
         String title = createRoom.getTitle();
         String roomId = createRoom.getRoomId();
         Long userCount = 0L;
@@ -82,8 +92,8 @@ public class StudyRoomService {
     }
 
     //방 진입
-    public List<EnterMemberResponseDto> enterRoom(StudyRoomEnterRequestDto roomEnterRequestDto, String userName) {
-//        Member member = memberDetails.getMember();
+    public List<EnterMemberResponseDto> enterRoom(StudyRoomEnterRequestDto roomEnterRequestDto, String userName) throws OpenViduJavaClientException, OpenViduHttpException {
+
         UserDetails userDetails = apiUserDetailsService.loadUserByUsername(userName);
         MemberDTO memberDTO = (MemberDTO) userDetails;
         Member member = memberDTO.toEntity();
@@ -135,19 +145,27 @@ public class StudyRoomService {
         studyRoomRepository.save(studyRoom);
 
         //방에 입장시 유저 한명이되는꼴
-
         EnterMember enterMember = new EnterMember(member, studyRoom);
         enterMemberRepository.save(enterMember);
+
+        // OpenVidu 세션에 사용자 추가
+        Session session = (Session) redisTemplate.opsForValue().get(roomEnterRequestDto.getRoomId());
+        if (session == null) {
+            throw new IllegalArgumentException("세션을 찾을 수 없습니다.");
+        }
+        String token = session.generateToken();
+        // Token은 클라이언트에게 반환하여 사용자가 세션에 접속할 수 있도록 함
 
         // 방에 입장한 사람들을 리스트에 담음
         List<EnterMember> enterMembers = enterMemberRepository.findByStudyRoom(studyRoom);
         List<EnterMemberResponseDto> enterStudyRoomMembers = new ArrayList<>();
         for (EnterMember enterMember2 : enterMembers) {
+            String tokenForUser = session.generateToken(); // 각 사용자에 대해 고유한 토큰 생성
             enterStudyRoomMembers.add(new EnterMemberResponseDto(
                     //방에 입장한 유저의 이름
-                    enterMember2.getMember().getMid()
-                    //방에 입장한 유저의 프로필
-//                    enterMember2.getMember().getProfileImg()
+                    enterMember2.getMember().getMid(),
+                    // 방에 입장한 유저의 OpenVidu 세션 토큰
+                    tokenForUser
             ));
         }
         return enterStudyRoomMembers;
@@ -155,14 +173,25 @@ public class StudyRoomService {
 
     //방 나가기
     @Transactional
-    public void quitRoom(String roomId, String userName) {
+    public void quitRoom(String roomId, String userName) throws OpenViduJavaClientException, OpenViduHttpException {
 
         UserDetails userDetails = apiUserDetailsService.loadUserByUsername(userName);
         MemberDTO memberDTO = (MemberDTO) userDetails;
         Member member = memberDTO.toEntity();
 
         //내가입장한 방을 찾음
-        StudyRoom studyRoom = studyRoomRepository.findByRoomId(roomId).orElseThrow(()-> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
+        StudyRoom studyRoom = studyRoomRepository.findByRoomId(roomId).orElseThrow(
+                ()-> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
+
+        // OpenVidu 세션 종료
+        Session session = (Session) redisTemplate.opsForValue().get(roomId);
+        if (session != null) {
+            Connection connection = session.getConnection(member.getMid());
+            if (connection != null) {
+                session.forceDisconnect(connection);
+            }
+        }
+
         //방에서 내가 입장했던 스터디룸을 찾은다음
         EnterMember enterMember =  enterMemberRepository.findByStudyRoomAndMember(studyRoom, member);
         // 그 기록을 지워서 내가 들어가있던 상태를 나간 상태로 만든다.
@@ -180,6 +209,8 @@ public class StudyRoomService {
                 banMemberRepository.deleteAll(banMember);
             }
             studyRoomRepository.delete(studyRoom);
+            // Redis에서 해당 방의 세션 제거
+            redisTemplate.delete(roomId);
         }
     }
     // 스터디 목록 페이지 전체 화상 채팅방 조회
