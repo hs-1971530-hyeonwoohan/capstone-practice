@@ -4,6 +4,7 @@ import com.passionroad.passionroad.exception.MemberException;
 import com.passionroad.passionroad.exception.MemberExceptionType;
 import com.passionroad.passionroad.member.domain.Member;
 import com.passionroad.passionroad.member.dto.MemberDTO;
+import com.passionroad.passionroad.member.service.MemberService;
 import com.passionroad.passionroad.security.APIUserDetailsService;
 import com.passionroad.passionroad.studyroom.entity.BanMember;
 import com.passionroad.passionroad.studyroom.entity.EnterMember;
@@ -29,6 +30,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,7 @@ public class StudyRoomService {
     private final StudyRoomRepository studyRoomRepository; // 스터디룸
     private final EnterMemberRepository enterMemberRepository;
     private final BanMemberRepository banMemberRepository;
+    private final MemberService memberService;
 
     private final APIUserDetailsService apiUserDetailsService;
     private final OpenVidu openVidu;
@@ -146,6 +149,7 @@ public class StudyRoomService {
 
         //방에 입장시 유저 한명이되는꼴
         EnterMember enterMember = new EnterMember(member, studyRoom);
+        enterMember.setEnteredAt(LocalDateTime.now()); // 방에 입장한 시간 설정
         enterMemberRepository.save(enterMember);
 
         // OpenVidu 세션에 사용자 추가
@@ -194,8 +198,19 @@ public class StudyRoomService {
 
         //방에서 내가 입장했던 스터디룸을 찾은다음
         EnterMember enterMember =  enterMemberRepository.findByStudyRoomAndMember(studyRoom, member);
-        // 그 기록을 지워서 내가 들어가있던 상태를 나간 상태로 만든다.
-        enterMemberRepository.delete(enterMember);
+        enterMember.setLeftAt(LocalDateTime.now()); // 떠난 시간을 현재 시간으로 설정
+
+        // 누적 사용시간 계산
+        Duration duration = Duration.between(enterMember.getEnteredAt(), enterMember.getLeftAt());
+        long seconds = duration.getSeconds(); // 초 단위로 시간 변환
+        long minutes = seconds / 60; // 초 단위로 받은 시간을 분으로 변경 (열정도는 분 단위이기 때문)
+
+        memberService.addAccumulatedTime(member, minutes); // MemberService를 이용하여 누적 사용시간 추가
+
+        enterMemberRepository.save(enterMember); // 변화된 시간을 업데이트
+
+        enterMemberRepository.delete(enterMember); // 방을 나간 상태로 만듦
+
         //내가 방을 나갔으니, room의 유저 카운터를 -1 해준다
         Long memberCount = studyRoom.getMemberCount() - 1;
         //유저카운터 감소
