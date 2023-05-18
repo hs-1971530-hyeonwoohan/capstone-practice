@@ -10,6 +10,8 @@ import com.passionroad.passionroad.studyroom.request.StudyRoomRequestDto;
 import com.passionroad.passionroad.studyroom.response.StudyRoomResponseDto;
 import com.passionroad.passionroad.studyroom.service.StudyRoomService;
 
+import io.openvidu.java.client.OpenViduHttpException;
+import io.openvidu.java.client.OpenViduJavaClientException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ public class StudyRoomController {
     //방 생성
     @PostMapping("/room")
     public ResponseEntity<StudyRoomResponseDto> createRoom(@RequestBody StudyRoomRequestDto requestDto,
-                                                           @AuthenticationPrincipal MemberDTO memberDTO) {
+                                                           @AuthenticationPrincipal MemberDTO memberDTO) throws OpenViduJavaClientException, OpenViduHttpException {
 
         return ResponseEntity.ok().body(studyRoomService.createRoom(requestDto, memberDTO));
     }
@@ -74,7 +76,7 @@ public class StudyRoomController {
     // 스터디룸에 입장  userEnter 테이블 조인(현재 방에 접속 중인 유저 확인 테이블)
     @PostMapping("/user-enter")
     public ResponseEntity<List<EnterMemberResponseDto>> enterRoom(@RequestBody StudyRoomEnterRequestDto studyRoomEnterRequestDto,
-                                                                  @AuthenticationPrincipal String userName) {
+                                                                  @AuthenticationPrincipal String userName) throws OpenViduJavaClientException, OpenViduHttpException {
         return ResponseEntity.ok().body(studyRoomService.enterRoom(studyRoomEnterRequestDto, userName));
     }
 
@@ -87,7 +89,7 @@ public class StudyRoomController {
     // 스터디룸에서 퇴장 enterUser 삭제
     @DeleteMapping("/user-quit/{roomId}")
     public void quitRoom(@PathVariable String roomId,
-                         @AuthenticationPrincipal String userName) {
+                         @AuthenticationPrincipal String userName) throws OpenViduJavaClientException, OpenViduHttpException {
         studyRoomService.quitRoom(roomId, userName);
     }
 

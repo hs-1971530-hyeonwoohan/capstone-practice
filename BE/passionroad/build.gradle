@@ -64,7 +64,11 @@ dependencies {
 	implementation "io.swagger:swagger-annotations:1.6.2"
 
 	// OpenVidu
-	implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.26.0'
+	implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.27.0'
+
+	// Redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.session:spring-session-data-redis'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'

@@ -1,4 +1,4 @@
-package com.passionroad.passionroad.member.domain;
+package com.passionroad.passionroad;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
