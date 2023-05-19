@@ -4,88 +4,30 @@ import { InvestDB } from "../dashLeft/utils/InvestementDB";
 import Chart from "./Chart";
 import PortfolioItem from "./PortfolioItem";
 import { AiOutlineInfoCircle } from "react-icons/ai";
+
+import InvestItem from './../dashLeft/InvestItem';
 function DashRight() {
   return (
-    <div className="col-span-3 items-start justify-start flex flex-col w-full pt-11 pb-6">
+    <div className="col-span-3 items-start justify-start flex flex-col w-full pb-6">
       {/* top section */}
-      <h1 className="text-xl font-bold xl:text-3xl px-12">
-        Unknown
-        <span className="text-2xl font-normal text-gray-500">
-          님의 공부기록
-        </span>
-      </h1>
-      <div className="md:flex gap-2  items-center justify-center w-full lg:space-y-0 space-y-4  lg:space-x-4  px-12 mt-4">
-        <div className="space-y-6 w-full border-2 border-gray-300 items-center justify-center flex flex-col ">
-          {/* <span className="py-4 px-4 rounded-full shadow-lg shadow-gray-300 items-center justify-center flex">
-            <CashIcon className="w-8 h-8 stroke-1 " />
-          </span> */}
-          <div className="flex">
-            <span className="font-semibold text-gray-500 text-base pt-4 pr-2">
-              오늘 공부 시간
-              <button className="absolute ml-2">
-                <AiOutlineInfoCircle size={24} />
-              </button>
-            </span>
+      <div className="w-full items-start justify-start flex flex-col px-12 py-6">
+        <h1 className="text-xl font-bold xl:text-3xl ">Recent StudyRoom</h1>
+        <div className="w-full space-y-4 overflow-y-auto max-h-[350px] py-5 scrollbar-hide">
+        
+         {/* <div className="w-full space-y-4 max-h-[350px] py-5"> */}
+          <div className="flex flex-col gap-4">
+          {InvestDB.map((item) => (
+            <div className="border-2 rounded-lg bg-[#e2e4e4] py-4">
+              <InvestItem item={item} key={item.id}/>
+            </div>
+            
+          ))}
           </div>
-          <span className="items-center justify-center">
-            <div className="font-light text-5xl text-gray-700 mb-4">
-              00:00:00
-            </div>
-          </span>
-          {/* <span className="items-center justify-center flex flex-col">
-            <h2> On Time </h2>
-            <h2 className="font-bold text-xl">temp </h2>
-          </span> */}
-        </div>
-        {/* duplicate above ☝ */}
-        <div className="space-y-6 w-full border-2 border-gray-300 items-center justify-center flex flex-col  ">
-          {/* <span className="py-4 px-4 rounded-full shadow-lg shadow-gray-300 items-center justify-center flex">
-            <CreditCardIcon className="w-8 h-8 stroke-1" />
-          </span> */}
-          <span className="font-semibold text-gray-500 text-base pt-4">
-            일 평균 공부 시간(최근 30일)
-          </span>
-          <span className="items-center justify-center">
-            <div className="font-light text-5xl text-gray-700 mb-4">
-              00:00:00
-            </div>
-          </span>
-          {/* <span className="items-center justify-center flex flex-col">
-            <h2> Round-Ups </h2>
-            <h2 className="font-bold text-xl">temp </h2>
-          </span> */}
-        </div>
-        <div className="space-y-6 w-full border-2 border-gray-300 items-center justify-center flex flex-col">
-          {/*bg-[#BFFA00] pt-6 items-center justify-between flex flex-col w-full  */}
-          {/* <span className="items-center justify-center flex flex-col w-full py-6">
-            <h3> temp </h3>
-            <h1 className="text-black font-bold text-xl 2xl:text-3xl">
-              temp
-            </h1>
-          </span> */}
-          <span className="font-semibold text-gray-500 text-base pt-4">
-            전체 공부 시간
-          </span>
-          {/* <div className="bg-black items-center justify-center flex text-white w-full py-3 ">
-            <h1> temp </h1>
-          </div> */}
-          <span className="items-center justify-center">
-            <div className="font-light text-5xl text-gray-700 mb-4">
-              00:00:00
-            </div>
-          </span>
-          {/* <span className="items-center justify-center flex flex-col">
-            <h2> Round-Ups </h2>
-            <h2 className="font-bold text-xl">temp </h2>
-          </span> */}
+          
         </div>
       </div>
-      {/* <div className="border-t border-gray-200 w-full my-4" /> */}
-      {/* chart */}
-      <div className="w-full items-start justify-start flex flex-col px-12 py-2 ">
-        <Chart />
-      </div>
-
+      {/* Recent posts */}
+      <div className="border-t border-gray-200 w-full my-4" />
       <div className="w-full px-12 py">
         <div id="last-users">
           <h1 className="text-xl font-bold xl:text-3xl py-4">Recent posts</h1>
@@ -95,7 +37,7 @@ function DashRight() {
                 <th className="text-left py-3 px-2 rounded-l-lg">Username</th>
                 <th className="text-left py-3 px-2">Title</th>
                 <th className="text-left py-3 px-2">Date</th>
-                <th className="text-left py-3 px-2">Status</th>
+                <th className="text-left py-3 px-2">Time</th>
                 <th className="text-left py-3 px-2 rounded-r-lg">Actions</th>
               </thead>
               <tr className="border-b border-gray-700">
@@ -110,9 +52,9 @@ function DashRight() {
                     <span>Unknown</span>
                   </div>
                 </td>
-                <td className="py-3 px-2">tom@example.com</td>
+                <td className="py-3 px-2">제목1</td>
                 <td className="py-3 px-2">2023-05-18</td>
-                <td className="py-3 px-2">2023-05-18</td>
+                <td className="py-3 px-2">30분전</td>
                 <td className="py-3 px-2">
                   <div className="inline-flex items-center space-x-3">
                     <a href="" title="Edit" class="hover:text-white">
@@ -178,9 +120,9 @@ function DashRight() {
                     <span>Unknown</span>
                   </div>
                 </td>
-                <td className="py-3 px-2">tom@example.com</td>
+                <td className="py-3 px-2">제목2</td>
                 <td className="py-3 px-2">2023-05-18</td>
-                <td className="py-3 px-2">2023-05-18</td>
+                <td className="py-3 px-2">3시간 전</td>
                 <td className="py-3 px-2">
                   <div className="inline-flex items-center space-x-3">
                     <a href="" title="Edit" className="hover:text-white">
@@ -246,9 +188,9 @@ function DashRight() {
                     <span>Unknown</span>
                   </div>
                 </td>
-                <td className="py-3 px-2">tom@example.com</td>
+                <td className="py-3 px-2">제목3</td>
                 <td className="py-3 px-2">2023-05-18</td>
-                <td className="py-3 px-2">2023-05-18</td>
+                <td className="py-3 px-2">3일전</td>
                 <td className="py-3 px-2">
                   <div class="inline-flex items-center space-x-3">
                     <a href="" title="Edit" className="hover:text-white">

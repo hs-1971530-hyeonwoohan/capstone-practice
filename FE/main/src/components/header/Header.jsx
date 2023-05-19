@@ -1,13 +1,15 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { FaRegBell } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { selectedNavigationIndex } from "../../atoms/SelectedNavigationIndex";
 import { useState } from "react";
 import ProfileModal from "../profilemodal/ProfileModal";
 import { AiOutlineCamera } from "react-icons/ai";
 import UserDefaultImage from "./../../imgs/UserImg/UserDefaultImage.png";
+import StudyModal from "../studymodal/StudyModal";
+import StudyJoin from "./StudyJoin";
 
 const isAuthenticated = true;
 
@@ -41,10 +43,13 @@ export default function Header() {
     selectedNavigationIndex
   );
   const [open, setOpen] = useState(false);
+  const [studyopen, setstudyOpen] = useState(false);
   const [image, setImage] = useState(null);
 
   const [commentText, setCommentText] = useState("");
   const [commentTextLength, setCommentTextLength] = useState(0);
+
+  const navigate = useNavigate();
 
   const handleCommentTextChange = (e) => {
     const newText = e.target.value;
@@ -107,7 +112,8 @@ export default function Header() {
                     <div className="hidden md:block">
                       <div className=" flex items-center md:ml-6">
                         <div className="mr-3 px-3 py-2  rounded-md text-black text-sm font-medium">
-                          <button className=" text-black hover:bg-teal-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                          <button className=" text-black hover:bg-teal-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                          onClick={setstudyOpen(true)}>
                             <Link to="/">
                               {/*여기에도 이거도 걍 Navigation 컴포넌트 주고  추가 필요.*/}
                               Study
@@ -209,11 +215,11 @@ export default function Header() {
                     <div className="hidden md:block">
                       <div className="ml-4 flex items-center md:ml-6">
                         <div className="mr-3 px-3 py-2  rounded-md text-black text-sm font-medium">
-                          <button className=" text-black hover:bg-black hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                            <Link to="/">
+                          <button className=" text-black hover:bg-black hover:text-white px-3 py-2 rounded-md text-sm font-medium" onClick={() => setstudyOpen(true)}>
+                            {/* <Link to="/"> */}
                               {/*여기에도  onClick={() => setSelectedIndex()} 추가 필요.*/}
                               Study
-                            </Link>
+                            {/* </Link> */}
                           </button>
                         </div>
 
@@ -318,6 +324,9 @@ export default function Header() {
                       </Disclosure.Button>
                     </div>
                   </div>
+                  <StudyModal studyopen={studyopen} studyonClose={() => setstudyOpen(false)}>
+              <StudyJoin />
+            </StudyModal>
                 </div>
 
                 <Disclosure.Panel className="md:hidden">
@@ -342,7 +351,6 @@ export default function Header() {
                   <div className="border-t border-gray-700 pt-4 pb-3">
                     <div className="flex items-center px-5">
                       <div className="flex-shrink-0">
-                        ::bef
                         <img
                           className="h-10 w-10 rounded-full"
                           src={user.imageUrl}

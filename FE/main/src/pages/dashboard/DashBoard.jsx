@@ -25,9 +25,14 @@ function DashBoard() {
 
         <div className="w-full">
           {activeNav === 0 && (
-            <div className="grid grid-cols-1 xl:grid-cols-5 w-full col-span-10">
+            <div className="flex xl:grid-cols-5 w-full col-span-10">
+              <div className="w-2/5">
               <DashLeft />
+              </div>
+              <div className="w-3/5">
               <DashRight />
+              </div>
+              
             </div>
           )}
 
