@@ -49,13 +49,13 @@ export const data = {
       label: "",
       data: labels.map(() => faker.datatype.number({ min: 0, max: 200 })),
       borderColor: "rgb(1, 152, 117,0.5)",
-      backgroundColor: "rgba(104, 195, 163,0.05)",
+      backgroundColor: "rgba(104, 195, 163, 0.548)",
     },
   ],
 };
 
 function Chart() {
-  return <Line data={data} options={options} height="50px" width="200px" style={{marginTop:"50px",marginBottom:"20px"}} />;
+  return <Line data={data} options={options} height="80px" width="200px" style={{marginTop:"50px",marginBottom:"20px"}} />;
 }
 
 export default Chart;
