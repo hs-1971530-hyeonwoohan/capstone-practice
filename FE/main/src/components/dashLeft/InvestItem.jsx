@@ -18,7 +18,7 @@ function InvestItem({ item }) {
       <div className="w-full items-end justify-end flex flex-col ">
         <h1 className="font-bold">{price}</h1>
         <p
-          className={`text-gray-300`}
+          className={`text-black/50`}
         >
           {percent}
         </p>

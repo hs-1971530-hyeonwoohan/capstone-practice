@@ -1,11 +1,15 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { FaRegBell } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { selectedNavigationIndex } from "../../atoms/SelectedNavigationIndex";
 import { useState } from "react";
 import ProfileModal from "../profilemodal/ProfileModal";
+import { AiOutlineCamera } from "react-icons/ai";
+import UserDefaultImage from "./../../imgs/UserImg/UserDefaultImage.png";
+import StudyModal from "../studymodal/StudyModal";
+import StudyJoin from "./StudyJoin";
 
 const isAuthenticated = true;
 
@@ -14,6 +18,7 @@ const user = {
   email: "tom@example.com",
   imageUrl:
     "https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
+  image: UserDefaultImage,
 };
 const navigation = [
   { name: "Dashboard", href: "dashBoard" },
@@ -38,6 +43,43 @@ export default function Header() {
     selectedNavigationIndex
   );
   const [open, setOpen] = useState(false);
+  const [studyopen, setstudyOpen] = useState(false);
+  const [image, setImage] = useState(null);
+
+  const [commentText, setCommentText] = useState("");
+  const [commentTextLength, setCommentTextLength] = useState(0);
+
+  const navigate = useNavigate();
+
+  const handleCommentTextChange = (e) => {
+    const newText = e.target.value;
+    setCommentText(newText);
+    setCommentTextLength(newText.length);
+  };
+
+  function handleImageUpload(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = function () {
+        setImage(reader.result); // 파일을 읽은 후, 이미지 상태를 업데이트
+      };
+      reader.readAsDataURL(file); // 파일을 읽기
+    }
+  }
+
+  const CameraIcon = ({ handleImageUpload }) => (
+    <AiOutlineCamera
+      className="w-8 h-8 rounded-full ml-48 -mt-20 border-4 border-gray-300 bg-gray-300 cursor-pointer"
+      onClick={handleImageUpload}
+    />
+  );
+
+  const handleLabelClick = (event) => {
+    // Prevent the default label click behavior
+    event.preventDefault();
+  };
+
   if (!isAuthenticated) {
     return (
       <>
@@ -70,7 +112,8 @@ export default function Header() {
                     <div className="hidden md:block">
                       <div className=" flex items-center md:ml-6">
                         <div className="mr-3 px-3 py-2  rounded-md text-black text-sm font-medium">
-                          <button className=" text-black hover:bg-teal-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                          <button className=" text-black hover:bg-teal-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                          onClick={setstudyOpen(true)}>
                             <Link to="/">
                               {/*여기에도 이거도 걍 Navigation 컴포넌트 주고  추가 필요.*/}
                               Study
@@ -172,11 +215,11 @@ export default function Header() {
                     <div className="hidden md:block">
                       <div className="ml-4 flex items-center md:ml-6">
                         <div className="mr-3 px-3 py-2  rounded-md text-black text-sm font-medium">
-                          <button className=" text-black hover:bg-black hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                            <Link to="/">
+                          <button className=" text-black hover:bg-black hover:text-white px-3 py-2 rounded-md text-sm font-medium" onClick={() => setstudyOpen(true)}>
+                            {/* <Link to="/"> */}
                               {/*여기에도  onClick={() => setSelectedIndex()} 추가 필요.*/}
                               Study
-                            </Link>
+                            {/* </Link> */}
                           </button>
                         </div>
 
@@ -281,6 +324,9 @@ export default function Header() {
                       </Disclosure.Button>
                     </div>
                   </div>
+                  <StudyModal studyopen={studyopen} studyonClose={() => setstudyOpen(false)}>
+              <StudyJoin />
+            </StudyModal>
                 </div>
 
                 <Disclosure.Panel className="md:hidden">
@@ -353,10 +399,28 @@ export default function Header() {
                 <div className="profile-container">
                   <div className="row profile-email">
                     <div class="emailAddress ">
-                      <img
-                        src={user.imageUrl}
-                        className="w-20 h-20 mx-auto rounded-full -mt-16 border-8 border-white"
-                      />
+                      <div className="relative">
+                        <div className="absolute mt-32">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            id="file-input"
+                            style={{ display: "none" }} // input을 숨김
+                          />
+                          <label className="flex-none">
+                            <CameraIcon
+                              handleImageUpload={() =>
+                                document.getElementById("file-input").click()
+                              }
+                            />
+                          </label>
+                        </div>
+                        <img
+                          src={user.image}
+                          // src={image}
+                          className="w-20 h-20 mx-auto bg-white rounded-full -mt-16 border-8 border-white object-cover"
+                        />
+                      </div>
                       <div className="flex">
                         <h3 className="emailAddress mr-4 text-center text-3xl font-medium">
                           {user.email}
@@ -414,17 +478,21 @@ export default function Header() {
                         readonly="readonly"
                       />
                     </div>
-                    <div class="form-group text-area-field mb-2">
+                    <div class="form-group flex justify-between text-area-field mb-2">
                       <label for="birth" className="profileLabel font-bold">
                         내 각오
                       </label>
-                      <textarea
-                        autocomplete="off"
-                        maxlength="1000"
-                        placeholder="올해에는 반드시! 기필코! 합격한다!"
-                        className="w-full px-3 py-2 border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-gray-900 rounded-md placeholder-gray-500 resize-none"
-                      />
+                      <span className="pr-3 ">{commentTextLength}/1000</span>
                     </div>
+                    <textarea
+                      autocomplete="off"
+                      value={commentText}
+                      onChange={handleCommentTextChange}
+                      maxlength="1000"
+                      placeholder="올해에는 반드시! 기필코! 합격한다!"
+                      className="w-full px-3 py-2 border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-gray-900 rounded-md placeholder-gray-500 resize-none -mt-2"
+                    />
+
                     <div className="form-group my-category flex-col">
                       <label for="favorite" className="profileLabel font-bold">
                         내 관심 카테고리
