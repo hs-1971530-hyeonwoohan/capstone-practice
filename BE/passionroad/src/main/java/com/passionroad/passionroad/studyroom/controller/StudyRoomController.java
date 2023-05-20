@@ -22,6 +22,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api/studyroom")
 public class StudyRoomController {
 
     private final StudyRoomService studyRoomService;
@@ -32,6 +33,7 @@ public class StudyRoomController {
                                                            @AuthenticationPrincipal MemberDTO memberDTO) throws OpenViduJavaClientException, OpenViduHttpException {
 
         return ResponseEntity.ok().body(studyRoomService.createRoom(requestDto, memberDTO));
+        // ok() 메소드는 HTTP 상태 코드를 200 OK로 설정하는 ResponseEntity.Builder를 반환
     }
 
 

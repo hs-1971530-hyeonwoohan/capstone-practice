@@ -90,8 +90,10 @@ public class StudyRoomService {
         String tag2 = createRoom.getTag2();
         String tag3 = createRoom.getTag3();
         LocalDateTime createAt = createRoom.getCreatedAt();
+        String sessionId = session.getSessionId(); // 세션 ID 추출
+        // 세션을 직접 전달하지 않고 ID만 전달하는 이유는 클라이언트와 불필요한 종속성을 만들지 않기 위함.
 
-        return new StudyRoomResponseDto(title, roomId, userCount, maxUser, tag1, tag2, tag3, createAt, memberDTO);
+        return new StudyRoomResponseDto(title, roomId, userCount, maxUser, tag1, tag2, tag3, createAt, memberDTO, sessionId);
     }
 
     //방 진입
