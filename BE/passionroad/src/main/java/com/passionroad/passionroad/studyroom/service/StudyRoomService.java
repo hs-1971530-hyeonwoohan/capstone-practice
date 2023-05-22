@@ -61,13 +61,13 @@ public class StudyRoomService {
             throw new IllegalArgumentException("방 이름을 입력해주세요.");
         }
 
-        if (requestDto.getTag1() == null) {
-            throw new IllegalArgumentException("기업분류를 선택해주세요");
-        } else if (requestDto.getTag2() == null) {
-            throw new IllegalArgumentException("신입/경력을 선택해주세요");
-        } else if (requestDto.getTag3() == null) {
-            throw new IllegalArgumentException("면접 유형을 선택해주세요");
-        }
+//        if (requestDto.getTag1() == null) {
+//            throw new IllegalArgumentException("기업분류를 선택해주세요");
+//        } else if (requestDto.getTag2() == null) {
+//            throw new IllegalArgumentException("신입/경력을 선택해주세요");
+//        } else if (requestDto.getTag3() == null) {
+//            throw new IllegalArgumentException("면접 유형을 선택해주세요");
+//        }
 
         int maxUser = requestDto.getMaxUser();
         if(maxUser < 2){
