@@ -86,14 +86,14 @@ public class StudyRoomService {
         String title = createRoom.getTitle();
         String roomId = createRoom.getRoomId();
         Long userCount = 0L;
-        String tag1 = createRoom.getTag1();
-        String tag2 = createRoom.getTag2();
-        String tag3 = createRoom.getTag3();
+//        String tag1 = createRoom.getTag1();
+//        String tag2 = createRoom.getTag2();
+//        String tag3 = createRoom.getTag3();
         LocalDateTime createAt = createRoom.getCreatedAt();
         String sessionId = session.getSessionId(); // 세션 ID 추출
         // 세션을 직접 전달하지 않고 ID만 전달하는 이유는 클라이언트와 불필요한 종속성을 만들지 않기 위함.
 
-        return new StudyRoomResponseDto(title, roomId, userCount, maxUser, tag1, tag2, tag3, createAt, memberDTO, sessionId);
+        return new StudyRoomResponseDto(title, roomId, userCount, maxUser, createAt, memberDTO, sessionId);
     }
 
     //방 진입
@@ -159,14 +159,13 @@ public class StudyRoomService {
         if (session == null) {
             throw new IllegalArgumentException("세션을 찾을 수 없습니다.");
         }
-        String token = session.generateToken();
-        // Token은 클라이언트에게 반환하여 사용자가 세션에 접속할 수 있도록 함
 
         // 방에 입장한 사람들을 리스트에 담음
         List<EnterMember> enterMembers = enterMemberRepository.findByStudyRoom(studyRoom);
         List<EnterMemberResponseDto> enterStudyRoomMembers = new ArrayList<>();
         for (EnterMember enterMember2 : enterMembers) {
-            String tokenForUser = session.generateToken(); // 각 사용자에 대해 고유한 토큰 생성
+            Connection connection = session.createConnection(); // 세션에 연결을 생성.
+            String tokenForUser = connection.getToken(); // 연결에서 토큰을 가져옴.
             enterStudyRoomMembers.add(new EnterMemberResponseDto(
                     //방에 입장한 유저의 이름
                     enterMember2.getMember().getMid(),
