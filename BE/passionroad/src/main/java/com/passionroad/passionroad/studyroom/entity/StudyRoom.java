@@ -38,28 +38,30 @@ public class StudyRoom extends Timestamped implements Serializable {
     @Column(name = "max_member")
     private int maxMember;
 
-    @Column(nullable = false)
-    private String tag1;
-
-    @Column(nullable = false)
-    private String tag2;
-
-    @Column(nullable = false)
-    private String tag3;
+//    @Column(nullable = false)
+//    private String tag1;
+//
+//    @Column(nullable = false)
+//    private String tag2;
+//
+//    @Column(nullable = false)
+//    private String tag3;
 
     @Column(nullable = false)
     private boolean studying;
 
-    public static StudyRoom create(StudyRoomRequestDto studyRoomDto, Member member, int maxUser) {
+    // 최대인원을 6명으로 고정 => maxUser 인자 삭제, 생성시 6으로 고정
+    public static StudyRoom create(String title, Member member) {
         StudyRoom studyRoom = new StudyRoom();
         studyRoom.roomId = UUID.randomUUID().toString();
-        studyRoom.title = studyRoomDto.getTitle();
+//        studyRoom.title = studyRoomDto.getTitle();
+        studyRoom.title = title;
         studyRoom.member = member;
         studyRoom.memberCount = 0L;
-        studyRoom.maxMember = maxUser;
-        studyRoom.tag1 = studyRoomDto.getTag1();
-        studyRoom.tag2 = studyRoomDto.getTag2();
-        studyRoom.tag3 = studyRoomDto.getTag3();
+        studyRoom.maxMember = 6;
+//        studyRoom.tag1 = studyRoomDto.getTag1();
+//        studyRoom.tag2 = studyRoomDto.getTag2();
+//        studyRoom.tag3 = studyRoomDto.getTag3();
         studyRoom.studying = false;
         return studyRoom;
     }

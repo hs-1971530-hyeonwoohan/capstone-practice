@@ -4,6 +4,7 @@ import com.passionroad.passionroad.exception.MemberException;
 import com.passionroad.passionroad.exception.MemberExceptionType;
 import com.passionroad.passionroad.member.domain.Member;
 import com.passionroad.passionroad.member.dto.MemberDTO;
+import com.passionroad.passionroad.member.repository.MemberRepository;
 import com.passionroad.passionroad.member.service.MemberService;
 import com.passionroad.passionroad.security.APIUserDetailsService;
 import com.passionroad.passionroad.studyroom.entity.BanMember;
@@ -12,13 +13,15 @@ import com.passionroad.passionroad.studyroom.entity.StudyRoom;
 import com.passionroad.passionroad.studyroom.repository.BanMemberRepository;
 import com.passionroad.passionroad.studyroom.repository.EnterMemberRepository;
 import com.passionroad.passionroad.studyroom.repository.StudyRoomRepository;
-import com.passionroad.passionroad.studyroom.repository.StudyRoomSpecification;
+//import com.passionroad.passionroad.studyroom.repository.StudyRoomSpecification;
+import com.passionroad.passionroad.studyroom.request.RequestDTO;
 import com.passionroad.passionroad.studyroom.request.StudyRoomEnterRequestDto;
 import com.passionroad.passionroad.studyroom.request.StudyRoomRequestDto;
 import com.passionroad.passionroad.studyroom.response.EnterMemberResponseDto;
 import com.passionroad.passionroad.studyroom.response.StudyRoomResponseDto;
 import io.openvidu.java.client.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +29,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,13 +39,17 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-@Slf4j
+//@Slf4j
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class StudyRoomService {
 
     private final StudyRoomRepository studyRoomRepository; // 스터디룸
+    private final MemberRepository memberRepository;
     private final EnterMemberRepository enterMemberRepository;
     private final BanMemberRepository banMemberRepository;
     private final MemberService memberService;
@@ -51,58 +60,101 @@ public class StudyRoomService {
     // Redis
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public StudyRoomResponseDto createRoom(StudyRoomRequestDto requestDto, MemberDTO memberDTO) throws OpenViduJavaClientException, OpenViduHttpException {
+    // 1. StudyRoom 생성 : StudyRoom 이 없다면 생성 후 반환, 있다면 원래 것 반환
+    // 2. Session 생성 : Session 이 없다면 생성 후 반환, 있다면 원래 것 반환
+    public String getOrCreateRoom(RequestDTO requestDTO, SessionProperties properties) throws OpenViduJavaClientException, OpenViduHttpException {
 
-        if (studyRoomRepository.findByTitle(requestDto.getTitle()) != null) {
-            throw new IllegalArgumentException("이미 존재하는 방 이름입니다.");
+        log.info("StudyRoomService: getOrCreateRoom() ---------------------");
+
+        // openvidu 서버와 Spring 서버의 active session 동기화
+        if(openVidu.fetch()){
+            log.info("openvidu fetch changed");
+        }else{
+            log.info("openvidu fetch changed nothing");
         }
 
-        if (requestDto.getTitle() == null || requestDto.getTitle().equals(" ")) {
-            throw new IllegalArgumentException("방 이름을 입력해주세요.");
+        String customSessionId = requestDTO.getCustomSessionId();
+        //  값이 없으면 null 반환
+        StudyRoom studyRoom = studyRoomRepository.findByTitle(customSessionId).orElse(null);
+        Member member = memberRepository.findByMid(requestDTO.getMid()).orElseThrow();
+
+        for(Session session : openVidu.getActiveSessions()){
+
+            String sessionId = session.getSessionId();
+
+            if(sessionId.equals(customSessionId)){
+                if(studyRoom != null){
+                    // 1. session, studyroom 모두 존재
+                    // 전에 생성된 적 있고, 지금 회의중
+                    log.info("1. session, studyroom 모두 존재 : " + session);
+                    return sessionId;
+                }
+                // 2. session 존재, studyroom 없음
+                // studyroom 생성 오류, 지금 회의중
+                studyRoom = StudyRoom.create(customSessionId, member);
+                studyRoomRepository.save(studyRoom);
+                log.info("2. session 존재, studyroom 없음 : " + session);
+                return sessionId;
+            }
         }
 
-        if (requestDto.getTag1() == null) {
-            throw new IllegalArgumentException("기업분류를 선택해주세요");
-        } else if (requestDto.getTag2() == null) {
-            throw new IllegalArgumentException("신입/경력을 선택해주세요");
-        } else if (requestDto.getTag3() == null) {
-            throw new IllegalArgumentException("면접 유형을 선택해주세요");
+        // 3. session 없음, studyroom 존재
+        // 전에 생성된 적 있음, 현재 회의중 아님
+        if(studyRoom != null){
+            Session createdSession = openVidu.createSession(properties);
+            log.info("3. session 없음, studyroom 존재");
+            return createdSession.getSessionId();
         }
 
-        int maxUser = requestDto.getMaxUser();
-        if(maxUser < 2){
-            throw new IllegalArgumentException("인원수를 선택해주세요");
-        }
+        // 4. session 없음, studyroom 없음
+        // 전에 생성된 적도 없고, 회의중도 아님
+        studyRoom = StudyRoom.create(customSessionId, member);
+        studyRoomRepository.save(studyRoom);
+        Session createdSession = openVidu.createSession(properties);
 
-
-        Member member = memberDTO.toEntity();
-        StudyRoom studyRoom = StudyRoom.create(requestDto, member, maxUser);
-        StudyRoom createRoom = studyRoomRepository.save(studyRoom);
-
-        // OpenVidu 세션 생성 및 Redis에 추가
-        Session session = openVidu.createSession();
-        redisTemplate.opsForValue().set(createRoom.getRoomId(), session);
-
-        String title = createRoom.getTitle();
-        String roomId = createRoom.getRoomId();
-        Long userCount = 0L;
-        String tag1 = createRoom.getTag1();
-        String tag2 = createRoom.getTag2();
-        String tag3 = createRoom.getTag3();
-        LocalDateTime createAt = createRoom.getCreatedAt();
-        String sessionId = session.getSessionId(); // 세션 ID 추출
-        // 세션을 직접 전달하지 않고 ID만 전달하는 이유는 클라이언트와 불필요한 종속성을 만들지 않기 위함.
-
-        return new StudyRoomResponseDto(title, roomId, userCount, maxUser, tag1, tag2, tag3, createAt, memberDTO, sessionId);
+        log.info("4. session 없음, studyroom 없음");
+        return createdSession.getSessionId();
     }
+
+    // 1. sessionId 로 session 을 찾고 하나의 session 을 위한 인증 token 반환
+    // 2. session 이 없다면 에러메세지 전송
+    public String createConnection(String sessionId, ConnectionProperties properties) throws OpenViduJavaClientException, OpenViduHttpException{
+        log.info("StudyRoomService: createConnection() -----------------");
+
+        // openvidu 서버와 Spring 서버의 active session 동기화
+        if(openVidu.fetch()){
+            log.info("openvidu fetch changed");
+        }else{
+            log.info("openvidu fetch changed nothing");
+        }
+
+        // getOrCreateSession() 에서 반환한 sessionId를 다시 받아서 session 객체 찾기
+        Session session = openVidu.getActiveSession(sessionId);
+        log.info("active session : " + session);
+
+        // 생성된 session이 없다면
+        if (session == null) {
+            // session 을 찾지 못했다는 에러 메세지 전송
+            log.info("Not Found Error");
+            return "Not Found Error";
+        }
+        // connection properties 객체로 connection 생성
+        Connection connection = session.createConnection(properties);
+
+        return connection.getToken();
+    }
+
+
 
     //방 진입
     public List<EnterMemberResponseDto> enterRoom(StudyRoomEnterRequestDto roomEnterRequestDto, String userName) throws OpenViduJavaClientException, OpenViduHttpException {
 
+        // 사용자정보 담은 Member 찾기
         UserDetails userDetails = apiUserDetailsService.loadUserByUsername(userName);
         MemberDTO memberDTO = (MemberDTO) userDetails;
         Member member = memberDTO.toEntity();
         String roomId = roomEnterRequestDto.getRoomId();
+
         // 받은 룸id로 내가 입장할 받을 찾음
         StudyRoom studyRoom = studyRoomRepository.findByRoomId(roomId).orElseThrow(
                 () -> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
@@ -249,24 +301,24 @@ public class StudyRoomService {
     }
 
     // 스터디목록 페이지 조회
-    @Transactional
-    public Page<StudyRoom> getTagRoom(int page, int size, String sortBy, String recruit, String tag1, String tag2, String tag3, String keyword) {
-        Sort.Direction direction = Sort.Direction.DESC;
-        Sort sort = Sort.by(direction, sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
-        Specification<StudyRoom> spec = (root, query, criteriaBuilder) -> null;
-        if(recruit.equals("recruiting"))
-            spec = spec.and(StudyRoomSpecification.equalStudying(false));
-        if (!tag1.equals("null"))
-            spec = spec.and(StudyRoomSpecification.equalTag1(tag1));
-        if (!tag2.equals("null"))
-            spec = spec.and(StudyRoomSpecification.equalTag2(tag2));
-        if (!tag3.equals("null"))
-            spec = spec.and(StudyRoomSpecification.equalTag3(tag3));
-        if (!keyword.equals("null"))
-            spec = spec.and(StudyRoomSpecification.equalTitle(keyword));
-        return studyRoomRepository.findAll(spec, pageable);
-    }
+//    @Transactional
+//    public Page<StudyRoom> getTagRoom(int page, int size, String sortBy, String recruit, String tag1, String tag2, String tag3, String keyword) {
+//        Sort.Direction direction = Sort.Direction.DESC;
+//        Sort sort = Sort.by(direction, sortBy);
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//        Specification<StudyRoom> spec = (root, query, criteriaBuilder) -> null;
+//        if(recruit.equals("recruiting"))
+//            spec = spec.and(StudyRoomSpecification.equalStudying(false));
+//        if (!tag1.equals("null"))
+//            spec = spec.and(StudyRoomSpecification.equalTag1(tag1));
+//        if (!tag2.equals("null"))
+//            spec = spec.and(StudyRoomSpecification.equalTag2(tag2));
+//        if (!tag3.equals("null"))
+//            spec = spec.and(StudyRoomSpecification.equalTag3(tag3));
+//        if (!keyword.equals("null"))
+//            spec = spec.and(StudyRoomSpecification.equalTitle(keyword));
+//        return studyRoomRepository.findAll(spec, pageable);
+//    }
 
     // 스터디룸의 입장 유저정보 조회
     public List<EnterMember> enterUsers(String roomId) {

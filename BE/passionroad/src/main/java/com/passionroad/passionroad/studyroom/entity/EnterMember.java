@@ -21,7 +21,7 @@ public class EnterMember extends Timestamped {
     @JoinColumn
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private StudyRoom studyRoom;
 

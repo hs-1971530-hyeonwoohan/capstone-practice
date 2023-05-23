@@ -16,7 +16,7 @@ public interface StudyRoomRepository extends JpaRepository<StudyRoom, Long>, Jpa
 
     Optional<StudyRoom> findByRoomId(String roomId);
 
-    StudyRoom findByTitle(String title);
+    Optional<StudyRoom> findByTitle(String title);
 
 //    Room findByTitleContains(String title);
 
@@ -26,7 +26,7 @@ public interface StudyRoomRepository extends JpaRepository<StudyRoom, Long>, Jpa
 
     Page<StudyRoom> findAllByTitleContainingIgnoreCaseOrderByCreatedAtDesc(Pageable pageable, String title);
 
-    Page<StudyRoom> findAllByTag1AndTag2AndTag3OrderByCreatedAtDesc(Pageable pageable, String tag1, String tag2, String tag3);
+//    Page<StudyRoom> findAllByTag1AndTag2AndTag3OrderByCreatedAtDesc(Pageable pageable, String tag1, String tag2, String tag3);
 
     List<StudyRoom> findTop8ByOrderByCreatedAtDesc();
 
