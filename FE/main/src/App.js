@@ -34,10 +34,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="dashBoard" element={<PrivateRoute />}>
+          {/* <Route path="dashBoard" element={<PrivateRoute />}> */}
+          <Route path="dashBoard">
             <Route index element={<DashBoard />} />
           </Route>
-          <Route path="calendar" element={<PrivateRoute />}>
+          {/* <Route path="calendar" element={<PrivateRoute />}> */}
+          <Route path="calendar">
             <Route index element={<Calendar />} />
           </Route>
           <Route path="freeBoard" element={<FreeBoard />}/>
