@@ -9,7 +9,7 @@ function BoardBanner() {
     <div className="flex flex-col pr-10">
       <div className="grid grid-cols-3">
         <button
-          className={`border-b-4 pt-1 h-11 font-kr font-semibold ${
+          className={`border-b-4 pt-1  font-kr font-semibold ${
             selectedBoard === "Board1"
               ? "border-teal-500 text-teal-400 font-bold"
               : "border-gray-300 text-gray-600 cursor-pointer font-normal"

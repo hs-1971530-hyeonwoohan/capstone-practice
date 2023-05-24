@@ -78,8 +78,8 @@ function DashLeft() {
           {/* <span className="py-4 px-4 rounded-full shadow-lg shadow-gray-300 items-center justify-center flex">
             <CashIcon className="w-8 h-8 stroke-1 " />
           </span> */}
-          <div className="flex">
-            <span className="flex justify-center font-semibold text-gray-500 text-base pt-4">
+          <div className="flex ">
+            <span className="flex justify-center font-kr font-medium text-gray-500 text-base pt-4">
               오늘 공부 시간
               <button className=" ml-2" onClick={() => setRcOpen(true)}>
                 <AiOutlineInfoCircle size={24} />
@@ -88,30 +88,33 @@ function DashLeft() {
 
           </div>
           <RecordModal Rcopen={Rcopen} RconClose={() => setRcOpen(false)}>
-              <div className="text-center h-76 w-64">
-                <HiOutlineBell size={56} className="mx-auto text-blue-400" />
+              <div className="text-start" style={{ width: "400px", height: "177px" }}>
+                {/* <AiOutlineInfoCircle size={56} className="mx-auto text-blue-400" /> */}
 
-                <div className="mx-auto my-4 w-48">
-                  <h3 className="text-lg font-black text-gray-800">
-                    혜택
+                <div className="mx-auto">
+                  <h3 className="text-sm text-gray-500 mb-4">
+                    공부 기록 안내
                   </h3>
-                  <p className="text-sm text-gray-500">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde velit nisi magnam similique aperiam numquam ipsam. Magni quidem illum voluptate alias! Consequuntur iusto id debitis deserunt iste reiciendis autem odio.
+                  <p className="text-lg font-black text-gray-800">
+                    공부 기록 집계 시간
+                  </p>
+                  <p className="mt-2">
+                  스터디 방에서 출석체크 후 스탑워치로 측정한 시간을 표시합니다.출석체크를 누락하고 스탑워치를 사용할 경우 마지막으로 출석을 체크한 날의 공부기록으로 합산될 수 있습니다.
                   </p>
                 </div>
-                <div className="flex gap-4 ">
+                {/* <div className="flex gap-4 ">
                   <button
                     className="btn btn-light w-full"
                     onClick={() => setRcOpen(false)}
                   >
                     Cancel
                   </button>
-                </div>
+                </div> */}
               </div>
             </RecordModal>
 
           <span className="items-center justify-center">
-            <div className="font-light text-5xl text-gray-700 mb-4">
+            <div className="font-light font-kr text-5xl text-gray-700 mb-4">
               00:00:00
             </div>
           </span>
@@ -121,11 +124,11 @@ function DashLeft() {
           </span> */}
         </div>
         {/* duplicate above ☝ */}
-        <div className="space-y-6 w-full border-2 border-gray-300 items-center justify-center flex flex-col  ">
+        <div className="space-y-6 w-full border-2 border-gray-300 items-center justify-center flex flex-col font-kr ">
           {/* <span className="py-4 px-4 rounded-full shadow-lg shadow-gray-300 items-center justify-center flex">
             <CreditCardIcon className="w-8 h-8 stroke-1" />
           </span> */}
-          <span className="font-semibold text-gray-500 text-base pt-4">
+          <span className="font-medium text-gray-500 text-base pt-4">
             일 평균 공부 시간(30일)
           </span>
           <span className="items-center justify-center">
@@ -138,7 +141,7 @@ function DashLeft() {
             <h2 className="font-bold text-xl">temp </h2>
           </span> */}
         </div>
-        <div className="space-y-6 w-full border-2 border-gray-300 items-center justify-center flex flex-col">
+        <div className="space-y-6 w-full border-2 border-gray-300 items-center justify-center flex flex-col font-kr">
           {/*bg-[#BFFA00] pt-6 items-center justify-between flex flex-col w-full  */}
           {/* <span className="items-center justify-center flex flex-col w-full py-6">
             <h3> temp </h3>
@@ -146,7 +149,7 @@ function DashLeft() {
               temp
             </h1>
           </span> */}
-          <span className="font-semibold text-gray-500 text-base pt-4">
+          <span className="font-medium text-gray-500 text-base pt-4">
             전체 공부 시간
           </span>
           {/* <div className="bg-black items-center justify-center flex text-white w-full py-3 ">

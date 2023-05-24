@@ -5,6 +5,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import '@fullcalendar/common/main.css'; // 수정된 경로
+import Calnav from "./Calnav"
 
 function Calendar() {
   const handleDateSelect = (selectInfo) => {
@@ -24,7 +25,11 @@ function Calendar() {
   };  
 
   return (
-    <div className='pt-5 px-20'>
+    <div className='flex flex-row'>
+      <div className='w-1/6'>
+      <Calnav />
+      </div>
+      <div className='pt-5 w-5/6'>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
         initialView='dayGridMonth'
@@ -49,6 +54,7 @@ function Calendar() {
 
 
       />
+      </div>
     </div>
   );
 }
