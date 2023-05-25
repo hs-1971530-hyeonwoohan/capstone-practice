@@ -14,8 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
+import java.sql.Array;
+import java.util.*;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -36,13 +36,30 @@ public class FreeBoardRepositoryTest {
     public void testInsert(){
 //        Member member = memberRepository.findByEmail("kimhankimhan1111@gmail.com").orElseThrow();
 
+        String[] arr = {
+                "안녕하세요 가입했습니다!",
+                "오늘 면접보고 왔어요..",
+                "합격자분들 팁같은거 있나요?",
+                "합격했습니다 질문받아요 ~",
+                "프론트를 해야할까요 백엔드를 해야할까요?",
+                "오늘부터 진짜 열심히 할거에요",
+                "같이 스터디 하실분 있나요?",
+                "순공부 10시간 찍었습니다 !!!",
+                "알고리즘 스터디원 구합니다",
+                "SpringBoot 스터디하실분 구해요"
+        };
+        List<String> titlesAndContents = new ArrayList<>(Arrays.asList(arr));
+
         IntStream.rangeClosed(1, 100).forEach(i -> {
+
+            Random random = new Random();
+            int randomInt = random.nextInt(10);
+
             Member member = memberRepository.findByMid("user" + (i % 10 + 1)).orElseThrow();
 
             FreeBoard freeBoard = FreeBoard.builder()
-                    .title("title..." + i)
-                    .content("content..." + i)
-//                    .writer("writer..." + i)
+                    .title(titlesAndContents.get(randomInt))
+                    .content(titlesAndContents.get(randomInt))
                     .writer(member.getMid())
                     .member(member)
                     .build();
