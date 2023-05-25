@@ -4,6 +4,7 @@ import com.passionroad.passionroad.freeboard.domain.freeboard.FreeBoard;
 import com.passionroad.passionroad.freeboard.domain.freeboard.FreeBoardComment;
 import com.passionroad.passionroad.BaseEntity;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,20 +28,9 @@ public class Member extends BaseEntity{
     @Column
     private String mpw;
 
-    @Column(nullable = false)
-    private Long accumulatedTime = 0L; // 분 단위의 누적 사용시간
-
-//    @Column
-//    private String username;
-//
-//    @Column
-//    private String nickname;
-
-//    @Column(length = 320, unique = true)x
-//    private String email;
-
-//    @Column
-//    private String picture;
+    @Column(name = "total_passionroad", nullable = false)
+    @ColumnDefault("0")
+    private Long totalPassionroad; // 분 단위의 누적 사용시간
 
     @Enumerated(EnumType.STRING)
     @Column
@@ -52,20 +42,13 @@ public class Member extends BaseEntity{
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<FreeBoardComment> freeBoardCommentList;
 
-
-    /*public Member(String nickname, String username, Role role) {
-        this.mid = username;
-        this.role = role;
-    }*/
-
-//    public Member update(String name, String picture) {
-//        this.name = name;
-//        this.picture = picture;
-//
-//        return this;
-//    }
-
     public String getRoleKey() {
         return this.role.getKey();
+    }
+
+    // 열정도 누적하고 총 열정도 반환
+    public Long accumulatePassionroad(Long passionroad){
+        this.totalPassionroad += passionroad;
+        return this.totalPassionroad;
     }
 }
