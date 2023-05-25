@@ -46,7 +46,7 @@ export const data = {
   datasets: [
     {
       fill: true,
-      label: "",
+      label: "공부 시간",
       data: labels.map(() => faker.datatype.number({ min: 0, max: 200 })),
       borderColor: "rgb(1, 152, 117,0.5)",
       backgroundColor: "rgba(104, 195, 163, 0.548)",
@@ -55,7 +55,7 @@ export const data = {
 };
 
 function Chart() {
-  return <Line data={data} options={options} height="80px" width="200px" style={{marginTop:"50px",marginBottom:"20px"}} />;
+  return <Line data={data} options={options} height="90px" width="200px" style={{marginTop:"20px",marginBottom:"10px"}} />;
 }
 
 export default Chart;

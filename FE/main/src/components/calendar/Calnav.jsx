@@ -1,18 +1,10 @@
 import React from "react";
-import InvestItem from "./../dashLeft/InvestItem";
-import { InvestDB } from "./../dashLeft/utils/InvestementDB";
-import BenefitModal from "../benefitmodal/BenefitModal";
-import { useState } from "react";
-import { HiOutlineBell } from "react-icons/hi";
-import { AiOutlineInfoCircle } from "react-icons/ai";
 import Chart from "./../dashRight/Chart";
 
 function DashLeft() {
-  const [open, setOpen] = useState(false);
-  const [Rcopen, setRcOpen] = useState(false);
 
   return (
-    <div className="col-span-2 min-h-[90vh] max-h-[90vh] border-r border-feay-200 items-start justify-start flex flex-col  w-full ">
+    <div className="col-span-2  border-r border-feay-200 items-start justify-start flex flex-col  w-full ">
         <div className=" w-full border-b border-feay-200 flex flex-col">
       {/*top section*/}
       <div className="basis-1/2">
@@ -53,7 +45,7 @@ function DashLeft() {
       </div> */}
       
       {/* chart */}
-      <div className="w-full items-start justify-start flex flex-col px-2 ">
+      <div className="w-full border-b border-feay-200 items-start justify-start flex flex-col px-2 ">
         <Chart />
       </div>
       
