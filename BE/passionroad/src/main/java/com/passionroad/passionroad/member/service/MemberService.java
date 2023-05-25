@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberRepository memberRepository;
+//    private final MemberRepository memberRepository;
 
-    public void addAccumulatedTime(Member member, long minutes) {
-        long currentAccumulatedTime = member.getAccumulatedTime();
-        member.setAccumulatedTime(currentAccumulatedTime + minutes);
-
-        memberRepository.save(member);
-    }
+//    public void addAccumulatedTime(Member member, long minutes) {
+//        long currentAccumulatedTime = member.getAccumulatedTime();
+//        member.setAccumulatedTime(currentAccumulatedTime + minutes);
+//
+//        memberRepository.save(member);
+//    }
 }
