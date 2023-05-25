@@ -49,13 +49,25 @@ public class StudyRoom extends Timestamped {
     // 1. 스터디에서 헤어질 때 -1
     // exception: 0명이면 -1 반환
     public int minusMemberCount(){
-        return (this.memberCount <= 0) ? (-1) : (this.memberCount - 1) ;
+        if(this.memberCount <= 0){
+            // 인원 미달
+            return -1;
+        }else{
+            this.memberCount -= 1;
+            return this.memberCount;
+        }
     }
 
     // 2. 새로운 스터디원이 들어올 때 +1
     // exception: maxMember와 멤버수가 같으면 -1 반환
     public int plusMemberCount(){
-        return (this.memberCount >= this.maxMember) ? (-1) : (this.memberCount + 1);
+        if(this.memberCount >= this.maxMember){
+            // 인원 초과
+            return -1;
+        }else{
+            this.memberCount += 1;
+            return this.memberCount;
+        }
     }
 
     // 공부 상황 바꾸기
