@@ -6,7 +6,7 @@ function BoardBanner() {
   const [selectedBoard, setSelectedBoard] = useState("Board1");
 
   return (
-    <div className="flex flex-col pr-10">
+    <div className="flex flex-col -ml-12 w-full">
       <div className="grid grid-cols-3">
         <button
           className={`border-b-4 pt-1  font-kr font-semibold ${
@@ -26,7 +26,7 @@ function BoardBanner() {
           }`}
           onClick={() => setSelectedBoard("Board2")}
         >
-          자유게시판
+          최근 방문
         </button>
         <button
           className={`flex h-11 items-center justify-center pt-1 border-b-4 font-semibold ${
@@ -40,9 +40,9 @@ function BoardBanner() {
         </button>
       </div>
       {selectedBoard === "Board1" && (
-        <div className="flex flex-col items-center justify-between w-full h-60  bg-white text-center align-middle">
+        <div className="flex flex-col items-center justify-between w-full h-60 bg-white text-center align-middle">
           <div className="h-full w-full p-4 flex">
-            <div className="w-1/4">
+            {/* <div className="w-1/4">
               <div className=" font-semibold items-center mr-14"> 최근 방문</div>
               <div className="relative w-32 h-36 bg-gray-100 cursor-pointer rounded-md mt-2">
                 <div className="absolute p-2 text-sm text-white">
@@ -58,9 +58,9 @@ function BoardBanner() {
                 />
                 <div className="items-center mt-4">Study With Me</div>
               </div>
-            </div>
+            </div> */}
 
-            <div className="mine-goal flex flex-col w-3/4">
+            <div className="mine-goal flex flex-col w-full">
               <div className="mine-goal-contents px-2 ">
                 <div className="mine-goal-record  ">
                   <div className="mine-goal-record-header flex justify-between">
@@ -81,7 +81,7 @@ function BoardBanner() {
                         </span>
                       </p>
                       <p class="mine-goal-record-tx none text-slate-400">
-                        내 목표시간을 설정해보세요.
+                        {/* 내 목표시간을 설정해보세요. */}
                       </p>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700 mt-2">
@@ -93,7 +93,7 @@ function BoardBanner() {
                     </div>
                     <hr />
                     <div className="flex items-start">
-                      <div className="w-1/2 mt-2">
+                      {/* <div className="w-1/2 mt-2">
                         <div className="flex justify-between">
                           <h4 className="font-semibold">내 각오</h4>
                           <button className="border-1 border-gray-200 bg-gray-200 px-2 rounded-lg text-sm">
@@ -103,9 +103,9 @@ function BoardBanner() {
                         <div className="mt-2 items-center">
                           각오는 30자 이내로 가능합니다.
                         </div>
-                      </div>
-                      <div className="self-stretch border-l border-gray-300 mx-2 mt-2"></div>
-                      <div className="w-1/2 mt-2">
+                      </div> */}
+                      {/* <div className="self-stretch border-l border-gray-300 mx-2 mt-2"></div> */}
+                      <div className="w-full mt-2">
                         <div className="flex justify-between">
                           <h4 className="font-semibold">내 디데이</h4>
                           <button className="border-1 border-gray-200 bg-gray-200 px-2 rounded-lg text-sm">
@@ -145,7 +145,68 @@ function BoardBanner() {
         </div>
       )}
       {selectedBoard === "Board2" && (
-        <div className="flex flex-col items-center justify-between w-full h-44 p-4 bg-white text-center align-middle"></div>
+        <div className="h-60">
+        <div className="">
+          
+        <div className="grid grid-cols-3 gap-4 items-center justify-between w-full h-full bg-white text-center align-middle">
+          
+          <div className="">
+        
+              {/* <div className=" font-semibold items-center mr-14"> 최근 방문</div> */}
+              <div className="relative bg-gray-100 cursor-pointer rounded-md mt-4">
+                <div className="absolute p-2 text-sm text-white">
+                  <div className="flex">
+                    <FaUserAlt className="mt-1" />
+                    3/8
+                  </div>
+                </div>
+                <img
+                  src="https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt=""
+                  className="object-cover h-40"
+                />
+                <div className="items-center py-2">Study With Me</div>
+              </div>
+              
+            </div>
+            <div>
+            {/* <div className=" font-semibold items-center mr-14"> 최근 방문</div> */}
+            <div className="relative bg-gray-100 cursor-pointer rounded-md mt-4">
+                <div className="absolute p-2 text-sm text-white">
+                  <div className="flex">
+                    <FaUserAlt className="mt-1" />
+                    3/8
+                  </div>
+                </div>
+                <img
+                  src="https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt=""
+                  className="object-cover h-40"
+                />
+                <div className="items-center py-2">Study With Me</div>
+              </div>
+            </div>
+            <div>
+            {/* <div className=" font-semibold items-center mr-14"> 최근 방문</div> */}
+            <div className="relative bg-gray-100 cursor-pointer rounded-md mt-4">
+                <div className="absolute p-2 text-sm text-white">
+                  <div className="flex">
+                    <FaUserAlt className="mt-1" />
+                    3/8
+                  </div>
+                </div>
+                <img
+                  src="https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt=""
+                  className="object-cover h-40"
+                />
+                <div className="items-center py-2">Study With Me</div>
+              </div>
+            </div>
+            </div>
+            </div>
+            </div>
+         
       )}
       {selectedBoard === "Board3" && (
         <div className="flex flex-col items-center justify-between w-full h-44 p-4 bg-white text-center align-middle"></div>
@@ -156,6 +217,7 @@ function BoardBanner() {
         <Link to="/Board">캘린더 바로가기</Link>
       </div>
     </div>
+    
   );
 }
 

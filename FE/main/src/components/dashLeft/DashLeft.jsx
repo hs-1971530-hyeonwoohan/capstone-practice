@@ -75,12 +75,12 @@ function DashLeft() {
         </div>
       </div>
       <div className="w-full border-b border-gray-200 pt-1"></div>
-      <div className="md:flex gap-2  items-center justify-center w-full lg:space-y-0 space-y-4  lg:space-x-4  px-12 mt-8">
-        <div className="space-y-6 w-full border-2 border-gray-300 items-center justify-center flex flex-col ">
+      <div className="flex flex-row gap-4 w-fit items-center justify-center px-3 mt-8">
+        <div className="space-y-6 border-2 border-gray-300 items-center justify-center flex flex-col ">
           {/* <span className="py-4 px-4 rounded-full shadow-lg shadow-gray-300 items-center justify-center flex">
             <CashIcon className="w-8 h-8 stroke-1 " />
           </span> */}
-          <div className="flex ">
+          <div className="flex">
             <span className="flex justify-center font-kr font-medium text-gray-500 text-base pt-4">
               오늘 공부 시간
               {/* <button className=" ml-2" onClick={() => setRcOpen(true)}> */}

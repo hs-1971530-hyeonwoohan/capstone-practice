@@ -104,11 +104,7 @@ export default function Header() {
                     <div className="flex items-center">
                       <div className="flex-shrink-0">
                         <Link to="/" onClick={() => setSelectedIndex(null)}>
-                          <img
-                            className="object-cover h-8 w-8 cursor-pointer"
-                            src="../../imgs/icon1.png"
-                            alt=""
-                          />
+                          Home
                         </Link>
                       </div>
                       <Navigation navigation={navigation} />
@@ -205,13 +201,9 @@ export default function Header() {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                   <div className="flex h-16 items-center justify-between">
                     <div className="flex items-center">
-                      <div className="flex-shrink-0">
+                      <div className="flex-shrink-0 text-gray-700 hover:bg-gray-200 hover:text-black px-3 py-2 rounded-md text-sm font-medium">
                         <Link to="/" onClick={() => setSelectedIndex()}>
-                          <img
-                            className="object-cover h-8 w-8 cursor-pointer"
-                            src="../../imgs/icon1.png"
-                            alt=""
-                          />
+                          Home
                         </Link>
                       </div>
                       <Navigation navigation={navigation} />
