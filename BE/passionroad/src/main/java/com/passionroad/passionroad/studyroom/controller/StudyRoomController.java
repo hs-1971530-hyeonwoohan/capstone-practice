@@ -1,12 +1,10 @@
 package com.passionroad.passionroad.studyroom.controller;
 
 
-import com.passionroad.passionroad.security.exception.AccessTokenException;
 import com.passionroad.passionroad.studyroom.entity.StudyRoom;
 import com.passionroad.passionroad.studyroom.request.RequestDTO;
 import com.passionroad.passionroad.studyroom.service.StudyRoomService;
 
-import com.passionroad.passionroad.util.JWTUtil;
 import io.openvidu.java.client.*;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.TypeMismatchException;
@@ -23,7 +21,6 @@ import java.util.Map;
 public class StudyRoomController {
 
     private final StudyRoomService studyRoomService;
-    private final JWTUtil jwtUtil;
 
     // 세션 생성, 세션 객체의 sessionId 반환, 사용자의 방 정보를 담은 StudyRoom 엔티티 생성
     @PostMapping
@@ -63,28 +60,6 @@ public class StudyRoomController {
 
         // 생성한 connection 의 token 을 클라이언트로 전송
         return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-
-    // 현재 내가 참여 중인 방 검색
-    // 매개변수: jwt 혹은 mid (?)
-    // return: StudyRoom 이름, 참여 인원, 마지막 입장시간
-    @GetMapping("joinedStudyRoom")
-    public ResponseEntity<Map<String, Object>> joinedStudyRoom(
-            @RequestHeader("Authorization") String jwtHeader
-    ) throws AccessTokenException {
-
-        // TokenCheckFilter 의해 JWT 검증했으므로 바로 사용
-        String tokenStr = jwtHeader.substring(7);   // 토큰 문자열 (인증값)
-
-        // payload 검출 (key = mid)
-        Map<String, Object> values = jwtUtil.validateToken(tokenStr);
-
-        // 참여중인 스터디룸 map
-        Map<String, Object> joinedStudyRoom = studyRoomService.getJoinedStudyRoom((String) values.get("mid"));
-
-        // 참여중인 스터디룸 반환
-        return new ResponseEntity<>(joinedStudyRoom, HttpStatus.OK);
     }
 
     // 스터디룸 목록 전체 조회
