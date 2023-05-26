@@ -2,6 +2,7 @@ package com.passionroad.passionroad.studyroom.service;
 
 import com.passionroad.passionroad.member.domain.Member;
 import com.passionroad.passionroad.member.repository.MemberRepository;
+import com.passionroad.passionroad.studyroom.dto.StudyRoomDTO;
 import com.passionroad.passionroad.studyroom.entity.EnterMember;
 import com.passionroad.passionroad.studyroom.entity.StudyRoom;
 import com.passionroad.passionroad.studyroom.repository.EnterMemberRepository;
@@ -217,7 +218,7 @@ public class StudyRoomService {
         // enterMember가 참여한 StudyRoom 을 Map에 저장(key 중복x)
         enterMemberList.forEach(enterMember -> {
             StudyRoom studyRoom = enterMember.getStudyRoom();
-            joinedStudyRoom.put(studyRoom.getTitle(), studyRoom);
+            joinedStudyRoom.put(studyRoom.getTitle(), StudyRoomDTO.fromEntity(studyRoom));
         });
 
         return joinedStudyRoom;
