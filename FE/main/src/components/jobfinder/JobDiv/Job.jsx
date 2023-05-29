@@ -186,7 +186,7 @@ const Job = () => {
               <span className="text-[14px] py-[1rem] block group-hover:text-white">{company}</span>
             </div>
   
-            <button className="border-[2px] rounded-[10px] block p-[10px] w-full text-[14px] onfts-semibold text-textColor hover:bg-teal-500 group-hover:bg-teal-700 item:text-textColor group-hover:text-white">
+            <button className="border-[2px] rounded-[10px] block p-[10px] w-full text-[14px] onfts-semibold text-textColor  hover:bg-teal-700 group-hover/item:text-textColor group-hover:text-white">
               Apply Now
             </button>
   

@@ -58,9 +58,9 @@ const Value = () => {
 
       </div>
 
-      <div className="card mt-[2rem] flex justify-between bg-blueColor p-[5rem] rounded-[10px]">
+      <div className="card mt-[2rem] flex justify-between bg-blue-500 p-[5rem] rounded-[10px]">
           <div>
-            <h1 className="text-blueColor text-[30px] font-bold">
+            <h1 className="text-blue-500 text-[30px] font-bold">
               Ready to switch a career
             </h1>
             <h2 className="text-textColor text-[25px] font-bold">
@@ -68,7 +68,7 @@ const Value = () => {
             </h2>
           </div>
 
-          <button className="border-[2px] rounded-[10px] py-[4px] px-[50px] text-[18px] font-semibold text-blueColor hover:bg-white border-blueColor">
+          <button className="border-[2px] rounded-[10px] py-[4px] px-[50px] text-[18px] font-semibold text-blue-500 hover:bg-white border-blue-500">
             Get Started
           </button>
         </div>
