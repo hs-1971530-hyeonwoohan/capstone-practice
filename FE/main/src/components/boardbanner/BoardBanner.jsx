@@ -88,8 +88,7 @@ function BoardBanner() {
                       <div
                         className="bg-teal-600 h-2.5 rounded-full dark:bg-teal-500 mt-2"
                         style={{ width: "45%" }}
-                      >
-                      </div>
+                      ></div>
                     </div>
                     <hr />
                     <div className="flex items-start">
@@ -146,70 +145,89 @@ function BoardBanner() {
       )}
       {selectedBoard === "Board2" && (
         <div className="h-60">
-        <div className="">
-          
-        <div className="grid grid-cols-3 gap-4 items-center justify-between w-full h-full bg-white text-center align-middle">
-          
           <div className="">
-        
-              {/* <div className=" font-semibold items-center mr-14"> 최근 방문</div> */}
-              <div className="relative bg-gray-100 cursor-pointer rounded-md mt-4">
-                <div className="absolute p-2 text-sm text-white">
-                  <div className="flex">
-                    <FaUserAlt className="mt-1" />
-                    3/8
+            <div className="grid grid-cols-3 gap-4 items-center justify-between w-full h-full bg-white text-center align-middle">
+              <div className="">
+                {/* <div className=" font-semibold items-center mr-14"> 최근 방문</div> */}
+                <div className="relative bg-gray-100 cursor-pointer rounded-md mt-4">
+                  <div className="absolute p-2 text-sm text-white">
+                    <div className="flex">
+                      <FaUserAlt className="mt-1" />
+                      3/8
+                    </div>
                   </div>
+                  <img
+                    src="https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt=""
+                    className="object-cover h-40"
+                  />
+                  <div className="items-center py-2">Study With Me</div>
                 </div>
-                <img
-                  src="https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt=""
-                  className="object-cover h-40"
-                />
-                <div className="items-center py-2">Study With Me</div>
               </div>
-              
-            </div>
-            <div>
-            {/* <div className=" font-semibold items-center mr-14"> 최근 방문</div> */}
-            <div className="relative bg-gray-100 cursor-pointer rounded-md mt-4">
-                <div className="absolute p-2 text-sm text-white">
-                  <div className="flex">
-                    <FaUserAlt className="mt-1" />
-                    3/8
+              <div>
+                {/* <div className=" font-semibold items-center mr-14"> 최근 방문</div> */}
+                <div className="relative bg-gray-100 cursor-pointer rounded-md mt-4">
+                  <div className="absolute p-2 text-sm text-white">
+                    <div className="flex">
+                      <FaUserAlt className="mt-1" />
+                      3/8
+                    </div>
                   </div>
+                  <img
+                    src="https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt=""
+                    className="object-cover h-40"
+                  />
+                  <div className="items-center py-2">Study With Me</div>
                 </div>
-                <img
-                  src="https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt=""
-                  className="object-cover h-40"
-                />
-                <div className="items-center py-2">Study With Me</div>
               </div>
-            </div>
-            <div>
-            {/* <div className=" font-semibold items-center mr-14"> 최근 방문</div> */}
-            <div className="relative bg-gray-100 cursor-pointer rounded-md mt-4">
-                <div className="absolute p-2 text-sm text-white">
-                  <div className="flex">
-                    <FaUserAlt className="mt-1" />
-                    3/8
+              <div>
+                {/* <div className=" font-semibold items-center mr-14"> 최근 방문</div> */}
+                <div className="relative bg-gray-100 cursor-pointer rounded-md mt-4">
+                  <div className="absolute p-2 text-sm text-white">
+                    <div className="flex">
+                      <FaUserAlt className="mt-1" />
+                      3/8
+                    </div>
                   </div>
+                  <img
+                    src="https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt=""
+                    className="object-cover h-40"
+                  />
+                  <div className="items-center py-2">Study With Me</div>
                 </div>
-                <img
-                  src="https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt=""
-                  className="object-cover h-40"
-                />
-                <div className="items-center py-2">Study With Me</div>
               </div>
             </div>
-            </div>
-            </div>
-            </div>
-         
+          </div>
+        </div>
       )}
       {selectedBoard === "Board3" && (
-        <div className="flex flex-col items-center justify-between w-full h-44 p-4 bg-white text-center align-middle"></div>
+        <div className="h-60">
+          <div>
+            <h4 className="text-center align-middle mt-2 font-kr font-bold text-lg">주요 회사 채용 공고</h4>
+            <div className="border-t border-[#a9a9a9] w-full my-2" />
+            <div className="grid grid-rows-3 grid-cols-3 gap-2 mt-4 items-center justify-between place-content-center w-full h-full bg-white text-center align-middle ">
+              {/* <div className=" "> */}
+                <div className="text-3xl font-bold " style={{ color: '#17ce5f' }}>Naver</div>
+                <div className="font-kr">[인턴십] Software Development Engineer (자율주행 프로젝트)</div>
+                <div className="font-kr">2023-03-23 ~ 영입 종료시</div>
+              {/* </div> */}
+              {/* <div className=""> */}
+                <div className="text-3xl font-bold" style={{color: '#f3dd02'}}>Kakao</div>
+                
+                <div className="font-kr">[관계사] 카카오페이증권 워크플랫폼 개발자</div>
+                <div className="font-kr">2023-05-28 ~ 영입 종료시</div>
+              {/* </div> */}
+              {/* <div className=""> */}
+                {/* <div className="text-3xl font-bold" style={{color:'#00b100'}}>Line</div>
+                <div>Global Commerce Data Tech Lead</div>
+                <div className="">2023-05-19 ~ 영입 종료시</div> */}
+              {/* </div> */}
+            </div>
+          </div>
+        </div>
+        // <div className="flex flex-col items-center justify-between w-full h-44 p-4 bg-white text-center align-middle"></div>
       )}
       <div
         className={`flex flex-col items-center justify-between w-full h-11 min-h-11 p-2 -mt-3 rounded-lg text-white text-center align-middle font-bold cursor-pointer bg-black`}
@@ -217,7 +235,6 @@ function BoardBanner() {
         <Link to="/Board">캘린더 바로가기</Link>
       </div>
     </div>
-    
   );
 }
 

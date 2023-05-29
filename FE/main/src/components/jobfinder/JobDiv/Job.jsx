@@ -17,6 +17,11 @@ import logo12 from '../Assets/logo (12).png'
 import logo13 from '../Assets/logo (13).png'
 import logo14 from '../Assets/logo (14).png'
 import logo15 from '../Assets/logo (15).png'
+import logo16 from '../Assets/logo (16).png'
+import logo17 from '../Assets/logo (17).png'
+import logo18 from '../Assets/logo (18).png'
+import logo19 from '../Assets/logo (19).png'
+import logo20 from '../Assets/logo (20).png'
 
 
 const Data = [
@@ -42,7 +47,7 @@ const Data = [
     id:3, 
     image: logo3,
     title: 'Web Developer',
-    time: '10Hrs',
+    time: 'Yerterday',
     location: 'Seoul',
     desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
     company: 'NAVER'
@@ -51,7 +56,7 @@ const Data = [
     id:4, 
     image: logo4,
     title: 'Web Developer',
-    time: '10Hrs',
+    time: '8Hrs',
     location: 'Seoul',
     desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
     company: 'McDonald'
@@ -60,7 +65,7 @@ const Data = [
     id:5, 
     image: logo5,
     title: 'Web Developer',
-    time: '10Hrs',
+    time: '2Days',
     location: 'Seoul',
     desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
     company: 'twitter'
@@ -69,7 +74,7 @@ const Data = [
     id:6, 
     image: logo6,
     title: 'Web Developer',
-    time: '10Hrs',
+    time: '5Hrs',
     location: 'Seoul',
     desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
     company: 'Apple'
@@ -78,7 +83,7 @@ const Data = [
     id:7, 
     image: logo7,
     title: 'Web Developer',
-    time: '10Hrs',
+    time: '30Secs',
     location: 'Seoul',
     desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
     company: 'SAMSUNG'
@@ -87,7 +92,7 @@ const Data = [
     id:8, 
     image: logo8,
     title: 'Web Developer',
-    time: '10Hrs',
+    time: '10Mins',
     location: 'Seoul',
     desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
     company: 'Instagram'
@@ -96,7 +101,7 @@ const Data = [
     id:9, 
     image: logo9,
     title: 'Web Developer',
-    time: '10Hrs',
+    time: '43Mins',
     location: 'Seoul',
     desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
     company: 'Coupang'
@@ -105,7 +110,7 @@ const Data = [
     id:10, 
     image: logo10,
     title: 'Web Developer',
-    time: '10Hrs',
+    time: '7Hrs',
     location: 'Seoul',
     desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
     company: 'Hundai Motors'
@@ -114,7 +119,7 @@ const Data = [
     id:11, 
     image: logo11,
     title: 'Web Developer',
-    time: '10Hrs',
+    time: '1Hrs',
     location: 'Seoul',
     desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
     company: 'Toss Invest'
@@ -123,7 +128,7 @@ const Data = [
     id:12, 
     image: logo12,
     title: 'Web Developer',
-    time: '10Hrs',
+    time: '3Weeks',
     location: 'Seoul',
     desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
     company: 'CJ ENM'
@@ -132,7 +137,7 @@ const Data = [
     id:13, 
     image: logo13,
     title: 'Web Developer',
-    time: '10Hrs',
+    time: '4Days',
     location: 'Seoul',
     desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
     company: 'KIA'
@@ -141,7 +146,7 @@ const Data = [
     id:14, 
     image: logo14,
     title: 'Web Developer',
-    time: '10Hrs',
+    time: '3Hrs',
     location: 'Seoul',
     desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
     company: 'Posco'
@@ -150,10 +155,55 @@ const Data = [
     id:15, 
     image: logo15,
     title: 'Web Developer',
-    time: '10Hrs',
+    time: '6Hrs',
     location: 'Seoul',
     desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
     company: '배달의 민족'
+  },
+  {
+    id:16, 
+    image: logo16,
+    title: 'Web Developer',
+    time: '2Days',
+    location: 'Seoul',
+    desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+    company: 'Facebook'
+  },
+  {
+    id:17, 
+    image: logo17,
+    title: 'Web Developer',
+    time: '5Days',
+    location: 'Seoul',
+    desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+    company: 'Line'
+  },
+  {
+    id:18, 
+    image: logo18,
+    title: 'Web Developer',
+    time: '2Weeks',
+    location: 'Seoul',
+    desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+    company: 'Google'
+  },
+  {
+    id:19, 
+    image: logo19,
+    title: 'Web Developer',
+    time: '20Mins',
+    location: 'Seoul',
+    desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+    company: 'LG'
+  },
+  {
+    id:20, 
+    image: logo20,
+    title: 'Web Developer',
+    time: '20Hrs',
+    location: 'Seoul',
+    desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+    company: 'KB Bank'
   }
 ]
 
@@ -165,7 +215,7 @@ const Job = () => {
           Data.map(({id,image,title,time,location,desc,company}) => {
             return (
               // This will return a single job post based on the ID
-            <div key={id} className="group group/item singleJob w-[250px] p-[20px] bg-white rounded [10px] hover:bg-teal-500 shoadow-lg shadow-greyIsh-400/700 hover:shadow-lg">
+            <div key={id} className="group group/item singleJob w-[260px] p-[20px] bg-white rounded [10px] hover:bg-teal-500 shoadow-lg shadow-greyIsh-400/700 hover:shadow-lg border-2 border-feay-200">
             <span className="flex justify-between items-center gap-4">
               <h1 className="text-[16px] font-semibold text-textColor group-hover:text-white">
                 {title}
