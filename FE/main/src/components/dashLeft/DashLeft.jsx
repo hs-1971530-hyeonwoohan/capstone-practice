@@ -13,7 +13,7 @@ function DashLeft() {
   const [Rcopen, setRcOpen] = useState(false);
 
   return (
-    <div className="col-span-2 min-h-[90vh] max-h-[90vh] border-r border-feay-200 items-start justify-start flex flex-col  w-full ">
+    <div className="col-span-2  border-r border-feay-200 items-start justify-start flex flex-col  w-full h-full">
       {/*top section*/}
       <h1 className="text-xl font-bold xl:text-3xl px-12 py-6">
         Unknown

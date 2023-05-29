@@ -87,13 +87,13 @@ function Calendar() {
           </div>
           <div className="flex flex-col border-b border-feay-200">
             <div className="overflow-auto h-full ">
-            <h1 className="font-bold sm:text-xl px-12 py-2 text-center ">
+            <h1 className="font-bold font-kr sm:text-xl px-12 py-2 text-center ">
               이번 주 할 일
             </h1>
             <FullCalendar
               plugins={[listPlugin, interactionPlugin]}
               initialView="listWeek"
-              height={280}
+              height={285}
               // height="auto"
 
               headerToolbar={false}

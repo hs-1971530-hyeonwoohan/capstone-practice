@@ -11,8 +11,8 @@ function DashRight() {
     <div className="col-span-3 items-start justify-start flex flex-col w-full pb-6">
       {/* top section */}
       <div className="w-full items-start justify-start flex flex-col px-12 py-6">
-        <h1 className="text-xl font-bold xl:text-3xl ">Recent StudyRoom</h1>
-        <div className="w-full space-y-4 overflow-y-auto max-h-[350px] py-5 scrollbar-hide">
+        <h1 className="text-xl font-bold xl:text-3xl mb-4">Recent StudyRoom</h1>
+        <div className="w-full space-y-4 overflow-y-auto max-h-[350px] py-5 -mb-4 scrollbar-hide">
         
          {/* <div className="w-full space-y-4 max-h-[350px] py-5"> */}
           <div className="flex flex-col gap-4">
