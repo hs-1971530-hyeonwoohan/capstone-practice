@@ -6,14 +6,18 @@ import com.passionroad.passionroad.member.domain.Member;
 import com.passionroad.passionroad.freeboard.dto.PageRequestDTO;
 import com.passionroad.passionroad.freeboard.dto.PageResponseDTO;
 import com.passionroad.passionroad.freeboard.repository.FreeBoardRepository;
+import com.passionroad.passionroad.studyroom.entity.StudyRoom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,6 +81,24 @@ public class FreeBoardService {
     //
     public void remove(Long postId){
         freeBoardRepository.deleteById(postId);
+    }
+
+
+    public Map<String, Object> getMyPosts(String mid) {
+
+        Map<String, Object> postsMap = new HashMap<>();
+
+        List<FreeBoard> posts = freeBoardRepository.findAllByWriterOrderByRegDateDesc(mid).orElseThrow();
+
+        posts.forEach(freeBoard -> {
+
+            FreeBoardDTO freeBoardDTO = FreeBoardDTO.fromEntity(freeBoard);
+
+            postsMap.put(Long.toString(freeBoardDTO.getPostId()), freeBoardDTO);
+        });
+
+
+        return postsMap;
     }
 
 }

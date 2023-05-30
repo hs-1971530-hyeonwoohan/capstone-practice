@@ -1,8 +1,6 @@
 package com.passionroad.passionroad.dashboard.controller;
 
-import com.passionroad.passionroad.dashboard.dto.DateStudyTimeRequestDTO;
-import com.passionroad.passionroad.dashboard.dto.JoinedStudyRoomRequestDTO;
-import com.passionroad.passionroad.dashboard.dto.PassionroadRequestDTO;
+import com.passionroad.passionroad.freeboard.service.FreeBoardService;
 import com.passionroad.passionroad.member.domain.Member;
 import com.passionroad.passionroad.member.repository.MemberRepository;
 import com.passionroad.passionroad.security.exception.AccessTokenException;
@@ -25,30 +23,44 @@ public class DashBoardController {
 
     private final MemberRepository memberRepository;
     private final TodayPassionroadRepository todayPassionroadRepository;
+    private final FreeBoardService freeBoardService;
     private final StudyRoomService studyRoomService;
     private final JWTUtil jwtUtil;
 
 
-    @PostMapping("passionroad")
+    @GetMapping("passionroad")
     public ResponseEntity<Long> getTotalPassionroad(
-            @RequestBody PassionroadRequestDTO requestDTO
-            ){
+            @RequestHeader("Authorization") String jwtHeader
+    ){
         // 총 열정도 반환
-        
-        String mid = requestDTO.getMid();
+
+        // TokenCheckFilter 의해 JWT 검증했으므로 바로 사용
+        String tokenStr = jwtHeader.substring(7);   // 토큰 문자열 (인증값)
+
+        // payload 검출 (key = mid)
+        Map<String, Object> values = jwtUtil.validateToken(tokenStr);
+        String mid = (String)values.get("mid");
+
         Member member = memberRepository.findByMid(mid).orElseThrow();
 
         return new ResponseEntity<>(member.getTotalPassionroad(), HttpStatus.OK);
     }
 
-    @PostMapping("dateStudyTime")
+    @GetMapping("dateStudyTime")
     public ResponseEntity<Long> getDateStudyTime(
-            @RequestBody DateStudyTimeRequestDTO requestDTO
+            @RequestHeader("Authorization") String jwtHeader,
+            @RequestParam String dateParam
             ){
         // 특정 날짜의 누적 공부시간 반환
-        
-        String mid = requestDTO.getMid();
-        LocalDate date = requestDTO.getDate();
+
+        // TokenCheckFilter 의해 JWT 검증했으므로 바로 사용
+        String tokenStr = jwtHeader.substring(7);   // 토큰 문자열 (인증값)
+
+        // payload 검출 (key = mid)
+        Map<String, Object> values = jwtUtil.validateToken(tokenStr);
+        String mid = (String)values.get("mid");
+
+        LocalDate date = LocalDate.parse(dateParam);
         Member member = memberRepository.findByMid(mid).orElseThrow();
 
         TodayPassionroad todayPassionroad = todayPassionroadRepository.findTodayPassionroadByMemberAndDate(member, date).orElseThrow();
@@ -77,17 +89,20 @@ public class DashBoardController {
         return new ResponseEntity<>(joinedStudyRoom, HttpStatus.OK);
     }
 
+    @GetMapping
+    public ResponseEntity<Map<String, Object>> getMyPost(
+            @RequestHeader("Authorization") String jwtHeader
+    ){
+        // TokenCheckFilter 의해 JWT 검증했으므로 바로 사용
+        String tokenStr = jwtHeader.substring(7);   // 토큰 문자열 (인증값)
 
-//    @PostMapping("joinedStudyRoom")
-//    public ResponseEntity<Map<String, Object>> joinedStudyRoom(
-//            @RequestBody JoinedStudyRoomRequestDTO requestDTO
-//        ){
-//        // 가입된 스터디룸들 반환
-//
-//        String mid = requestDTO.getMid();
-//        Map<String, Object> joinedStudyRoomMap = studyRoomService.getJoinedStudyRoom(mid);
-//
-//        // key: Room Title, value: StudyRoom Entity
-//        return new ResponseEntity<>(joinedStudyRoomMap, HttpStatus.OK);
-//    }
+        // payload 검출 (key = mid)
+        Map<String, Object> values = jwtUtil.validateToken(tokenStr);
+        String mid = (String)values.get("mid");
+
+        Map<String, Object> myPosts =freeBoardService.getMyPosts(mid);
+
+        return new ResponseEntity<>(myPosts, HttpStatus.OK);
+    }
+
 }
