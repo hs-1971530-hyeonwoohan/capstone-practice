@@ -10,6 +10,7 @@ import { AiOutlineCamera } from "react-icons/ai";
 import UserDefaultImage from "./../../imgs/UserImg/UserDefaultImage.png";
 import StudyModal from "../studymodal/StudyModal";
 import StudyJoin from "./StudyJoin";
+import NotiDropDown from "../norificationdropdown/NotiDropDown";
 
 const isAuthenticated = true;
 
@@ -51,12 +52,15 @@ export default function Header() {
 
   const navigate = useNavigate();
 
+  const [openNoti, setOpenNoti] = useState(false);
+
   const handleCommentTextChange = (e) => {
     const newText = e.target.value;
     setCommentText(newText);
     setCommentTextLength(newText.length);
   };
 
+  
   function handleImageUpload(e) {
     const file = e.target.files[0];
     if (file) {
@@ -243,21 +247,25 @@ export default function Header() {
                               ></path>
                             </svg>
                           </button>
+                          
                         </div>
 
                         {/*nav Bell */}
                         <button
                           type="button"
                           className="rounded-full bg-white p-1 text-gray-400 hover:text-black focus:outline-none focus:text-black focus:offset"
+                          onClick={() => setOpenNoti((prev) =>!prev )}
                         >
                           {/*BdropDown 추가 필요 + 몇개의 notification이 왔는지 빨간 글씨로 띄워주기.*/}
                           <FaRegBell
                             className="h-6 w-6 pr-1"
                             aria-hidden="true"
                           />
+                           
                           <span className="sr-only">5</span>
                         </button>
-
+                        {openNoti && <NotiDropDown />}
+                        
                         {/* Profile + dropdown Header에서는 로그인/비로그인을 나눌 파트가 여기뿐임. bell Icon + profile로 div하나로 묶고 로그인/비로그인 나눠놓기. */}
 
                         <Menu as="div" className="relative ml-3">
@@ -549,5 +557,6 @@ function Navigation({ navigation }) {
         ))}
       </div>
     </div>
+    
   );
 }
