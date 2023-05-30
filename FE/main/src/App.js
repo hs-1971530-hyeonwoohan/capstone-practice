@@ -14,6 +14,7 @@ import TextEdit from "./components/reactquill/TextEdit";
 import GroupBoard from "./components/groupboard/GroupBoard";
 import Comment from "./components/comment/Comment";
 import JobfinderBoard from "./pages/board/JobfinderBoard";
+import CommunityHeader from "./components/communityheader/CommunityHeader";
 
 
 
@@ -22,6 +23,7 @@ const Layout = () => {
   return (
     <div>
       <Header />
+      <CommunityHeader />
       <Outlet />
       <Footer />
     </div>

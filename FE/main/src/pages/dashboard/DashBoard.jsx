@@ -37,7 +37,7 @@ function DashBoard() {
           )}
 
           {activeNav === 5 && (<div className="grid grid-cols-1 xl:grid-cols-5 w-full col-span-10l">
-              <div className="xl:col-span-1"></div> {/* 왼쪽 여백을 위한 빈 div */}
+              {/* <div className="xl:col-span-1"></div> 왼쪽 여백을 위한 빈 div */}
               <div className="px-10 xl:col-span-4">
                 <Profile />
               </div>
