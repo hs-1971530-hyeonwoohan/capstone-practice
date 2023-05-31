@@ -8,7 +8,7 @@ function InvestItem({ item }) {
       <div className="flex items-center justify-center space-x-4 w-full  ">
         {/* <div className="bg-[#DBEEF4] rounded-full py-2 px-2"> */}
         <div>
-        <img src={image} className="w-[300px]"/>
+        <img src={image} className="w-[300px] rounded-lg"/>
         </div>
         <div className="w-full space-y-1">
           <h4 className="font-bold text-xl">{title}</h4>
