@@ -32,8 +32,8 @@ public class StudyRoom extends Timestamped {
     @Column(name = "max_member")
     private int maxMember;
 
-    @Column(nullable = false)
-    private boolean studying;
+//    @Column(nullable = false)
+//    private boolean studying;
 
     // 최대인원을 6명으로 고정 => maxUser 인자 삭제, 생성시 6으로 고정
     public static StudyRoom create(String title) {
@@ -42,7 +42,7 @@ public class StudyRoom extends Timestamped {
         studyRoom.title = title;
         studyRoom.memberCount = 0;
         studyRoom.maxMember = 6;
-        studyRoom.studying = false;
+//        studyRoom.studying = false;
         return studyRoom;
     }
 
@@ -71,8 +71,8 @@ public class StudyRoom extends Timestamped {
     }
 
     // 공부 상황 바꾸기
-    public boolean changeStudying(){
-        this.studying = !this.studying;
-        return this.studying;
-    }
+//    public boolean changeStudying(){
+//        this.studying = !this.studying;
+//        return this.studying;
+//    }
 }
