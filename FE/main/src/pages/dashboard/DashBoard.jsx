@@ -26,10 +26,10 @@ function DashBoard() {
         <div className="w-full">
           {activeNav === 0 && (
             <div className="flex xl:grid-cols-5 w-full col-span-10">
-              <div className="w-2/5">
+              <div className="w-2/5 max-h-fit">
               <DashLeft />
               </div>
-              <div className="w-3/5">
+              <div className="w-3/5 max-h-fit">
               <DashRight />
               </div>
               
