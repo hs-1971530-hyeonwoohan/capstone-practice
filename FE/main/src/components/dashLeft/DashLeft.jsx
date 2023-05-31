@@ -75,7 +75,7 @@ function DashLeft() {
         </div>
       </div>
       <div className="w-full border-b border-gray-200 pt-1"></div>
-      <div className="flex flex-row gap-4 w-fit items-center justify-center px-3 mt-8">
+      <div className="flex flex-row gap-4 w-full items-center justify-center px-3 mt-8">
         <div className="space-y-6 border-2 border-gray-300 items-center justify-center flex flex-col ">
           {/* <span className="py-4 px-4 rounded-full shadow-lg shadow-gray-300 items-center justify-center flex">
             <CashIcon className="w-8 h-8 stroke-1 " />
