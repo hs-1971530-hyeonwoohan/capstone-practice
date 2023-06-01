@@ -5,9 +5,9 @@ import calendaricon from './calendaricon.png'
 
 function NotiDropDown() {
   return (
-    <div className='flex flex-col dropdownnoti'>
+    <div className='flex flex-col dropdownnoti w-fit h-fit'>
       <div className='text-center font-kr font-bold text-xl  border-b border-feay-200 shadow-md py-2'>알림</div>
-      <div className='bg-gray-200 w-full h-64 overflow-y-auto'>
+      <div className='bg-gray-200 rounded-lg w-full h-64 overflow-y-auto'>
         <div className='flex flex-col gap-4 py-4 px-4'>
             <div className='border-2 rounded-lg bg-white px-4 py-4'>
               <div className='flex justify-start items-center'>
@@ -44,7 +44,7 @@ function NotiDropDown() {
                 <div className='ml-4 text-sm '>어제 오후 01:21</div>
               </div>
               <div className='flex justify-between items-center mt-2'>
-              <div>일정을 등록하셨습니다.</div>
+              <div>일정을 등록하였습니다.</div>
             </div>
             </div>
         </div>
