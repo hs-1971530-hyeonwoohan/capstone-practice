@@ -8,17 +8,17 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import InvestItem from './../dashLeft/InvestItem';
 function DashRight() {
   return (
-    <div className="col-span-3 items-start justify-start flex flex-col w-full pb-6">
+    <div className="col-span-3 items-start justify-start flex flex-col w-full pb-6 flex-shrink-0">
       {/* top section */}
-      <div className="w-full items-start justify-start flex flex-col px-12 py-6">
-        <h1 className="text-xl font-bold xl:text-3xl mb-4">Recent StudyRoom</h1>
+      <div className="w-full items-start justify-start flex flex-col px-12 py-6 flex-shrink-0">
+        <h1 className="text-xl font-bold xl:text-3xl mb-2">Recent StudyRoom</h1>
         <div className="w-full space-y-4 overflow-y-auto max-h-[350px] py-5 -mb-4 scrollbar-hide">
         
          {/* <div className="w-full space-y-4 max-h-[350px] py-5"> */}
           <div className="flex flex-col gap-4">
           {InvestDB.map((item) => (
             <div className="border-2 rounded-lg bg-[#e2e4e4] py-4">
-              <InvestItem item={item} key={item.id}/>
+              <InvestItem item={item} key={item.id} imgae={item.id}/>
             </div>
             
           ))}
