@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.Map;
 
 @Service
 @Log4j2
@@ -51,4 +52,53 @@ public class TodayPassionroadService {
         // 오늘 누적된 공부시간 반환
         return todayStudyTime;
     }
+
+    public Map<String, Object> getThreeDaysStudyTimes(Member member){
+        log.info("TodayPassionroad: getThreeDaysStudyTimes --------------------------------");
+        // 중요: 데이터가 없으면 기본값 0으로 데이터 만들어서 출력 (데이터 없다고 에러나면 안됨)
+        // 각 날짜의 TodayPassionroad 엔티티 불러오고 save (새로운 엔티티를 insert 하기위해)
+
+        LocalDate today = LocalDate.now();  // 오늘 날짜 YYYY-MM-DD
+        TodayPassionroad todayPassionroad = todayPassionroadRepository.findTodayPassionroadByMemberAndDate(member, today).orElseGet(() -> {
+            // 값이 null 이면
+            return TodayPassionroad.builder()
+                    .studyTime(0L)
+                    .date(today)
+                    .member(member)
+                    .build();
+        });
+        todayPassionroadRepository.save(todayPassionroad);
+
+        LocalDate yesterday = today.minusDays(1);
+        TodayPassionroad yesterdayPassionroad = todayPassionroadRepository.findTodayPassionroadByMemberAndDate(member, yesterday).orElseGet(() -> {
+            // 값이 null 이면
+            return TodayPassionroad.builder()
+                    .studyTime(0L)
+                    .date(yesterday)
+                    .member(member)
+                    .build();
+        });
+        todayPassionroadRepository.save(yesterdayPassionroad);
+
+        LocalDate dayBeforeYesterday = today.minusDays(2);
+        TodayPassionroad dayBeforeYesterdayPassionroad = todayPassionroadRepository.findTodayPassionroadByMemberAndDate(member, dayBeforeYesterday).orElseGet(() -> {
+            // 값이 null 이면
+            return TodayPassionroad.builder()
+                    .studyTime(0L)
+                    .date(dayBeforeYesterday)
+                    .member(member)
+                    .build();
+        });
+        todayPassionroadRepository.save(dayBeforeYesterdayPassionroad);
+
+        Map<String, Object> studyTimeMap = Map.of(
+                "today", todayPassionroad.getStudyTime(),
+                "yesterday", yesterdayPassionroad.getStudyTime(),
+                "dayBeforeYesterday", dayBeforeYesterdayPassionroad.getStudyTime()
+        );
+
+        return studyTimeMap;
+    }
+
+
 }
