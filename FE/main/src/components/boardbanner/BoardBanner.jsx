@@ -4,12 +4,13 @@ import { FaUserAlt } from "react-icons/fa";
 
 function BoardBanner() {
   const [selectedBoard, setSelectedBoard] = useState("Board1");
+  const user = localStorage.getItem("mid");
 
   return (
-    <div className="flex flex-col -ml-12 w-full">
+    <div className="flex flex-col pr-10">
       <div className="grid grid-cols-3">
         <button
-          className={`border-b-4 pt-1  font-kr font-semibold ${
+          className={`border-b-4 pt-1 h-11 font-kr font-semibold ${
             selectedBoard === "Board1"
               ? "border-teal-500 text-teal-400 font-bold"
               : "border-gray-300 text-gray-600 cursor-pointer font-normal"
@@ -40,7 +41,9 @@ function BoardBanner() {
         </button>
       </div>
       {selectedBoard === "Board1" && (
-        <div className="flex flex-col items-center justify-between w-full h-60 bg-white text-center align-middle">
+        <div className="flex flex-col items-center justify-between w-full h-72  bg-white text-center align-middle">
+          
+          {user && <div className="pt-10 flex flex-col items-center justify-between w-full h-60 bg-white text-center align-middle">
           <div className="h-full w-full p-4 flex">
             {/* <div className="w-1/4">
               <div className=" font-semibold items-center mr-14"> 최근 방문</div>
@@ -75,9 +78,9 @@ function BoardBanner() {
                   <div class="mine-goal-record-body">
                     <div class="mine-goal-record-tx-wrap flex justify-between mt-2 ">
                       <p class="mine-goal-record-tx time font-semibold ">
-                        0시간 0분
+                        1시간 50분
                         <span class="mine-goal-record-tx total text-gray-300 font-normal">
-                          / 0시간 0분
+                          / 5시간 0분
                         </span>
                       </p>
                       <p class="mine-goal-record-tx none text-slate-400">
@@ -141,15 +144,18 @@ function BoardBanner() {
               </div>
             </div> */}
           </div>
+        </div>}
         </div>
       )}
       {selectedBoard === "Board2" && (
-        <div className="h-60">
+        <div className="flex flex-col items-center justify-between w-full h-72 p-4 bg-white text-center align-middle">
+           <div className="h-60">
           <div className="">
             <div className="grid grid-cols-3 gap-4 items-center justify-between w-full h-full bg-white text-center align-middle">
               <div className="">
                 {/* <div className=" font-semibold items-center mr-14"> 최근 방문</div> */}
-                <div className="relative bg-gray-100 cursor-pointer rounded-md mt-4">
+                <div>
+                <div className="relative h-48 bg-gray-100 cursor-pointer rounded-md mt-4">
                   <div className="absolute p-2 text-sm text-white">
                     <div className="flex">
                       <FaUserAlt className="mt-1" />
@@ -163,10 +169,13 @@ function BoardBanner() {
                   />
                   <div className="items-center py-2">Study With Me</div>
                 </div>
+                  <div className="text-gray-400"> 5 시간 전</div>
+                </div>
               </div>
               <div>
                 {/* <div className=" font-semibold items-center mr-14"> 최근 방문</div> */}
-                <div className="relative bg-gray-100 cursor-pointer rounded-md mt-4">
+                <div>
+                <div className="relative h-48 bg-gray-100 cursor-pointer rounded-md mt-4">
                   <div className="absolute p-2 text-sm text-white">
                     <div className="flex">
                       <FaUserAlt className="mt-1" />
@@ -180,10 +189,13 @@ function BoardBanner() {
                   />
                   <div className="items-center py-2">Study With Me</div>
                 </div>
+                  <div className="text-gray-400">2일 전</div>
+                </div>
               </div>
               <div>
                 {/* <div className=" font-semibold items-center mr-14"> 최근 방문</div> */}
-                <div className="relative bg-gray-100 cursor-pointer rounded-md mt-4">
+                <div>
+                <div className="relative h-48 bg-gray-100 cursor-pointer rounded-md mt-4">
                   <div className="absolute p-2 text-sm text-white">
                     <div className="flex">
                       <FaUserAlt className="mt-1" />
@@ -196,45 +208,50 @@ function BoardBanner() {
                     className="object-cover h-40"
                   />
                   <div className="items-center py-2">Study With Me</div>
+                </div>
+                  <div className="text-gray-400">10일 전</div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
         </div>
       )}
       {selectedBoard === "Board3" && (
-        <div className="h-60">
-          <div>
-            <h4 className="text-center align-middle mt-2 font-kr font-bold text-lg">주요 회사 채용 공고</h4>
-            <div className="border-t border-[#a9a9a9] w-full my-2" />
-            <div className="grid grid-rows-3 grid-cols-3 gap-2 mt-4 items-center justify-between place-content-center w-full h-full bg-white text-center align-middle ">
-              {/* <div className=" "> */}
-                <div className="text-3xl font-bold " style={{ color: '#17ce5f' }}>Naver</div>
-                <div className="font-kr">[인턴십] Software Development Engineer (자율주행 프로젝트)</div>
-                <div className="font-kr">2023-03-23 ~ 영입 종료시</div>
-              {/* </div> */}
-              {/* <div className=""> */}
-                <div className="text-3xl font-bold" style={{color: '#f3dd02'}}>Kakao</div>
-                
-                <div className="font-kr">[관계사] 카카오페이증권 워크플랫폼 개발자</div>
-                <div className="font-kr">2023-05-28 ~ 영입 종료시</div>
-              {/* </div> */}
-              {/* <div className=""> */}
-                {/* <div className="text-3xl font-bold" style={{color:'#00b100'}}>Line</div>
-                <div>Global Commerce Data Tech Lead</div>
-                <div className="">2023-05-19 ~ 영입 종료시</div> */}
-              {/* </div> */}
-            </div>
-          </div>
-        </div>
-        // <div className="flex flex-col items-center justify-between w-full h-44 p-4 bg-white text-center align-middle"></div>
+       <div className="h-72">
+       <div>
+         <h4 className="text-center align-middle mt-4 font-kr font-bold text-lg">주요 회사 채용 공고</h4>
+         <div className="border-t border-[#a9a9a9] w-full my-2" />
+         <div className="grid grid-rows-3 grid-cols-3 gap-2 mt-4 items-center justify-between place-content-center w-full h-full bg-white text-center align-middle ">
+           {/* <div className=" "> */}
+             <div className="text-3xl font-bold " style={{ color: '#17ce5f' }}>Naver</div>
+             <div className="font-kr">[인턴십] Software Development Engineer (자율주행 프로젝트)</div>
+             <div className="font-kr">2023-03-23 ~ 영입 종료시</div>
+           {/* </div> */}
+           {/* <div className=""> */}
+             <div className="text-3xl font-bold" style={{color: '#f3dd02'}}>Kakao</div>
+             
+             <div className="font-kr">[관계사] 카카오페이증권 워크플랫폼 개발자</div>
+             <div className="font-kr">2023-05-28 ~ 영입 종료시</div>
+           {/* </div> */}
+           {/* <div className=""> */}
+             {/* <div className="text-3xl font-bold" style={{color:'#00b100'}}>Line</div>
+             <div>Global Commerce Data Tech Lead</div>
+             <div className="">2023-05-19 ~ 영입 종료시</div> */}
+           {/* </div> */}
+         </div>
+       </div>
+     </div>
       )}
+      <Link to={'/calendar'}>
       <div
         className={`flex flex-col items-center justify-between w-full h-11 min-h-11 p-2 -mt-3 rounded-lg text-white text-center align-middle font-bold cursor-pointer bg-black`}
       >
-        <Link to="/Board">캘린더 바로가기</Link>
+        캘린더 바로가기
       </div>
+      </Link>
     </div>
+    
   );
 }
 

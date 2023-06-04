@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,38 +24,78 @@ ChartJS.register(
   Legend
 );
 
-const labels = ["January", "February", "March"];
+const labels = ["2Days Ago", "YesterDay", "Today"];
 
-export const options = {
-  scales: {
-    x: {
-      grid: {
-        display: false,
+// export const options = {
+//   scales: {
+//     x: {
+//       grid: {
+//         display: false,
+//       },
+//     },
+//     y: {
+//       grid: {
+//         display: false,
+//       },
+//     },
+//   },
+// };
+
+// 한현우 수정 : 전역변수를 Chart 컴포넌트 안으로 이동
+
+// export const data = {
+//   labels,
+//   datasets: [
+//     {
+//       fill: true,
+//       label: "",
+//       data: labels.map(() => faker.datatype.number({ min: 0, max: 200 })),
+//       borderColor: "rgb(1, 152, 117,0.5)",
+//       backgroundColor: "rgba(104, 195, 163, 0.548)",
+//     },
+//   ],
+// };
+
+function Chart({studyTimeData}) {
+  // 한현우 수정 : DashLeft에서 data 가져오기, State, 전역변수 data 이동, 차트 data 변경
+  // const [studyTimes, setStudyTimes] = useState(studyTimeData);
+
+  let studyTimes = {...studyTimeData};
+
+  let studyTimeArr = [studyTimes.dayBeforeYesterday, studyTimes.yesterday, studyTimes.today];
+
+  const options = {
+    scales: {
+      x: {
+        grid: {
+          display: true,
+        },
+      },
+      y: {
+        grid: {
+          display: true,
+        },
       },
     },
-    y: {
-      grid: {
-        display: false,
+    
+  };
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        fill: true,
+        label: "",
+        // data: labels.map(() => faker.datatype.number({ min: 0, max: 200 })),
+        data: labels.map((_, index) => studyTimeArr[index]),  // 한현우 수정
+        borderColor: "rgb(1, 152, 117,0.5)",
+        backgroundColor: "rgba(104, 195, 163, 0.548)",
       },
-    },
-  },
-};
+    ],
+  };
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      fill: true,
-      label: "공부 시간",
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 200 })),
-      borderColor: "rgb(1, 152, 117,0.5)",
-      backgroundColor: "rgba(104, 195, 163, 0.548)",
-    },
-  ],
-};
-
-function Chart() {
-  return <Line data={data} options={options} height="90px" width="200px" style={{marginTop:"20px",marginBottom:"10px"}} />;
+  // 한현우 수정 : width(원래 80)
+  return <Line data={data} options={options} height="200px" width="200px" style={{marginTop:"50px",marginBottom:"20px"}} />;
 }
 
 export default Chart;

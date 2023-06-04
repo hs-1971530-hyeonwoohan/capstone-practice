@@ -6,10 +6,9 @@ function RecordModal({ Rcopen, RconClose, children }) {
   return (
     <div
       onClick={RconClose}
-      className={`fixed inset-0 flex justify-start items-center  transition-colors ${
-        Rcopen ? "visible " : "invisible"
+      className={`fixed inset-0 flex justify-center items-center transition-colors ${
+        Rcopen ? "visible bg-black/20" : "invisible"
       }`}
-      style={{left:'370px' , top:'145px'}}
     >
       {/* modal */}
       <div

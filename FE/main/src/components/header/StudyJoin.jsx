@@ -3,9 +3,12 @@ import { useState } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
 import thumbnail1 from "./../../imgs/thumbnail/thumbnail1.jpg";
 import "./ToggleButton.css";
+import { Link } from "react-router-dom";
 
 function StudyJoin() {
   const [commentText, setCommentText] = useState("");
+  const [title, setTitle] = useState("");
+  const [error, setError] = useState(null);
   const [commentTextLength, setCommentTextLength] = useState(0);
   const [studyopen, setstudyOpen] = useState(false);
   const CameraIcon = ({ handleImageUpload }) => (
@@ -15,11 +18,28 @@ function StudyJoin() {
     />
   );
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   const handleCommentTextChange = (e) => {
     const newText = e.target.value;
     setCommentText(newText);
     setCommentTextLength(newText.length);
   };
+
+  const handletitleChange = (e) => {
+    const value = e.target.value;
+    const regex = /^[a-zA-Z0-9_ ]*$/;  // 영문자만 허용하는 정규표현식
+
+    if (regex.test(value)) {  // 입력값이 정규표현식에 맞는 경우
+        setError(null);  // 오류 상태 초기화
+        setTitle(value);  // 상태 업데이트
+    } else {  // 입력값이 정규표현식에 맞지 않는 경우
+        setError("영문자와 숫자만 입력해 주세요.");  // 오류 상태 업데이트
+    }
+  };
+
 
   return (
     <div>
@@ -39,7 +59,10 @@ function StudyJoin() {
               </span>
 
               <input
+                value={title}
                 type="text"
+                onChange={handletitleChange}
+                required
                 placeholder="스터디 이름을 입력하세요."
                 className="ml-6 mt-4 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
       focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
@@ -48,7 +71,11 @@ function StudyJoin() {
       focus:invalid:border-pink-500 focus:invalid:ring-pink-500
     "
               />
+              
             </label>
+            <div className="flex justify-start ml-24">
+              {error && <span style={{color: 'red'}}>{error}</span>}
+            </div>
           </form>
           <form>
             <label class="flex flex-row">
@@ -165,7 +192,6 @@ function StudyJoin() {
 
           <div class="formGroup mt-10 rounded-xl flex justify-center items-center bg-[#fff5ec] w-full py-4">
             <label class="detailInfo ">
-              
               <p class="detailInfoText text-sm text-[#ff7f00]">
                 설정한 내용은 스터디를 만든 후 변경이 가능합니다. 단, 스터디
                 공개 여부는변경이 불가능합니다.
@@ -173,15 +199,17 @@ function StudyJoin() {
             </label>
           </div>
 
-          <button
-            className="btn btn-light h-12 w-full bg-teal-600 font-medium text-white mt-6 rounded-xl"
+          <Link
+            
             onClick={() => {
-              window.open("/dashBoard", "_blank");
               setstudyOpen(false);
             }}
-          >
+            to={`/room`} state={{ makeSession: `${title}` }}
+          > <div className="h-12 w-full bg-teal-600 font-medium text-white mt-6 rounded-xl flex justify-center items-center">
             스터디 룸 만들기
-          </button>
+
+          </div>
+          </Link>
         </div>
       </div>
     </div>

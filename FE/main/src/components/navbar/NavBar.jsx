@@ -11,30 +11,30 @@ const navLinks = [
     current:false
 
   },
-  // {
-  //   id: 1,
-  //   title: "Products",
-  //   icon: <HiOutlineDocumentReport className="nav-icon" />,
-  //   current:false
-  // },
-  // {
-  //   id: 2,
-  //   title: "Reports",
-  //   icon: <HiOutlineChartPie className="nav-icon" />,
-  //   current:false
-  // },
-  // {
-  //   id: 3,
-  //   title: "Messages",
-  //   icon: <HiOutlineChatAlt className="nav-icon"/>,
-  //   current:false
-  // },
-  // {
-  //   id: 4,
-  //   title: "Calendar",
-  //   icon: <HiOutlineCalendar className="nav-icon" />,
-  //   current:false
-  // },
+  {
+    id: 1,
+    title: "Products",
+    icon: <HiOutlineDocumentReport className="nav-icon" />,
+    current:false
+  },
+  {
+    id: 2,
+    title: "Reports",
+    icon: <HiOutlineChartPie className="nav-icon" />,
+    current:false
+  },
+  {
+    id: 3,
+    title: "Messages",
+    icon: <HiOutlineChatAlt className="nav-icon"/>,
+    current:false
+  },
+  {
+    id: 4,
+    title: "Calendar",
+    icon: <HiOutlineCalendar className="nav-icon" />,
+    current:false
+  },
   {
     id: 5,
     title: "Profile",
@@ -56,7 +56,7 @@ function NavBar() {
   return (
     <nav className=" col-span-2 border-r border-gray-200 min-h-[h-auto] max-h-[auto] w-[80px] xl:w-[210px] px-1 flex flex-col items-start justify-around">
       <div className="w-full min-h-fit max-h-fit items-center">
-        <div className="pb-10 sticky top-0">
+        <div className="pb-10">
           <img
             src="https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
             alt="Avatar user"

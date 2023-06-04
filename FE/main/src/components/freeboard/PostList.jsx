@@ -159,21 +159,13 @@
                 <span className="pl-3 text-base text-black mr-1 hover:underline hover:text-blue-500 cursor-pointer">
                     <Link
                     to={`/post/${post.postId}`}
-                    state={{
-                        postId: `${post.postId}`, // or a valid postId, if needed
-                        authorId: `${post.authorId}`,
-                        writer: `${post.writer}`,
-                        content: `${post.content}`,
-                        title: `${post.title}`,
-                        date: date(post.regDate, post.modDate)
-                    }}
-                    onClick={scrollToTop}
+                    
                     >
                     <span>{post.title}</span>
                     </Link>
                 </span>
                 <span className="text-base text-blue-500">
-                    {/*post.comments*/}
+                    {3}
                 </span>
                 </div>
                 <div className="flex justify-items-stretch">
