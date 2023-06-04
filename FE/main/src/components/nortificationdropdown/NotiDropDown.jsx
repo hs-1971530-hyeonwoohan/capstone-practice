@@ -9,7 +9,7 @@ function NotiDropDown() {
             <li>알림 3</li>
         </ul>
     </div>
-        
+
   )
 }
 

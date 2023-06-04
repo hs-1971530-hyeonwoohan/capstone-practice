@@ -17,14 +17,17 @@ function LoginForm() {
     const password = info.get("password");
     const data = { mid: username, mpw: password };
 
-    axios.post("http://localhost:8080/generateToken", data).then((response) => {
+    axios.post("https://passionroad2.com/api/generateToken", data).then((response) => {
       if (response.status === 200) {
         console.log("JWT AccessToken: " + response.data.accessToken);
 
         const accessToken = response.data.accessToken;
         const refreshToken = response.data.refreshToken;
+        const mid = response.data.mid;
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem("mid", mid);
+
 
         if (accessToken !== null) {
           setIsAuthenticated(!isAuthenticated);

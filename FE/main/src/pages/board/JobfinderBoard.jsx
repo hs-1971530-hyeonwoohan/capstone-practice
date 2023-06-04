@@ -15,7 +15,7 @@ const JobfinderBoard = () => {
         <Search/>
         <Jobs/>
         <Value/>
-        {/* <Footer/> */}
+        <Footer/>
     </div>
   )
 }

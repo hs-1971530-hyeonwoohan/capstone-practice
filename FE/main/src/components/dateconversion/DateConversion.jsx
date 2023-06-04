@@ -1,6 +1,12 @@
 import moment from "moment";
 
-function DateConversion(dateString) {
+function arrayToDate(dateArray) {
+  const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6] / 1000000);
+  return date.toISOString();
+}
+
+function DateConversion(dateArray) {
+  const dateString = arrayToDate(dateArray);
   const date = moment(dateString);
   const now = moment();
 
@@ -24,3 +30,5 @@ function DateConversion(dateString) {
 }
 
 export default DateConversion;
+
+
