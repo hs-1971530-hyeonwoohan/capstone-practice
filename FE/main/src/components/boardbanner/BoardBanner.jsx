@@ -203,51 +203,27 @@ function BoardBanner() {
         </div>
       )}
       {selectedBoard === "Board3" && (
-        <div className="h-60 overflow-y-auto">
+        <div className="h-60">
           <div>
-            <h4 className="text-center align-middle mt-2 font-kr font-bold text-lg">
-              주요 회사 채용 공고
-            </h4>
+            <h4 className="text-center align-middle mt-2 font-kr font-bold text-lg">주요 회사 채용 공고</h4>
             <div className="border-t border-[#a9a9a9] w-full my-2" />
-            <div className="grid grid-rows-3 grid-cols-3 gap-2 mt-4 mb-4 items-center justify-between place-content-center w-full bg-white text-center align-middle ">
+            <div className="grid grid-rows-3 grid-cols-3 gap-2 mt-4 items-center justify-between place-content-center w-full h-full bg-white text-center align-middle ">
               {/* <div className=" "> */}
-              <div className="text-3xl font-bold " style={{ color: "#17ce5f" }}>
-                Naver
-              </div>
-              <div className="font-kr">
-                [인턴십] Software Development Engineer (자율주행 프로젝트)
-              </div>
-              <div className="font-kr">2023-03-23 ~ 영입 종료시</div>
+                <div className="text-3xl font-bold " style={{ color: '#17ce5f' }}>Naver</div>
+                <div className="font-kr">[인턴십] Software Development Engineer (자율주행 프로젝트)</div>
+                <div className="font-kr">2023-03-23 ~ 영입 종료시</div>
               {/* </div> */}
               {/* <div className=""> */}
-              <div className="text-3xl font-bold" style={{ color: "#f3dd02" }}>
-                Kakao
-              </div>
-
-              <div className="font-kr">
-                [관계사] 카카오페이증권 워크플랫폼 개발자
-              </div>
-              <div className="font-kr">2023-05-28 ~ 영입 종료시</div>
+                <div className="text-3xl font-bold" style={{color: '#f3dd02'}}>Kakao</div>
+                
+                <div className="font-kr">[관계사] 카카오페이증권 워크플랫폼 개발자</div>
+                <div className="font-kr">2023-05-28 ~ 영입 종료시</div>
               {/* </div> */}
               {/* <div className=""> */}
-              <div className="text-3xl font-bold" style={{ color: "#00b100" }}>
-                Line
-              </div>
-              <div className="font-kr">Global Commerce Data Tech Lead</div>
-              <div className="font-kr">2023-05-19 ~ 영입 종료시</div>
+                {/* <div className="text-3xl font-bold" style={{color:'#00b100'}}>Line</div>
+                <div>Global Commerce Data Tech Lead</div>
+                <div className="">2023-05-19 ~ 영입 종료시</div> */}
               {/* </div> */}
-              <div className="text-3xl font-bold">
-                <span class name="flex flex-grow"style={{ color: "#511110" }}>Cou<span className="text-[#d8312b]">p</span>
-                <span className="text-[#e99b1a]">a</span>
-                <span className="text-[#97b538]">n</span>
-                <span className="text-[#4f9fdd]">g</span></span>
-              </div>
-              <div className="font-kr">Senior / Staff Data Analyst (Customer Experience Product Analytics)</div>
-              <div className="font-kr">공고페이지 확인</div>
-
-              <div className="text-[#2abab6] text-3xl font-bold">Baemin</div>
-              <div className="font-kr">[Tech] 배민푸드서비스실 배민리스팅광고팀 서버개발자</div>
-              <div className="font-kr">2023-05-22 ~ 영입 종료시</div>
             </div>
           </div>
         </div>

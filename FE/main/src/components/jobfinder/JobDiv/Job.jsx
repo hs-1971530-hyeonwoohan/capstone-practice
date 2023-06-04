@@ -215,7 +215,7 @@ const Job = () => {
           Data.map(({id,image,title,time,location,desc,company}) => {
             return (
               // This will return a single job post based on the ID
-            <div key={id} className="group group/item singleJob w-[260px] p-[20px] bg-white rounded-[10px] hover:bg-teal-500 shadow-lg shadow-greyIsh-400/700 hover:shadow-lg border-2 border-feay-200">
+            <div key={id} className="group group/item singleJob w-[260px] p-[20px] bg-white rounded [10px] hover:bg-teal-500 shoadow-lg shadow-greyIsh-400/700 hover:shadow-lg border-2 border-feay-200">
             <span className="flex justify-between items-center gap-4">
               <h1 className="text-[16px] font-semibold text-textColor group-hover:text-white">
                 {title}

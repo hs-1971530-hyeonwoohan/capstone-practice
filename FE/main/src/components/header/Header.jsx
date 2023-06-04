@@ -32,6 +32,7 @@ const nonAuthenticated = [{ name: "Sign In", href: "dashBoard" }];
 
 const userNavigation = [
   { name: "Your Profile", href: "#" },
+  { name: "Settings", href: "#" },
   { name: "Sign out", href: "#" },
 ];
 
@@ -209,7 +210,7 @@ export default function Header() {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                   <div className="flex h-16 items-center justify-between">
                     <div className="flex items-center">
-                      <div className="flex-shrink-0 text-gray-700 hover:bg-gray-200 hover:text-black px-3 py-2 rounded-md text-sm font-medium cursor-pointer">
+                      <div className="flex-shrink-0 text-gray-700 hover:bg-gray-200 hover:text-black px-3 py-2 rounded-md text-sm font-medium">
                         <Link to="/" onClick={() => setSelectedIndex()}>
                           Home
                         </Link>

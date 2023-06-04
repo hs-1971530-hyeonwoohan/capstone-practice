@@ -1,7 +1,7 @@
 import React from "react";
-import simple from "../Assets/free-icon-checklist-7260996.png";
-import netflix from "../Assets/free-icon-parachute-9681937.png";
-import css from "../Assets/free-icon-shield-306047.png";
+import simple from "../Assets/simple.png";
+import netflix from "../Assets/netflix.png";
+import css from "../Assets/css.png";
 
 const Value = () => {
   return (
@@ -17,7 +17,7 @@ const Value = () => {
               <img src={simple} alt="" className="w-[70%]" />
             </div>
 
-            <span className="font-semibold text-textColor text-[18px]">
+            <span className="font-semibold text-textColor text-[10px]">
               Simplicity
             </span>
           </div>
@@ -33,7 +33,7 @@ const Value = () => {
               <img src={netflix} alt="" className="w-[70%]" />
             </div>
 
-            <span className="font-semibold text-textColor text-[18px]">Social Good</span>
+            <span className="font-semibold text-textColor text-[10px]">ex</span>
           </div>
           <p className="text-[13px] text-textColor opacity-[.7] py-[1rem] font-semibold">
             We believe in making things better for everyone, even if just by a
@@ -47,7 +47,7 @@ const Value = () => {
               <img src={css} alt="" className="w-[70%]" />
             </div>
 
-            <span className="font-semibold text-textColor text-[18px]">Trust</span>
+            <span className="font-semibold text-textColor text-[10px]">ex</span>
           </div>
           <p className="text-[13px] text-textColor opacity-[.7] py-[1rem] font-semibold">
             We work on the basis of creating trust which can be nurtured through
@@ -60,15 +60,15 @@ const Value = () => {
 
       <div className="card mt-[2rem] flex justify-between bg-blue-500 p-[5rem] rounded-[10px]">
           <div>
-            <h1 className="text-teal-500 text-[30px] font-bold">
+            <h1 className="text-blue-500 text-[30px] font-bold">
               Ready to switch a career
             </h1>
-            <h2 className="text-teal-500 text-[25px] font-bold">
+            <h2 className="text-textColor text-[25px] font-bold">
               Let's get started
             </h2>
           </div>
 
-          <button className="border-[2px] rounded-[10px] py-[4px] px-[50px] text-[18px] font-semibold text-teal-500 hover:bg-white border-teal-500">
+          <button className="border-[2px] rounded-[10px] py-[4px] px-[50px] text-[18px] font-semibold text-blue-500 hover:bg-white border-blue-500">
             Get Started
           </button>
         </div>

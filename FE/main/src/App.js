@@ -14,6 +14,7 @@ import TextEdit from "./components/reactquill/TextEdit";
 import GroupBoard from "./components/groupboard/GroupBoard";
 import Comment from "./components/comment/Comment";
 import JobfinderBoard from "./pages/board/JobfinderBoard";
+import CommunityHeader from "./components/communityheader/CommunityHeader";
 
 
 
@@ -22,6 +23,7 @@ const Layout = () => {
   return (
     <div>
       <Header />
+      <CommunityHeader />
       <Outlet />
       <Footer />
     </div>
@@ -34,12 +36,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="dashBoard" element={<PrivateRoute />}>
-          {/* <Route path="dashBoard"> */}
+          {/* <Route path="dashBoard" element={<PrivateRoute />}> */}
+          <Route path="dashBoard">
             <Route index element={<DashBoard />} />
           </Route>
-          <Route path="calendar" element={<PrivateRoute />}>
-          {/* <Route path="calendar"> */}
+          {/* <Route path="calendar" element={<PrivateRoute />}> */}
+          <Route path="calendar">
             <Route index element={<Calendar />} />
           </Route>
           <Route path="freeBoard" element={<FreeBoard />}/>
