@@ -23,7 +23,7 @@ code {
     monospace;
 }
 
-/* li{
+li{
   list-style: none;
   cursor: pointer;
   position:relative;
@@ -38,7 +38,7 @@ li:hover::before{
   right: 0;
   bottom: -10px;
   color: #2a68ff;
-} */
+}
 
 .icon{
   cursor:pointer;
@@ -64,12 +64,11 @@ li:hover::before{
   position: absolute;
   top: 3rem; /* Adjust this value based on your button's height */
   right: -17px;
-  width: 400px;
-  padding: 0px;
+  width: 300px;
+  padding: 15px;
   border-radius: 8px;
   background-color: white;
-  border: 1px solid rgb(128, 128, 128);
-  filter: drop-shadow(0 0px 1px rgba(128, 128, 128, 128)) drop-shadow(0 0px 0px rgba(128, 128, 128, 128));
+  border: 1px solid gray;
 }
 .dropdownnoti::before {
   content: "";
