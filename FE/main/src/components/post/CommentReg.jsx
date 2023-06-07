@@ -1,11 +1,15 @@
 import React from "react";
 import { useState } from "react";
 import { FaImage, FaRegSmileBeam, FaRegPlayCircle } from "react-icons/fa";
-import { sendComment } from "../../api/axios";
+import { postComment } from "../../api/axios";
+import { useNavigate } from "react-router-dom";
+import { getPostComment } from "../../api/axios";
 
-function CommentReg(postId) {
+function CommentReg({ postId, fetchComments }) {
   const [commentText, setCommentText] = useState("");
   const [commentTextLength, setCommentTextLength] = useState(0);
+  const pid = postId.toString();
+  const navigate = useNavigate();
 
   const handleCommentTextChange = (e) => {
     const newText = e.target.value;
@@ -14,6 +18,8 @@ function CommentReg(postId) {
     
   };
 
+  const user = localStorage.getItem("mid");
+
   const handleCommentSubmit = async () => {
     if (commentText.trim() === "") {
       alert("댓글을 입력해 주세요.");
@@ -21,11 +27,17 @@ function CommentReg(postId) {
     }
   
     try {
-      await sendComment(postId, commentText);
+      await postComment(user, commentText, pid);
+      
+      
       alert("댓글이 등록되었습니다.");
       // 댓글 등록 후 입력창 초기화 및 댓글 목록 업데이트를 수행해야 함..
+      fetchComments(pid);
       setCommentText("");
+      
+      
     } catch (error) {
+      
       console.error("Error while submitting comment:", error);
       alert("댓글 등록에 실패했습니다. 다시 시도해 주세요.");
     }

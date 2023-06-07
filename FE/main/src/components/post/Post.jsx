@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
-import { getPostComment } from "../../api/axios";
+import { useNavigate, Link, useParams } from "react-router-dom";
+import {
+  getPostComment,
+  getPostPage,
+  deletePost,
+  putComment,
+  deleteComment,
+} from "../../api/axios";
 import DateConversion from "../dateconversion/DateConversion";
-import isAuthenticatedAtom from "../../atoms/IsAuthenticatedAtom";
-import { useRecoilValue } from "recoil";
-
 import PostList from "../freeboard/PostList";
+import Purify from "../../security/Purify";
 
 import {
   FaSistrix,
@@ -25,29 +29,81 @@ import {
   BsHandThumbsDown,
 } from "react-icons/bs";
 import CommentReg from "./CommentReg";
+import FreeBoard from "../freeboard/FreeBoard";
 
 function Post() {
-  const location = useLocation();
-  const { postId, authorId, writer, content, title, date } =
-    location.state || {};
+  const { postId: urlPostId } = useParams();
+  const [postPage, setPostPage] = useState({
+    authorId: null,
+    writer: null,
+    content: null,
+    title: null,
+    date: null,
+  });
   const [comments, setComments] = useState([]);
-  const [commentText, setCommentText] = useState("");
-  const [charCount, setCharCount] = useState(0);
+  const user = localStorage.getItem("mid");
+  const navigate = useNavigate();
 
-  const handleCommentTextChange = (e) => {
-    const newText = e.target.value;
-    setCommentText(newText);
-    setCharCount(newText.length);
-  };
-
-  async function fetchComments() {
+  async function fetchComments(postId) {
     const fetchedComments = await getPostComment(postId);
     setComments(fetchedComments);
   }
 
   useEffect(() => {
-    fetchComments();
-  }, [postId]);
+    console.log("useEffect 초기화 실행 됨. postId :", urlPostId);
+
+    const fetchData = async () => {
+      try {
+        const postPage = await getPostPage(urlPostId); // await를 사용하여 프로미스가 완료될 때까지 기다림
+        console.log("postPage에 들어온 데이터 : ", postPage);
+        console.log("date객체 분석에 : ", postPage.modDate, postPage.regDate);
+
+
+        setPostPage({
+          authorId: postPage.authorId,
+          writer: postPage.writer,
+          content: postPage.content,
+          title: postPage.title,
+          date: postPage.date,
+        });
+        //console.log("authorId, writer, content, title, date : ", authorId, writer, content, title, date);
+
+        fetchComments(urlPostId);
+      } catch (error) {
+        console.error("getPostPage 오류:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log("useEffect 초기화 실행 됨. postId :", urlPostId);
+
+    const fetchData = async () => {
+      try {
+        const postPage = await getPostPage(urlPostId); // await를 사용하여 프로미스가 완료될 때까지 기다림
+        console.log("postPage에 들어온 데이터 : ", postPage);
+        console.log("date객체 분석에 : ", postPage.modDate, postPage.regDate);
+
+
+        setPostPage({
+          authorId: postPage.authorId,
+          writer: postPage.writer,
+          content: postPage.content,
+          title: postPage.title,
+          date: postPage.date,
+        });
+        //console.log("authorId, writer, content, title, date : ", authorId, writer, content, title, date);
+
+        fetchComments(urlPostId);
+      } catch (error) {
+        console.error("getPostPage 오류:", error);
+      }
+    };
+
+    fetchData();
+  }, [urlPostId]);
 
   const dateConvert = (regD, modD) => {
     console.log("date함수 실행 redD, modD :", regD, modD);
@@ -75,23 +131,25 @@ function Post() {
         </div>
 
         <div className=" py-1 border-b-2 border-indigo-900 flex">
-          <h2 className="ml-4 font-semibold text-xl">{title}</h2>
+          <h2 className="ml-4 font-semibold text-xl">{postPage.title}</h2>
         </div>
 
         {/*여기서 부터 실질적인 게시물과 관련된 파트*/}
         <div className="w-full">
           <div className="flex justify-between mt-1 h-6 w-fulls pl-5">
             <div className="flex cursor-pointer">
-              {console.log("location에 들어온 값", location)}
-              {console.log("location.state에 들어온 값", location.state)}
-              {console.log("writer로 구조 분해 할당 한 writer값", writer)}
-              {console.log("title로 구조 분해 할당 한 title값", title)}
-              {console.log("postId로 구조 분해 할당 한 postId값", postId)}
-              {console.log("postId로 불러온 comment데이터", comments)}
+              {/*console.log("location에 들어온 값", location)*/}
+              {/*console.log("location.state에 들어온 값", location.state)*/}
+              {/*console.log("writer로 구조 분해 할당 한 writer값", writer)*/}
+              {/*console.log("title로 구조 분해 할당 한 title값", title)*/}
+              {/*console.log("postId로 구조 분해 할당 한 postId값", postId)*/}
+              {/*console.log("postId로 불러온 comment데이터", comments)*/}
 
-              {writer}
+              {/*writer*/}
               <FaRegClock className="mt-2 mr-1 ml-4 w-3 h-3 text-gray-300" />
-              <span className="mt-1 text-gray-300 text-sm">{date}</span>
+              <span className="mt-1 text-gray-300 text-sm">
+                {null}
+              </span>
             </div>
             <div className="pr-4 cursor-pointer">
               <FaPrint />
@@ -102,14 +160,14 @@ function Post() {
               <FaLink />
             </div>
             <span className="pl-2 text-gray-400 cursor-pointer hover:text-gray-500">
-              localhost3000:/post/{postId}
+              localhost3000:/post/{urlPostId}
             </span>
           </div>
 
           {/*main파트에서 최소한의 height값을 부여해야 게시글이 보여질 때 덜 어색할 것 같음.*/}
-          <main className="h-screen pt-10 px-10">
-            {console.log(content)}
-            {content}
+          <main className="h-80 pt-10 px-10">
+            {console.log(postPage.content)}
+            {Purify(postPage.content)}
           </main>
           <div className="flex justify-center py-10">
             <div className="flex px-2 py-2 mr-2 hover:bg-gray-200 rounded-xl cursor-pointer">
@@ -142,17 +200,32 @@ function Post() {
           </div>
 
           <div className="flex justify-end mb-4 pr-2 ">
+            <div>
+              {postPage.writer === user && (
+                <div
+                  className="rounded font-kr bg-red-600 text-white px-2 py-1 hover:bg-gray-400 cursor-pointer mr-2"
+                  onClick={async () => {
+                    await deletePost(urlPostId);
+                    navigate("/freeBoard");
+                  }}
+                >
+                  삭제
+                </div>
+              )}
+            </div>
             <Link
               to="/textedit"
               state={{
-                postId: `${postId}`, // or a valid postId, if needed
+                postId: `${urlPostId}`, // or a valid postId, if needed
                 editMode: true,
               }}
             >
               <div>
-                <div className="rounded font-kr bg-black text-white px-2 py-1 hover:bg-gray-400 cursor-pointer">
-                  수정
-                </div>
+                {postPage.writer === user && (
+                  <div className="rounded font-kr bg-black text-white px-2 py-1 hover:bg-gray-400 cursor-pointer">
+                    수정
+                  </div>
+                )}
               </div>
             </Link>
           </div>
@@ -189,15 +262,42 @@ function Post() {
                     <BsHandThumbsDown className="w-4 h-4 text-gray-400" />
                   </div>
                 </div>
+
+                {postPage.writer === user && (
+                  <div className="flex justify-end mr-6 text-sm text-gray-400 ">
+                    <span
+                      className="mr-2 cursor-pointer hover:text-blue-500"
+                      onClick={async () => {
+                        await putComment(
+                          comment.commentId,
+                          comment.commentText,
+                          urlPostId
+                        );
+                        fetchComments(urlPostId);
+                      }}
+                    >
+                      수정
+                    </span>
+                    <span
+                      className="cursor-pointer hover:text-blue-500"
+                      onClick={async () => {
+                        await deleteComment(comment.commentId, urlPostId);
+                        fetchComments(urlPostId);
+                      }}
+                    >
+                      삭제
+                    </span>
+                  </div>
+                )}
               </div>
             ))}
             <div className="px-6 mt-3">
-              <CommentReg postId={postId} />
+              <CommentReg postId={urlPostId} fetchComments={fetchComments} />
             </div>
           </div>
         </div>
       </div>
-      <PostList />
+      <FreeBoard />
     </div>
   );
 }

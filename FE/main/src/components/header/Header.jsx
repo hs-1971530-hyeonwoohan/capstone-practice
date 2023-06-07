@@ -7,11 +7,11 @@ import { selectedNavigationIndex } from "../../atoms/SelectedNavigationIndex";
 import { useState } from "react";
 import ProfileModal from "../profilemodal/ProfileModal";
 import { AiOutlineCamera } from "react-icons/ai";
-import UserDefaultImage from "./../../imgs/UserImg/UserDefaultImage.png";
+import UserDefaultImage from "./../../imgs/userImg/UserDefaultImage.png";
 import StudyModal from "../studymodal/StudyModal";
 import StudyJoin from "./StudyJoin";
-
-const isAuthenticated = true;
+import NotiDropDown from "../nortificationdropdown/NotiDropDown";
+import { isAuthenticatedAtom } from "../../atoms/IsAuthenticatedAtom";
 
 const user = {
   name: "Tom Cook",
@@ -48,13 +48,25 @@ export default function Header() {
 
   const [commentText, setCommentText] = useState("");
   const [commentTextLength, setCommentTextLength] = useState(0);
+  
+  const [isAuthenticated, setIsAuthenticated] =
+    useRecoilState(isAuthenticatedAtom);
 
   const navigate = useNavigate();
+
+  const [openNoti, setOpenNoti] = useState(false);
 
   const handleCommentTextChange = (e) => {
     const newText = e.target.value;
     setCommentText(newText);
     setCommentTextLength(newText.length);
+  };
+
+  const onClickLogOut = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("mid");
+    setIsAuthenticated(false);
+    window.location.href = "/";
   };
 
   function handleImageUpload(e) {
@@ -112,9 +124,11 @@ export default function Header() {
                     <div className="hidden md:block">
                       <div className=" flex items-center md:ml-6">
                         <div className="mr-3 px-3 py-2  rounded-md text-black text-sm font-medium">
-                          <button className=" text-black hover:bg-teal-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                          onClick={setstudyOpen(true)}>
-                            <Link to="/">
+                          <button
+                            className=" text-black hover:bg-teal-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                            
+                          >
+                            <Link to="/login">
                               {/*여기에도 이거도 걍 Navigation 컴포넌트 주고  추가 필요.*/}
                               Study
                             </Link>
@@ -147,7 +161,7 @@ export default function Header() {
                         {/*nav Bell 아이콘 있던 자리*/}
                         <div className="mr-3 py-2  rounded-md text-black text-sm font-medium">
                           <button className=" text-black hover:bg-teal-400 hover:text-white px-2  py-2 rounded-md text-sm font-medium">
-                            <Link to="/">
+                          <Link to="/login">
                               {/*여기에도  onClick={() => setSelectedIndex()} 추가 필요.*/}
                               Sign In
                             </Link>
@@ -202,12 +216,8 @@ export default function Header() {
                   <div className="flex h-16 items-center justify-between">
                     <div className="flex items-center">
                       <div className="flex-shrink-0">
-                        <Link to="/" onClick={() => setSelectedIndex()}>
-                          <img
-                            className="object-cover h-8 w-8 cursor-pointer"
-                            src="../../imgs/icon1.png"
-                            alt=""
-                          />
+                        <Link className="font-kr font-bold" to="/" onClick={() => setSelectedIndex()}>
+                          HOME
                         </Link>
                       </div>
                       <Navigation navigation={navigation} />
@@ -215,10 +225,13 @@ export default function Header() {
                     <div className="hidden md:block">
                       <div className="ml-4 flex items-center md:ml-6">
                         <div className="mr-3 px-3 py-2  rounded-md text-black text-sm font-medium">
-                          <button className=" text-black hover:bg-black hover:text-white px-3 py-2 rounded-md text-sm font-medium" onClick={() => setstudyOpen(true)}>
+                          <button
+                            className=" text-black hover:bg-black hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                            onClick={() => setstudyOpen(true)}
+                          >
                             {/* <Link to="/"> */}
-                              {/*여기에도  onClick={() => setSelectedIndex()} 추가 필요.*/}
-                              Study
+                            {/*여기에도  onClick={() => setSelectedIndex()} 추가 필요.*/}
+                            Study
                             {/* </Link> */}
                           </button>
                         </div>
@@ -249,14 +262,20 @@ export default function Header() {
                         <button
                           type="button"
                           className="rounded-full bg-white p-1 text-gray-400 hover:text-black focus:outline-none focus:text-black focus:offset"
+                          onClick={() => setOpenNoti((prev) => !prev)}
                         >
                           {/*BdropDown 추가 필요 + 몇개의 notification이 왔는지 빨간 글씨로 띄워주기.*/}
                           <FaRegBell
                             className="h-6 w-6 pr-1"
                             aria-hidden="true"
                           />
+
                           <span className="sr-only">5</span>
                         </button>
+                        <div>
+                        {openNoti && <NotiDropDown/>}
+
+                        </div>
 
                         {/* Profile + dropdown Header에서는 로그인/비로그인을 나눌 파트가 여기뿐임. bell Icon + profile로 div하나로 묶고 로그인/비로그인 나눠놓기. */}
 
@@ -289,6 +308,8 @@ export default function Header() {
                                       onClick={() => {
                                         if (item.name === "Your Profile") {
                                           setOpen(true);
+                                        } else if (item.name === "Sign out") {
+                                          onClickLogOut();
                                         }
                                       }}
                                       className={classNames(
@@ -324,9 +345,12 @@ export default function Header() {
                       </Disclosure.Button>
                     </div>
                   </div>
-                  <StudyModal studyopen={studyopen} studyonClose={() => setstudyOpen(false)}>
-              <StudyJoin />
-            </StudyModal>
+                  <StudyModal
+                    studyopen={studyopen}
+                    studyonClose={() => setstudyOpen(false)}
+                  >
+                    <StudyJoin />
+                  </StudyModal>
                 </div>
 
                 <Disclosure.Panel className="md:hidden">
@@ -530,7 +554,9 @@ export default function Header() {
 }
 
 function Navigation({ navigation }) {
-  const [, setSelectedIndex] = useRecoilState(selectedNavigationIndex);
+  const [selectedIndex, setSelectedIndex] = useRecoilState(
+    selectedNavigationIndex
+  );
 
   return (
     <div className="hidden md:block md:ml-6">
@@ -541,7 +567,10 @@ function Navigation({ navigation }) {
             to={`/${item.href}`}
             onClick={() => setSelectedIndex(index)}
             className={classNames(
-              "text-gray-700 hover:bg-gray-200 hover:text-black px-3 py-2 rounded-md text-sm font-medium"
+              index === selectedIndex
+                ? "bg-teal-500 text-white"
+                : "text-black hover:bg-teal-400 hover:text-white",
+              "px-3 py-2 rounded-md text-sm font-medium"
             )}
           >
             {item.name}

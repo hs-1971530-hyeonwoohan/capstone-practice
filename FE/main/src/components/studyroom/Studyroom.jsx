@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaUserAlt } from "react-icons/fa";
 import AnimatedIcon from "../../imgs/AnimatedIcons";
 import Calendar from "./../calendar/Calendar";
 import { AiOutlinePlus } from "react-icons/ai";
+import { getStudyRoomList } from "../../api/axios";
+import { Link } from "react-router-dom";
 
 const tempRooms = [
   {
@@ -77,11 +79,13 @@ function Studyroom() {
     setDisplayCount(displayCount + 6);
   };
 
+
   return (
     <div className="mx-20 h-full mt-5">
       <div className="p-2 mt-3 font-semibold text-2xl">Now Studying</div>
       <div className="grid grid-cols-6 min-h-[h-28] max-h-[h-28] mx-auto w-full content-center ">
         {tempRooms.slice(0, displayCount).map((room) => (
+          <Link to={'/room'}>
           <div
             className="flex min-w-[w-28] max-w-[w-28] px-2 py-4 relative"
             key={room.id}
@@ -108,6 +112,7 @@ function Studyroom() {
             </div>
             {/*icon 집어넣을 자리*/}
           </div>
+          </Link>
         ))}
       </div>
       {displayCount < tempRooms.length && (

@@ -28,22 +28,12 @@ public class MemberRepositoryTest {
 
     @Test
     public void testInsert(){  // user register test
-//
-//        // make test Users Entity instance
-//        IntStream.rangeClosed(1, 100).forEach(i -> {
-//            Member member = Member.builder()
-////                    .nickname("nickname......" + i)
-//                    .build();
-//
-//            // insert or update result
-//            Member result = memberRepository.save(member);
-//            log.info("user_id: " + result.getId());
-//        });
 
         IntStream.rangeClosed(1, 100).forEach(i -> {
             Member member = Member.builder()
                     .mid("user" + i)
                     .mpw(passwordEncoder.encode("1111"))
+                    .totalPassionroad(0L)
                     .role(Role.USER)
                     .build();
 

@@ -5,7 +5,12 @@ import { Link } from "react-router-dom";
 
 const PostList2 = React.memo(({ posts }) => {
     const [formattedPosts, setFormattedPosts] = useState([]);
-  
+    const scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'auto'
+      });
+    };
     const date = (regD, modD) => {
       console.log("FreeBoard date함수 실행 redD, modD :", regD, modD);
       const regDate = regD;
@@ -45,21 +50,15 @@ const PostList2 = React.memo(({ posts }) => {
               <div className="basis-3/4 px-2  hover:underline hover:text-blue-500 ">
                 <span className="pl-3 text-base text-black mr-1 hover:underline hover:text-blue-500 cursor-pointer">
                   <Link
+                  onClick={()=> {scrollToTop()}}
                     to={`/post/${post.postId}`}
-                    state={{
-                      postId: `${post.postId}`, // or a valid postId, if needed
-                      authorId: `${post.authorId}`,
-                      writer: `${post.writer}`,
-                      content: `${post.content}`,
-                      title: `${post.title}`,
-                      date: date(post.regDate, post.modDate)
-                    }}
+                    
                   >
                     {post.title}
                   </Link>
                 </span>
                 <span className="text-base text-blue-500">
-                  {}
+                  {3}
                 </span>
               </div>
               <div className="flex justify-items-stretch">
